@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
+}
+
+.btn-secondary {
+  @apply bg-purple-600 text-white hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-800;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
+}
