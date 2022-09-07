@@ -4,14 +4,16 @@ import { pathAPI } from '../../Constants'
 import { IAuth } from '../../interface/auth'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
-// import { useNavigate } from 'react-router-dom'
 
 interface IFormInput {
   password: string
 }
 
-export const Login = () => {
-  // const navigate = useNavigate()
+interface ILogin {
+  setIsAuth: (state: boolean) => void
+}
+
+export const Login: FC<ILogin> = ({ setIsAuth }) => {
   const {
     register,
     handleSubmit,
@@ -21,7 +23,9 @@ export const Login = () => {
   const onLogin: SubmitHandler<IFormInput> = (data) => {
     axios
       .post<IAuth>(`${pathAPI}login.php`, { password: data.password })
-      // .then(() => navigate('/'))
+      .then((res) => {
+        setIsAuth(res.data.auth)
+      })
       .catch((e) => toast.error(`Ошибка! ${e}`))
   }
 

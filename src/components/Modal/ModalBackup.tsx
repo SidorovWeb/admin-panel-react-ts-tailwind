@@ -1,61 +1,77 @@
+import axios from 'axios'
 import { FC, MouseEvent } from 'react'
+import { toast } from 'react-toastify'
+import { pathAPI } from '../../Constants'
+import { serializeDOMToString, unWrapTextNode, wrapImages } from '../../helpers/dom-helpers'
 import { IBackupList } from '../../interface/backupList'
 import { Button } from '../UI/Button'
+import Modal from './modal'
 
 interface ModalBackupProps {
-  list: IBackupList[]
-  restoreBackup: (e: MouseEvent, time: string, backup: string) => void
+  listBackups: IBackupList[]
+  currentPage: string
+  setLoading: (state: boolean) => void
+  virtualDom: Document
+  setDom: (dom: string) => void
 }
 
-export const ModalBackup: FC<ModalBackupProps> = ({ list, restoreBackup }) => {
-  return (
-    <div
-      className='modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto'
-      id='modalBackup'
-      tabIndex={-1}
-      aria-labelledby='modalBackupLabel'
-      aria-hidden='true'
-    >
-      <div className='modal-dialog relative w-auto pointer-events-none'>
-        <div className='modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current'>
-          <div className='modal-header flex flex-shrink-0 items-center justify-between p-4 rounded-t-md'>
-            <h5 className='text-xl leading-normal text-gray-800 text-center font-bold' id='modalBackupLabel'>
-              Восстановить
-            </h5>
-            <button
-              type='button'
-              className='btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline'
-              data-bs-dismiss='modal'
-              aria-label='Close'
-            ></button>
-          </div>
-          <div className='modal-body relative p-4'>
-            <div>
-              {list &&
-                list.map((item) => (
-                  <div className='flex justify-center' key={item.time}>
-                    <div className='bg-white w-full border-b border-gray-200'>
-                      <a
-                        href='#!'
-                        className='block px-6 py-2 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer'
-                        onClick={(e) => restoreBackup(e, item.time, item.file)}
-                      >
-                        Резервная копия от {item.time}
-                      </a>
-                    </div>
-                  </div>
-                ))}
+export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, listBackups, setLoading, virtualDom, setDom }) => {
+  const save = () => {
+    const newDom = virtualDom?.cloneNode(true)
+    if (newDom) {
+      unWrapTextNode(newDom)
+      wrapImages(newDom)
+      const html = serializeDOMToString(newDom, setDom)
+      axios
+        .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
+        .then(() => {
+          toast.success('Успешно сохранено!')
+        })
+        .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
+        .finally(() => setLoading(false))
+    }
+  }
 
-              {!list.length && 'Резервных копий нет'}
+  const restoreBackup = async (e: MouseEvent, time: string, backup: string) => {
+    e.preventDefault()
+    setLoading(true)
+    return axios
+      .post(`${pathAPI}restoreBackup.php`, { page: currentPage, file: backup })
+      .then((res) => {
+        const ls = JSON.parse(localStorage.getItem('apsw')!)
+        localStorage.setItem('apsw', JSON.stringify({ ...ls, backupTime: time }))
+        location.reload()
+      })
+      .catch((e) => toast.error(e))
+      .catch((e) => toast.error(`Восстановить из backup не удалось! ${e}`))
+  }
+
+  return (
+    <Modal title='Восстановить резервную копию' id='modalBackup'>
+      <h4 className='text-sm text-red-600 mb-4'>
+        Перед восстановлением резервной копии рекомендуется сохранить текущую страницу{' '}
+        <Button clName='btn-success text-base !px-2 h-auto lowercase' onClick={save}>
+          Сохранить
+        </Button>
+      </h4>
+      <div>
+        {listBackups &&
+          listBackups.map((item) => (
+            <div className='flex justify-center' key={item.time}>
+              <div className='bg-white w-full border-b border-gray-200'>
+                <a
+                  href='#!'
+                  className='block py-2 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer'
+                  onClick={(e) => restoreBackup(e, item.time, item.file)}
+                >
+                  Резервная копия от {item.time}
+                </a>
+              </div>
             </div>
-          </div>
-          <div className='modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 rounded-b-md space-x-2'>
-            <Button clName='btn-secondary' dataBsDismiss>
-              Отмена
-            </Button>
-          </div>
-        </div>
+          ))}
+
+        {!listBackups.length && 'Резервных копий нет'}
       </div>
-    </div>
+    </Modal>
   )
 }
