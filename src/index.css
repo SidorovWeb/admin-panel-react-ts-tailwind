@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn-default {
+  @apply bg-transparent text-white hover:bg-slate-700 focus:bg-slate-700 active:bg-slate-800;
+}
+
 .btn-primary {
   @apply bg-blue-600 text-white hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800;
 }

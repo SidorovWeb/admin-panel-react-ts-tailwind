@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FC, MouseEvent } from 'react'
+import { FC, MouseEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { pathAPI } from '../../Constants'
 import { serializeDOMToString, unWrapTextNode, wrapImages } from '../../helpers/dom-helpers'
@@ -8,14 +8,32 @@ import { Button } from '../UI/Button'
 import Modal from './modal'
 
 interface ModalBackupProps {
-  listBackups: IBackupList[]
   currentPage: string
   setLoading: (state: boolean) => void
   virtualDom: Document
   setDom: (dom: string) => void
 }
 
-export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, listBackups, setLoading, virtualDom, setDom }) => {
+export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, setLoading, virtualDom, setDom }) => {
+  const [backupList, setBackupList] = useState<IBackupList[]>([])
+
+  useEffect(() => {
+    getBackupList()
+  }, [])
+
+  const getBackupList = async () => {
+    const path = import.meta.env.MODE === 'development' ? '../api/' : './api/'
+    return axios
+      .get<IBackupList[]>(`${path}backups/backups.json`)
+      .then((res) => {
+        const list = res.data.filter((b) => b.page === currentPage)
+        setBackupList(list)
+      })
+      .catch((err) => {
+        axios.get<IBackupList[]>(`${pathAPI}backup.php`).catch(() => toast.error(`Загрузить backup не удалось! ${err}`))
+      })
+  }
+
   const save = () => {
     const newDom = virtualDom?.cloneNode(true)
     if (newDom) {
@@ -25,6 +43,7 @@ export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, listBackups, se
       axios
         .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
         .then(() => {
+          getBackupList()
           toast.success('Успешно сохранено!')
         })
         .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
@@ -55,8 +74,8 @@ export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, listBackups, se
         </Button>
       </h4>
       <div>
-        {listBackups &&
-          listBackups.map((item) => (
+        {backupList &&
+          backupList.map((item) => (
             <div className='flex justify-center' key={item.time}>
               <div className='bg-white w-full border-b border-gray-200'>
                 <a
@@ -70,7 +89,7 @@ export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, listBackups, se
             </div>
           ))}
 
-        {!listBackups.length && 'Резервных копий нет'}
+        {!backupList.length && 'Резервных копий нет'}
       </div>
     </Modal>
   )

@@ -6,7 +6,7 @@ import { rect } from '../../helpers/utils'
 export const editorImages = (el: HTMLImageElement, iframe: HTMLIFrameElement) => {
   const parent = el.parentNode as HTMLElement
   const id = el.getAttribute('img-editor-app')
-  const btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+  let btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
 
   const setsStyleBtnUploadImg = () => {
     const widthBtnsEditorImg = btnsEditorImg.getBoundingClientRect().width
@@ -19,15 +19,23 @@ export const editorImages = (el: HTMLImageElement, iframe: HTMLIFrameElement) =>
     btnsEditorImg.style.opacity = '1'
   }
 
+  parent.addEventListener('mousemove', (e) => {
+    if (!btnsEditorImg) btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+    return
+  })
+
   parent.addEventListener('mouseover', (e) => {
-    setsStyleBtnUploadImg()
+    if (btnsEditorImg) setsStyleBtnUploadImg()
   })
   parent.addEventListener('mousemove', (e) => {
-    btnsEditorImg.style.opacity = '1'
+    if (btnsEditorImg) {
+      btnsEditorImg.style.opacity = '1'
+      setsStyleBtnUploadImg()
+    }
   })
 
   iframe.contentDocument?.addEventListener('scroll', () => {
-    btnsEditorImg.style.opacity = '0'
+    if (btnsEditorImg) btnsEditorImg.style.opacity = '0'
   })
 }
 
@@ -63,14 +71,12 @@ export const uploadImage = (
           const path = import.meta.env.MODE === 'development' ? '../api/' : '../api/'
           img.src = `${path}img/${res.data.src}`
           if (virtualElem) {
-            console.log('virtualElem')
             virtualElem.src = img.src
             setVirtualDom(virtualDom)
             toast.success('Успешно загружено')
           }
         })
         .catch((e) => {
-          console.log(e)
           toast.error(`Загрузить не удалось! ${e}`)
         })
         .finally(() => {

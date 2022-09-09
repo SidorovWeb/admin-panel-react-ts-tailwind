@@ -1,5 +1,6 @@
-import { FC } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { MdImage } from 'react-icons/md'
+import { userActions } from '../../hooks/actions'
 import { uploadImage } from '../Editor/EditorImages'
 
 interface IControlPanelImg {
@@ -9,27 +10,32 @@ interface IControlPanelImg {
 }
 
 export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDom, setLoading }) => {
+  // console.log(
+  //   'ControlPanelImg',
+  //   useAppSelector((state) => state.controlImg.idxElement)
+  // )
   const iframe = document.querySelector('iframe')
-  const btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+  const btnsEditorImg = useRef(null) as any
+  const { getDataImg } = userActions()
 
   const onMouseOver = () => {
-    const id = btnsEditorImg.getAttribute('img-editor-id')
+    const id = btnsEditorImg.current.getAttribute('img-editor-id')
     const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
     img.style.filter = 'grayscale(100%) blur(3px)'
     img.style.transition = '.25s ease-in-out'
-    btnsEditorImg.style.opacity = '1 !important'
+    btnsEditorImg.current.style.opacity = '1 !important'
   }
 
   const onMouseOut = () => {
-    const id = btnsEditorImg.getAttribute('img-editor-id')
+    const id = btnsEditorImg.current.getAttribute('img-editor-id')
     const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
     img.style.filter = 'grayscale(0) blur(0)'
     img.style.transition = '.25s ease-in-out'
-    btnsEditorImg.style.opacity = '1'
+    btnsEditorImg.current.style.opacity = '1'
   }
 
   const uploadImg = () => {
-    const id = btnsEditorImg.getAttribute('img-editor-id')
+    const id = btnsEditorImg.current.getAttribute('img-editor-id')
     if (id) {
       if (virtualDom) {
         const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
@@ -38,24 +44,22 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
     }
   }
 
-  const setTextImg = () => {
-    const id = btnsEditorImg.getAttribute('img-editor-id')
+  const getData = () => {
+    const id = btnsEditorImg.current.getAttribute('img-editor-id')
 
     if (id) {
       if (virtualDom) {
         const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
-        const text = img.getAttribute('alt')
-        // const editorTextBlock = document.createElement('DIV')
-        // editorTextBlock.classList.add('.apsw-editor-text-block')
-
-        console.log(text)
+        const text = img.getAttribute('alt') ?? ''
+        getDataImg({ id, text })
       }
     }
   }
 
   return (
     <div
-      className='btns-editor-img p-1 z-998 fixed opacity-0 font-medium text-xs leading-tight uppercase space-y-1'
+      className='btns-editor-img p-1 z-998 fixed opacity-0 transition-opacity font-medium text-xs leading-tight uppercase space-y-1'
+      ref={btnsEditorImg}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
@@ -70,7 +74,7 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
       <button
         className={`btn-alt-img block btn-primary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg`}
         type='button'
-        onClick={setTextImg}
+        onClick={getData}
         data-bs-toggle='modal'
         data-bs-target='#modalEditTextImg'
       >

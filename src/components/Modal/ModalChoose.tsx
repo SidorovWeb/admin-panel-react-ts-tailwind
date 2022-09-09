@@ -1,18 +1,35 @@
-import { FC, MouseEvent } from 'react'
-import { Button } from '../UI/Button'
+import axios from 'axios'
+import { FC, MouseEvent, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { pathAPI } from '../../Constants'
 import Modal from './modal'
 
 interface ModalChooseProps {
-  pages: string[]
   setCurrentPage: (page: string) => void
 }
 
-export const ModalChoose: FC<ModalChooseProps> = ({ pages, setCurrentPage }) => {
+export const ModalChoose: FC<ModalChooseProps> = ({ setCurrentPage }) => {
+  const [pages, setPages] = useState([])
+
+  useEffect(() => {
+    getPageList()
+  }, [])
+
   const redirect = (e: MouseEvent, page: string) => {
     e.preventDefault()
     setCurrentPage(page)
     const LS = JSON.parse(localStorage.getItem('apsw')!)
     localStorage.setItem('apsw', JSON.stringify({ ...LS, page }))
+  }
+
+  const getPageList = async () => {
+    return axios
+      .get<[]>(`${pathAPI}pageList.php`)
+      .then((res) => {
+        const filteredData = res.data.filter((item) => item !== 'temporaryFileCanBeDeleted.html')
+        setPages(filteredData)
+      })
+      .catch((e) => toast.error(`Загрузить список страниц не удалось! ${e}`))
   }
 
   return (

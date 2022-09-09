@@ -9,23 +9,21 @@ import { ModalConfirm } from './components/Modal/ModalConfirm'
 import { ModalChoose } from './components/Modal/ModalChoose'
 import { Panel } from './components/Panel/Panel'
 import { ModalBackup } from './components/Modal/ModalBackup'
-import { IBackupList } from './interface/backupList'
 import { ModalEditorMeta } from './components/Modal/ModalEditorMeta'
 import { pathAPI, pathHtml } from './Constants'
 import { editorImages } from './components/Editor/EditorImages'
 import { Login } from './components/Login/Login'
-import { toast, ToastContainer } from 'react-toastify'
+import { Slide, toast, ToastContainer } from 'react-toastify'
 import { ModalLogout } from './components/Modal/ModalLogout'
 import { ControlPanelImg } from './components/Panel/ControlPanelImg'
 import { IAuth } from './interface/auth'
 import { ModalEditTextImg } from './components/Modal/ModalEditTextImg'
+import { useVirtualDom } from './hooks/useVirtualDom'
 
 export const App: FC = () => {
-  const [pages, setPages] = useState([])
-  const [backupList, setBackupList] = useState<IBackupList[]>([])
   const [currentPage, setCurrentPage] = useState('index.html')
   const [dom, setDom] = useState('')
-  const [virtualDom, setVirtualDom] = useState<Document>()
+  const [VD, setVDom] = useState<Document | null>()
   const [loading, setLoading] = useState(true)
   const [isAuth, setIsAuth] = useState(false)
 
@@ -52,7 +50,6 @@ export const App: FC = () => {
       if (ls && ls.page) {
         setCurrentPage(ls.page)
       }
-      // getPageList()
     } else {
       return
     }
@@ -66,58 +63,49 @@ export const App: FC = () => {
         .then(wrapTextNodes)
         .then(wrapImages)
         .then((dom) => {
-          setVirtualDom(dom)
+          // setVDom(dom)
+          setVDom(dom)
           return dom
         })
-        .then((dom) => serializeDOMToString(dom, setDom))
+        .then((dom) => {
+          return serializeDOMToString(dom, setDom)
+        })
         .catch((e) => toast.error(e))
     }
   }, [currentPage, isAuth])
 
   useEffect(() => {
-    if (isAuth && virtualDom) {
-      const iframeDocument = document.querySelector('iframe')
-      if (iframeDocument) {
-        saveTempPage(iframeDocument)
-      }
+    if (isAuth && VD) {
+      saveTempPage()
     }
-  }, [virtualDom, isAuth])
+  }, [VD, isAuth])
 
-  const saveTempPage = (iframeDocument: HTMLIFrameElement) => {
+  const saveTempPage = () => {
     const path = import.meta.env.MODE === 'development' ? '../api/' : './../'
     axios
       .post(`${pathAPI}saveTempPage.php`, { html: dom })
       .then(() => {
-        iframeDocument.setAttribute('src', `${path}temporaryFileCanBeDeleted.html`)
-        iframeDocument.onload = async function () {
-          const ls = JSON.parse(localStorage.getItem('apsw')!)
+        const iframeDocument = document.querySelector('iframe')
+        if (iframeDocument) {
+          iframeDocument.setAttribute('src', `${path}temporaryFileCanBeDeleted.html`)
+          iframeDocument.onload = async function () {
+            const ls = JSON.parse(localStorage.getItem('apsw')!)
 
-          if (ls && ls.backupTime) {
-            toast.success(`Восстановлена резервная копия от ${ls.backupTime}`)
-            delete ls['backupTime']
-            localStorage.setItem('apsw', JSON.stringify({ ...ls }))
+            if (ls && ls.backupTime) {
+              toast.success(`Восстановлена резервная копия от ${ls.backupTime}`)
+              delete ls['backupTime']
+              localStorage.setItem('apsw', JSON.stringify({ ...ls }))
+            }
+
+            setLoading(false)
+            injectStyles(iframeDocument)
+            enableEditing(iframeDocument)
+
+            // deleteTampPage()
           }
-
-          setLoading(false)
-          await getPageList()
-          await getBackupList()
-          injectStyles(iframeDocument)
-          enableEditing(iframeDocument)
-
-          // deleteTampPage()
         }
       })
       .catch((e) => toast.error(e))
-  }
-
-  const getPageList = async () => {
-    return axios
-      .get<[]>(`${pathAPI}pageList.php`)
-      .then((res) => {
-        const filteredData = res.data.filter((item) => item !== 'temporaryFileCanBeDeleted.html')
-        setPages(filteredData)
-      })
-      .catch((e) => toast.error(`Загрузить список страниц не удалось! ${e}`))
   }
 
   // const deleteTampPage = () => {
@@ -126,25 +114,24 @@ export const App: FC = () => {
   //     .then((res) => {
   //       setLoading(false)
   //       getBackupList()
-  //       console.log('3')
+  //       console.log('deleteTampPage')
   //     })
   //     .catch((e) => toast.error(e))
   // }
 
   const save = () => {
     setLoading(true)
-    const newDom = virtualDom?.cloneNode(true)
+    const newDom = VD?.cloneNode(true)
     if (newDom) {
       unWrapTextNode(newDom)
       wrapImages(newDom)
       const html = serializeDOMToString(newDom, setDom)
-      console.log(html)
 
       axios
         .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
         .then(() => {
           toast.success('Успешно сохранено!')
-          getBackupList()
+          // getBackupList()
         })
         .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
         .finally(() => setLoading(false))
@@ -153,14 +140,14 @@ export const App: FC = () => {
 
   const enableEditing = (iframe: HTMLIFrameElement) => {
     iframe?.contentDocument?.body.querySelectorAll('.text-editor-app').forEach((el) => {
-      if (virtualDom) {
+      if (VD) {
         const htmlEl = el as HTMLElement
-        editorText(htmlEl, virtualDom, setVirtualDom)
+        editorText(htmlEl, VD, setVDom)
       }
     })
 
     iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
-      if (virtualDom) {
+      if (VD) {
         const htmlEl = el as HTMLImageElement
         editorImages(htmlEl, iframe)
       }
@@ -187,19 +174,6 @@ export const App: FC = () => {
     }
   }
 
-  const getBackupList = async () => {
-    const path = import.meta.env.MODE === 'development' ? '../api/' : './api/'
-    return axios
-      .get<IBackupList[]>(`${path}backups/backups.json`)
-      .then((res) => {
-        const list = res.data.filter((b) => b.page === currentPage)
-        setBackupList(list)
-      })
-      .catch((err) => {
-        axios.get<IBackupList[]>(`${pathAPI}backup.php`).catch(() => toast.error(`Загрузить backup не удалось! ${err}`))
-      })
-  }
-
   return !isAuth ? (
     <>
       <Login setIsAuth={setIsAuth} />
@@ -211,37 +185,30 @@ export const App: FC = () => {
       {!loading && (
         <>
           <Panel />
-          {virtualDom && (
-            <ControlPanelImg virtualDom={virtualDom} setVirtualDom={setVirtualDom} setLoading={setLoading} />
-          )}
+          {VD && <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />}
         </>
       )}
-      {virtualDom && (
+      {VD && (
         <>
-          <ModalEditorMeta virtualDom={virtualDom} save={save} currentPage={currentPage} />
-          <ModalBackup
-            listBackups={backupList}
-            currentPage={currentPage}
-            setLoading={setLoading}
-            virtualDom={virtualDom}
-            setDom={setDom}
-          />
+          <ModalEditorMeta virtualDom={VD} save={save} currentPage={currentPage} />
+          <ModalBackup currentPage={currentPage} setLoading={setLoading} virtualDom={VD} setDom={setDom} />
+          <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
         </>
       )}
-      <ModalChoose pages={pages} setCurrentPage={setCurrentPage} />
+      <ModalChoose setCurrentPage={setCurrentPage} />
       <ModalConfirm save={save} />
       <ModalLogout />
-      <ModalEditTextImg />
       <ToastContainer
         position='top-center'
-        autoClose={5000}
-        hideProgressBar={false}
+        autoClose={3000}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss={false}
         draggable={false}
         pauseOnHover={false}
+        transition={Slide}
       />
     </>
   )
