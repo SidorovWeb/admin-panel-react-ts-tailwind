@@ -2,7 +2,7 @@ import axios from 'axios'
 import { FC } from 'react'
 import { pathAPI } from '../../Constants'
 import { Button } from '../UI/Button'
-import Modal from './modal'
+import Modal from './Modal'
 
 export const ModalLogout: FC = () => {
   const logout = () => {

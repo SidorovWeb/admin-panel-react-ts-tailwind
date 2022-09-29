@@ -5,16 +5,15 @@ import { pathAPI } from '../../Constants'
 import { serializeDOMToString, unWrapTextNode, wrapImages } from '../../helpers/dom-helpers'
 import { IBackupList } from '../../interface/backupList'
 import { Button } from '../UI/Button'
-import Modal from './modal'
+import Modal from './Modal'
 
 interface ModalBackupProps {
   currentPage: string
   setLoading: (state: boolean) => void
   virtualDom: Document
-  setDom: (dom: string) => void
 }
 
-export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, setLoading, virtualDom, setDom }) => {
+export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, setLoading, virtualDom }) => {
   const [backupList, setBackupList] = useState<IBackupList[]>([])
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, setLoading, vir
     if (newDom) {
       unWrapTextNode(newDom)
       wrapImages(newDom)
-      const html = serializeDOMToString(newDom, setDom)
+      const html = serializeDOMToString(newDom)
       axios
         .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
         .then(() => {

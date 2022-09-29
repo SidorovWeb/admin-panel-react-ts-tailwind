@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button } from '../UI/Button'
-import Modal from './modal'
+import Modal from './Modal'
 
 interface ModalEditorMetaProps {
   virtualDom: Document

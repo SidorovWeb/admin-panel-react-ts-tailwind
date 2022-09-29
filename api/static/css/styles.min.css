@@ -74,7 +74,7 @@ body {
   font-family: 'Lato', sans-serif;
   font-weight: 400;
   scroll-behavior: smooth;
-  color: #fff;
+  color: white;
   text-rendering: optimizeSpeed;
   background-color: #161616;
   background-image: url(../images/@2x/bg.jpg);

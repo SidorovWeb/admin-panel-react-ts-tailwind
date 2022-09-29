@@ -1,8 +1,8 @@
 import axios from 'axios'
 import 'tw-elements'
-import { FC, MouseEvent, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { parseStrDom, serializeDOMToString, unWrapTextNode, wrapImages, wrapTextNodes } from './helpers/dom-helpers'
-import { editorText } from './components/Editor/EditorText'
+import { processingText } from './helpers/Text'
 import 'react-toastify/dist/ReactToastify.css'
 import { Spinner } from './components/Spinner/Spinner'
 import { ModalConfirm } from './components/Modal/ModalConfirm'
@@ -11,21 +11,25 @@ import { Panel } from './components/Panel/Panel'
 import { ModalBackup } from './components/Modal/ModalBackup'
 import { ModalEditorMeta } from './components/Modal/ModalEditorMeta'
 import { pathAPI, pathHtml } from './Constants'
-import { editorImages } from './components/Editor/EditorImages'
+import { processingImages } from './helpers/Images'
 import { Login } from './components/Login/Login'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 import { ModalLogout } from './components/Modal/ModalLogout'
 import { ControlPanelImg } from './components/Panel/ControlPanelImg'
 import { IAuth } from './interface/auth'
 import { ModalEditTextImg } from './components/Modal/ModalEditTextImg'
-import { useVirtualDom } from './hooks/useVirtualDom'
+import { CodeEditor } from './components/Editor/CodeEditor'
 
 export const App: FC = () => {
+  const [iframe, setIframe] = useState<HTMLIFrameElement>()
   const [currentPage, setCurrentPage] = useState('index.html')
-  const [dom, setDom] = useState('')
   const [VD, setVDom] = useState<Document | null>()
   const [loading, setLoading] = useState(true)
   const [isAuth, setIsAuth] = useState(false)
+
+  window.ondrop = (e) => {
+    e.preventDefault()
+  }
 
   useEffect(() => {
     checkAuth()
@@ -63,27 +67,30 @@ export const App: FC = () => {
         .then(wrapTextNodes)
         .then(wrapImages)
         .then((dom) => {
-          // setVDom(dom)
           setVDom(dom)
           return dom
         })
         .then((dom) => {
-          return serializeDOMToString(dom, setDom)
+          const d = serializeDOMToString(dom)
+
+          saveTempPage(d)
         })
         .catch((e) => toast.error(e))
     }
   }, [currentPage, isAuth])
 
   useEffect(() => {
-    if (isAuth && VD) {
-      saveTempPage()
+    if (VD && loading === false && iframe) {
+      injectStyles(iframe)
+      enableEditing(iframe)
     }
-  }, [VD, isAuth])
+  }, [VD, loading])
 
-  const saveTempPage = () => {
+  const saveTempPage = (htmlDom: string) => {
+    setVDom(parseStrDom(htmlDom))
     const path = import.meta.env.MODE === 'development' ? '../api/' : './../'
     axios
-      .post(`${pathAPI}saveTempPage.php`, { html: dom })
+      .post(`${pathAPI}saveTempPage.php`, { html: htmlDom })
       .then(() => {
         const iframeDocument = document.querySelector('iframe')
         if (iframeDocument) {
@@ -98,8 +105,9 @@ export const App: FC = () => {
             }
 
             setLoading(false)
-            injectStyles(iframeDocument)
-            enableEditing(iframeDocument)
+            setIframe(iframeDocument)
+            // injectStyles(iframeDocument)
+            // enableEditing(iframeDocument)
 
             // deleteTampPage()
           }
@@ -122,15 +130,16 @@ export const App: FC = () => {
   const save = () => {
     setLoading(true)
     const newDom = VD?.cloneNode(true)
+
     if (newDom) {
       unWrapTextNode(newDom)
       wrapImages(newDom)
-      const html = serializeDOMToString(newDom, setDom)
+      const html = serializeDOMToString(newDom)
 
       axios
         .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
         .then(() => {
-          toast.success('Успешно сохранено!')
+          toast.success('Успешно опубликовано!')
           // getBackupList()
         })
         .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
@@ -139,19 +148,17 @@ export const App: FC = () => {
   }
 
   const enableEditing = (iframe: HTMLIFrameElement) => {
-    iframe?.contentDocument?.body.querySelectorAll('.text-editor-app').forEach((el) => {
-      if (VD) {
+    if (VD) {
+      iframe?.contentDocument?.body.querySelectorAll('.text-editor-app').forEach((el) => {
         const htmlEl = el as HTMLElement
-        editorText(htmlEl, VD, setVDom)
-      }
-    })
+        processingText(htmlEl, VD, setVDom)
+      })
 
-    iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
-      if (VD) {
+      iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
         const htmlEl = el as HTMLImageElement
-        editorImages(htmlEl, iframe)
-      }
-    })
+        processingImages(htmlEl, iframe)
+      })
+    }
   }
 
   const injectStyles = (iframe: HTMLIFrameElement) => {
@@ -191,8 +198,9 @@ export const App: FC = () => {
       {VD && (
         <>
           <ModalEditorMeta virtualDom={VD} save={save} currentPage={currentPage} />
-          <ModalBackup currentPage={currentPage} setLoading={setLoading} virtualDom={VD} setDom={setDom} />
+          <ModalBackup currentPage={currentPage} setLoading={setLoading} virtualDom={VD} />
           <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
+          <CodeEditor VirtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} />
         </>
       )}
       <ModalChoose setCurrentPage={setCurrentPage} />

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { pathAPI } from '../../Constants'
-import { rect } from '../../helpers/utils'
+import { pathAPI } from '../Constants'
+import { rect } from './utils'
 
-export const editorImages = (el: HTMLImageElement, iframe: HTMLIFrameElement) => {
+export const processingImages = (el: HTMLImageElement, iframe: HTMLIFrameElement) => {
   const parent = el.parentNode as HTMLElement
   const id = el.getAttribute('img-editor-app')
   let btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement

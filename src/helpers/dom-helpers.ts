@@ -5,6 +5,7 @@ export const parseStrDom = (str: string) => {
 
 export const wrapTextNodes = (dom: any) => {
   const body = dom.body
+
   let textNodes: ChildNode[] = []
 
   function recursion(element: ChildNode | HTMLElement) {
@@ -34,14 +35,15 @@ export const wrapTextNodes = (dom: any) => {
   return dom
 }
 
-export const serializeDOMToString = (dom: any, setDom: (dom: string) => void) => {
-  const deleteElements: HTMLElement[] = dom.head.querySelectorAll('script[type="module"]')
-  deleteElements.forEach((el) => {
-    el.remove()
-  })
+export const serializeDOMToString = (dom: any) => {
+  const scriptsModule: HTMLElement[] = dom.head.querySelectorAll('script[type="module"]')
+  if (scriptsModule) {
+    scriptsModule.forEach((el) => {
+      el.remove()
+    })
+  }
 
   const serializer = new XMLSerializer()
-  setDom(serializer.serializeToString(dom))
   return serializer.serializeToString(dom)
 }
 

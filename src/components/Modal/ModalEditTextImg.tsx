@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
-import Modal from './modal'
+import Modal from './Modal'
 
 interface IModalEditTextImg {
   virtualDom: Document

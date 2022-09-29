@@ -2,7 +2,7 @@ import axios from 'axios'
 import { FC, MouseEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { pathAPI } from '../../Constants'
-import Modal from './modal'
+import Modal from './Modal'
 
 interface ModalChooseProps {
   setCurrentPage: (page: string) => void
@@ -12,7 +12,7 @@ export const ModalChoose: FC<ModalChooseProps> = ({ setCurrentPage }) => {
   const [pages, setPages] = useState([])
 
   useEffect(() => {
-    getPageList()
+    getListHtmlFiles()
   }, [])
 
   const redirect = (e: MouseEvent, page: string) => {
@@ -22,9 +22,9 @@ export const ModalChoose: FC<ModalChooseProps> = ({ setCurrentPage }) => {
     localStorage.setItem('apsw', JSON.stringify({ ...LS, page }))
   }
 
-  const getPageList = async () => {
+  const getListHtmlFiles = async () => {
     return axios
-      .get<[]>(`${pathAPI}pageList.php`)
+      .get<[]>(`${pathAPI}listHtmlFiles.php`)
       .then((res) => {
         const filteredData = res.data.filter((item) => item !== 'temporaryFileCanBeDeleted.html')
         setPages(filteredData)

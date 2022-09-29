@@ -18,14 +18,6 @@ export const controlImgSlice = createSlice({
       state.id = action.payload.id
       state.text = action.payload.text
     },
-    // setText: (state, action: PayloadAction<{ idx: number; text: string }>) => {
-    //   state.idx = action.payload.idx
-    //   state.text = action.payload.text
-    // },
-    // // Use the PayloadAction type to declare the contents of `action.payload`
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // }
   },
 })
 

@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Button } from '../UI/Button'
-import Modal from './modal'
+import Modal from './Modal'
 
 interface ModalConfirmProps {
   save: () => void
@@ -9,15 +9,15 @@ interface ModalConfirmProps {
 export const ModalConfirm: FC<ModalConfirmProps> = ({ save }) => {
   return (
     <Modal
-      title='Сохранить изменения'
+      title='Опубликовать изменения'
       id='confirmModal'
       footer={
         <Button clName='btn-success' dataBsDismiss onClick={save}>
-          Сохранить
+          Опубликовать
         </Button>
       }
     >
-      Вы уверены что хотите сохранить изменения?
+      Вы уверены что хотите опубликовать изменения?
     </Modal>
   )
 }

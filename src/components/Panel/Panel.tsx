@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import Draggable, { DraggableData } from 'react-draggable'
 import { Button } from '../UI/Button'
 import {
@@ -10,16 +10,19 @@ import {
   MdRestorePage,
   MdSave,
 } from 'react-icons/md'
+import { userActions } from '../../hooks/actions'
 
 export const Panel: FC = () => {
-  const dragContainer = useRef() as any
-  const dragHandle = useRef() as any
-  const dragInner = useRef() as any
+  const dragContainer = useRef() as MutableRefObject<HTMLDivElement>
+  const dragHandle = useRef() as MutableRefObject<HTMLButtonElement>
+  const dragInner = useRef() as MutableRefObject<HTMLDivElement>
   const [posDraggable, setPosDraggable] = useState<any>()
+  const { activateCodeEditor } = userActions()
 
   useEffect(() => {
-    const position = JSON.parse(localStorage.getItem('apsw-draggable-position')!) as any
-    const direction = JSON.parse(localStorage.getItem('apsw-draggable-direction')!) as any
+    const position = JSON.parse(localStorage.getItem('apsw-draggable-position')!) as { x: number; y: number }
+    const direction = JSON.parse(localStorage.getItem('apsw-draggable-direction')!) as string
+
     if (position) {
       setPosDraggable({ position: { x: position.x, y: position.y }, direction })
     } else {
@@ -57,6 +60,18 @@ export const Panel: FC = () => {
     localStorage.setItem('apsw-draggable-direction', JSON.stringify(direction))
   }
 
+  const activatesCodeEditor = () => {
+    // const el = document.querySelector('.codeEditor') as HTMLElement
+
+    // el.style.display = 'block'
+
+    // setTimeout(() => {
+    //   el.classList.add('show')
+    // }, 115)
+
+    activateCodeEditor()
+  }
+
   return (
     <div className='DragIndicator__container' ref={dragContainer}>
       {posDraggable && (
@@ -68,32 +83,41 @@ export const Panel: FC = () => {
           onStop={handleEnd}
         >
           <div
-            className='container fixed  w-auto  z-998 bg-slate-700 bg-opacity-90 flex justify-between rounded overflow-hidden shadow-md space-x-1 p-2'
+            className='fixed w-auto  z-998 bg-slate-700 bg-opacity-90 flex items-center rounded overflow-hidden shadow-md p-1'
             ref={dragInner}
             style={{
               flexDirection: posDraggable.direction,
             }}
           >
-            <Button clName='btn-default !p-1 ' dataBsToggle dataBsTarget='#modalEditorMeta'>
+            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' onClick={activatesCodeEditor}>
+              code
+            </Button>
+            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalEditorMeta'>
               <MdOutlineEditNote className='w-full  h-[30px]' />
             </Button>
-            <Button clName='btn-default !p-1 ' dataBsToggle dataBsTarget='#modalChoose'>
+            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalChoose'>
               <MdPageview className='w-full h-[30px]' />
             </Button>
-            <Button clName='btn-default !p-1 ' dataBsToggle dataBsTarget='#confirmModal'>
+            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#confirmModal'>
               <MdSave className='w-full h-[30px]' />
             </Button>
-            <Button clName='btn-default !p-1 ' dataBsToggle dataBsTarget='#modalBackup'>
+            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
               <MdRestorePage className='w-full h-[30px]' />
             </Button>
-            <Button clName='btn-default !p-1' dataBsToggle dataBsTarget='#modalLogout'>
+            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalLogout'>
               <MdLogout className='w-full h-[30px]' />
             </Button>
 
-            <button className=' hover:bg-slate-600 p-1 active:hover:bg-slate-700  rounded' onClick={flipElement}>
+            <button
+              className=' hover:bg-slate-600 w-[38px]  m-[2px] h-[38px] p-1 active:hover:bg-slate-700  rounded'
+              onClick={flipElement}
+            >
               <MdOutlineSync className='w-full h-[24px] fill-slate-400 ' />
             </button>
-            <button className='DragHandle hover:bg-slate-600 p-1 active:hover:bg-slate-700  rounded' ref={dragHandle}>
+            <button
+              className='DragHandle w-[38px] h-[38px]  m-[2px] hover:bg-slate-600 p-1 active:hover:bg-slate-700  rounded'
+              ref={dragHandle}
+            >
               <MdOutlineDragIndicator className='w-full h-[24px] fill-slate-400' />
             </button>
           </div>

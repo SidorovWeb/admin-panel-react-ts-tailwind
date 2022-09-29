@@ -1,4 +1,4 @@
-export const editorText = (el: HTMLElement, virtualDom: Document, setVirtualDom: (dom: Document) => void) => {
+export const processingText = (el: HTMLElement, virtualDom: Document, setVirtualDom: (dom: Document) => void) => {
   const onClick = (el: HTMLElement) => {
     el.setAttribute('contentEditable', 'true')
     el.focus()

@@ -1,7 +1,7 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, useRef } from 'react'
 import { MdImage } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
-import { uploadImage } from '../Editor/EditorImages'
+import { uploadImage } from '../../helpers/Images'
 
 interface IControlPanelImg {
   virtualDom: Document
@@ -10,10 +10,6 @@ interface IControlPanelImg {
 }
 
 export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDom, setLoading }) => {
-  // console.log(
-  //   'ControlPanelImg',
-  //   useAppSelector((state) => state.controlImg.idxElement)
-  // )
   const iframe = document.querySelector('iframe')
   const btnsEditorImg = useRef(null) as any
   const { getDataImg } = userActions()
