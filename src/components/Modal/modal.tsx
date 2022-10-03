@@ -29,7 +29,7 @@ const Modal: FC<IModal> = ({ title, id, footer, children }) => (
             aria-label='Close'
           ></button>
         </div>
-        <div className='modal-body relative p-4'>{children}</div>
+        <div className='modal-body relative p-4 mb-4'>{children}</div>
         <div className='modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 pt-0 rounded-b-md space-x-2'>
           <Button clName='btn-secondary' dataBsDismiss>
             Закрыть

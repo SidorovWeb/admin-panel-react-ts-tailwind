@@ -24,7 +24,7 @@ export const ModalChoose: FC<ModalChooseProps> = ({ setCurrentPage }) => {
 
   const getListHtmlFiles = async () => {
     return axios
-      .get<[]>(`${pathAPI}listHtmlFiles.php`)
+      .get<[]>(`${pathAPI}htmlList.php`)
       .then((res) => {
         const filteredData = res.data.filter((item) => item !== 'temporaryFileCanBeDeleted.html')
         setPages(filteredData)

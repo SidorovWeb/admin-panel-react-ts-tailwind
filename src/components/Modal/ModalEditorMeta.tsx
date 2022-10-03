@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react'
+import { MdContentCopy } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { Button } from '../UI/Button'
 import Modal from './Modal'
@@ -98,7 +99,7 @@ export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, save, cu
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
-        <div className='flex flex-wrap items-center justify-between space-x-4'>
+        <div className='flex flex-wrap items-center space-x-4'>
           <p className='text-sm text-blue-700 url-text-apsw'>{url}</p>
           <Button
             clName='btn-primary !text-[10px]'
@@ -110,7 +111,7 @@ export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, save, cu
               }
             }}
           >
-            Copy
+            <MdContentCopy className='w-full h-[18px]' />
           </Button>
         </div>
       </form>

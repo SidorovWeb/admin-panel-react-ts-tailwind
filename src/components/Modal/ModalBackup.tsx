@@ -1,90 +1,53 @@
 import axios from 'axios'
-import { FC, MouseEvent, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { pathAPI } from '../../Constants'
-import { serializeDOMToString, unWrapTextNode, wrapImages } from '../../helpers/dom-helpers'
-import { IBackupList } from '../../interface/backupList'
 import { Button } from '../UI/Button'
 import Modal from './Modal'
 
-interface ModalBackupProps {
-  currentPage: string
-  setLoading: (state: boolean) => void
-  virtualDom: Document
-}
+export const ModalBackup: FC = () => {
+  const [backupList, setBackupList] = useState([]) as any
 
-export const ModalBackup: FC<ModalBackupProps> = ({ currentPage, setLoading, virtualDom }) => {
-  const [backupList, setBackupList] = useState<IBackupList[]>([])
+  const getBackupList = () => {
+    axios.get<[]>(`${pathAPI}backupList.php`).then((res) => {
+      const editedData = [] as any
+      res.data.forEach((str: string) => {
+        const idx = str.lastIndexOf('/')
+        editedData.push(str.slice(idx + 1))
+      })
 
+      setBackupList(editedData)
+    })
+  }
   useEffect(() => {
     getBackupList()
   }, [])
 
-  const getBackupList = async () => {
-    const path = import.meta.env.MODE === 'development' ? '../api/' : './api/'
-    return axios
-      .get<IBackupList[]>(`${path}backups/backups.json`)
+  const backup = () => {
+    axios
+      .post(`${pathAPI}zipper.php`)
       .then((res) => {
-        const list = res.data.filter((b) => b.page === currentPage)
-        setBackupList(list)
+        getBackupList()
+        toast.success(`Архив ${res.data} успешно создан`)
       })
-      .catch((err) => {
-        axios.get<IBackupList[]>(`${pathAPI}backup.php`).catch(() => toast.error(`Загрузить backup не удалось! ${err}`))
-      })
-  }
-
-  const save = () => {
-    const newDom = virtualDom?.cloneNode(true)
-    if (newDom) {
-      unWrapTextNode(newDom)
-      wrapImages(newDom)
-      const html = serializeDOMToString(newDom)
-      axios
-        .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
-        .then(() => {
-          getBackupList()
-          toast.success('Успешно сохранено!')
-        })
-        .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
-        .finally(() => setLoading(false))
-    }
-  }
-
-  const restoreBackup = async (e: MouseEvent, time: string, backup: string) => {
-    e.preventDefault()
-    setLoading(true)
-    return axios
-      .post(`${pathAPI}restoreBackup.php`, { page: currentPage, file: backup })
-      .then((res) => {
-        const ls = JSON.parse(localStorage.getItem('apsw')!)
-        localStorage.setItem('apsw', JSON.stringify({ ...ls, backupTime: time }))
-        location.reload()
-      })
-      .catch((e) => toast.error(e))
-      .catch((e) => toast.error(`Восстановить из backup не удалось! ${e}`))
+      .catch((e) => toast.error(`Ошибка! ${e}`))
   }
 
   return (
-    <Modal title='Восстановить резервную копию' id='modalBackup'>
-      <h4 className='text-sm text-red-600 mb-4'>
-        Перед восстановлением резервной копии рекомендуется сохранить текущую страницу{' '}
-        <Button clName='btn-success text-base !px-2 h-auto lowercase' onClick={save}>
-          Сохранить
+    <Modal
+      title='Создать резервную копию?'
+      id='modalBackup'
+      footer={
+        <Button clName='btn-success' onClick={backup} dataBsDismiss>
+          Создать
         </Button>
-      </h4>
+      }
+    >
       <div>
         {backupList &&
-          backupList.map((item) => (
-            <div className='flex justify-center' key={item.time}>
-              <div className='bg-white w-full border-b border-gray-200'>
-                <a
-                  href='#!'
-                  className='block py-2 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer'
-                  onClick={(e) => restoreBackup(e, item.time, item.file)}
-                >
-                  Резервная копия от {item.time}
-                </a>
-              </div>
+          backupList.map((item: string, idx: number) => (
+            <div className='flex justify-center' key={idx}>
+              <div className='bg-white w-full border-b border-gray-200 py-2'>{item}</div>
             </div>
           ))}
 
