@@ -71,9 +71,9 @@ export const App: FC = () => {
           return dom
         })
         .then((dom) => {
-          const d = serializeDOMToString(dom)
+          const serializeDOMT = serializeDOMToString(dom)
 
-          saveTempPage(d)
+          saveTempPage(serializeDOMT)
         })
         .catch((e) => toast.error(e))
     }
@@ -96,36 +96,13 @@ export const App: FC = () => {
         if (iframeDocument) {
           iframeDocument.setAttribute('src', `${path}temporaryFileCanBeDeleted.html`)
           iframeDocument.onload = async function () {
-            const ls = JSON.parse(localStorage.getItem('apsw')!)
-
-            if (ls && ls.backupTime) {
-              toast.success(`Восстановлена резервная копия от ${ls.backupTime}`)
-              delete ls['backupTime']
-              localStorage.setItem('apsw', JSON.stringify({ ...ls }))
-            }
-
             setLoading(false)
             setIframe(iframeDocument)
-            // injectStyles(iframeDocument)
-            // enableEditing(iframeDocument)
-
-            // deleteTampPage()
           }
         }
       })
       .catch((e) => toast.error(e))
   }
-
-  // const deleteTampPage = () => {
-  //   axios
-  //     .post(`${pathAPI}deleteTempPage.php`)
-  //     .then((res) => {
-  //       setLoading(false)
-  //       getBackupList()
-  //       console.log('deleteTampPage')
-  //     })
-  //     .catch((e) => toast.error(e))
-  // }
 
   const save = () => {
     setLoading(true)
@@ -140,7 +117,6 @@ export const App: FC = () => {
         .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
         .then(() => {
           toast.success('Успешно опубликовано!')
-          // getBackupList()
         })
         .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
         .finally(() => setLoading(false))
@@ -198,9 +174,9 @@ export const App: FC = () => {
       {VD && (
         <>
           <ModalEditorMeta virtualDom={VD} save={save} currentPage={currentPage} />
-          <ModalBackup currentPage={currentPage} setLoading={setLoading} virtualDom={VD} />
+          <ModalBackup />
           <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
-          <CodeEditor VirtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} />
+          <CodeEditor VirtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} save={save} />
         </>
       )}
       <ModalChoose setCurrentPage={setCurrentPage} />

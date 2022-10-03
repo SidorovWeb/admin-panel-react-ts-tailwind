@@ -1,7 +1,4 @@
 <?php
-include('./includes/headerType.php');
-
-
 function glob_tree_search($path, $pattern, $_base_path = null)
 {
 	if (is_null($_base_path)) {
@@ -21,7 +18,3 @@ function glob_tree_search($path, $pattern, $_base_path = null)
 
 	return $out;
 }
-
-$path = __DIR__ . '/';
-$files = glob_tree_search($path, '*.css');
-echo json_encode($files);

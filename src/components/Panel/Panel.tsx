@@ -7,8 +7,9 @@ import {
   MdOutlineEditNote,
   MdOutlineSync,
   MdPageview,
-  MdRestorePage,
   MdSave,
+  MdArchive,
+  MdCode,
 } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 
@@ -61,14 +62,6 @@ export const Panel: FC = () => {
   }
 
   const activatesCodeEditor = () => {
-    // const el = document.querySelector('.codeEditor') as HTMLElement
-
-    // el.style.display = 'block'
-
-    // setTimeout(() => {
-    //   el.classList.add('show')
-    // }, 115)
-
     activateCodeEditor()
   }
 
@@ -90,7 +83,7 @@ export const Panel: FC = () => {
             }}
           >
             <Button clName='btn-default !p-1 h-[38px]  m-[2px]' onClick={activatesCodeEditor}>
-              code
+              <MdCode className='w-full h-[30px]' />
             </Button>
             <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalEditorMeta'>
               <MdOutlineEditNote className='w-full  h-[30px]' />
@@ -101,8 +94,8 @@ export const Panel: FC = () => {
             <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#confirmModal'>
               <MdSave className='w-full h-[30px]' />
             </Button>
-            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
-              <MdRestorePage className='w-full h-[30px]' />
+            <Button clName='btn-default !p-1 h-[38px] m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
+              <MdArchive className='w-full h-[30px] text-white' />
             </Button>
             <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalLogout'>
               <MdLogout className='w-full h-[30px]' />

@@ -15,7 +15,7 @@
 }
 
 .btn-secondary {
-  @apply bg-purple-600 text-white hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-800;
+  @apply bg-gray-600 text-white hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-800;
 }
 
 .btn-success {

@@ -23,13 +23,14 @@ interface ICodeEditor {
   currentPage: string
   saveTempPage: (dom: string, dd?: any) => void
   VirtualDom: Document
+  save: () => void
 }
 interface IFiles {
   files: string[]
   path: string[]
 }
 
-export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempPage }) => {
+export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempPage, save }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const { inactiveCodeEditor } = userActions()
   const codeEditor = useRef<HTMLDivElement>(null)
@@ -102,8 +103,8 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
   }, [])
 
   useEffect(() => {
-    getList('listCssFiles.php', setCssFiles)
-    getList('listJsFiles.php', setJsFiles)
+    getList('cssList.php', setCssFiles)
+    getList('jsList.php', setJsFiles)
   }, [])
 
   const getContentFile = (file: IFiles | undefined, fileName: string, setFun: (v: any) => void) => {
@@ -126,6 +127,8 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
 
     if (theme) {
       setTheme(theme)
+    } else {
+      setTheme('dark')
     }
 
     switch (mode) {
@@ -160,29 +163,42 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
     setData(value)
   }, [])
 
-  const save = () => {
+  const savesCode = () => {
     switch (mode) {
       case 'html':
         saveTempPage(data)
-        setTimeout(() => {
-          toast.success(`Успешно сохранено`)
-        }, 500)
+
+        axios
+          .post(`${pathAPI}savePage.php`, { pageName: currentPage, html: data })
+          .then(() => {
+            setTimeout(() => {
+              toast.success(`Успешно опубликовано`)
+            }, 500)
+          })
+          .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
+
         break
       case 'js':
         const idxJs = jsFiles?.files.indexOf(jsFileName) !== -1 ? jsFiles?.files.indexOf(jsFileName) : 0
-        axios.post(`${pathAPI}saveFile.php`, { pathToFile: jsFiles?.path[idxJs ?? 0], data: data }).then((res) => {
-          setTimeout(() => {
-            toast.success(`Успешно сохранено`)
-          }, 500)
-        })
+        axios
+          .post(`${pathAPI}saveFile.php`, { pathToFile: jsFiles?.path[idxJs ?? 0], data: data })
+          .then((res) => {
+            setTimeout(() => {
+              toast.success(`Успешно опубликовано`)
+            }, 500)
+          })
+          .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
         break
       case 'css':
         const idxCss = cssFiles?.files.indexOf(cssFileName) !== -1 ? cssFiles?.files.indexOf(cssFileName) : 0
-        axios.post(`${pathAPI}saveFile.php`, { pathToFile: cssFiles?.path[idxCss ?? 0], data: data }).then((res) => {
-          setTimeout(() => {
-            toast.success(`Успешно сохранено`)
-          }, 500)
-        })
+        axios
+          .post(`${pathAPI}saveFile.php`, { pathToFile: cssFiles?.path[idxCss ?? 0], data: data })
+          .then((res) => {
+            setTimeout(() => {
+              toast.success(`Успешно опубликовано`)
+            }, 500)
+          })
+          .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
         break
     }
   }
@@ -234,15 +250,12 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
         </div>
       )}
 
-      <div
-        className='fixed bottom-0 right-4 shadow-lg px-4 py-5 space-x-4 flex items-center justify-end'
-        ref={codeEditorBottom}
-      >
+      <div className='fixed bottom-0 right-4 px-4 py-5 space-x-4 flex items-center justify-end' ref={codeEditorBottom}>
         <Button clName='btn-secondary' onClick={close}>
           Закрыть
         </Button>
-        <Button clName='btn-success text-base h-auto' onClick={save}>
-          Сохранить
+        <Button clName='btn-success text-base h-auto' onClick={savesCode}>
+          Опубликовать
         </Button>
       </div>
     </div>
