@@ -1,4 +1,13 @@
+import { store } from '../store/store'
+import { textEditorPanelActions } from '../store/TextEditorPanel/TextEditorPanel'
+
 export const processingText = (el: HTMLElement, virtualDom: Document, setVirtualDom: (dom: Document) => void) => {
+  const id = el.getAttribute('text-editor-app')
+
+  const setsStyleBtnText = () => {
+    store.dispatch(textEditorPanelActions.setTextID({ id: Number(id) }))
+  }
+
   const onClick = (el: HTMLElement) => {
     el.setAttribute('contentEditable', 'true')
     el.focus()
@@ -6,10 +15,12 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
 
   el.addEventListener('click', () => {
     onClick(el)
+    setsStyleBtnText()
   })
 
-  el.addEventListener('blur', () => {
+  el.addEventListener('blur', (e) => {
     el.removeAttribute('contentEditable')
+    el.blur()
   })
 
   el.addEventListener('keypress', (e) => {
@@ -19,11 +30,11 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
   })
 
   el.addEventListener('input', () => {
-    const id = el.getAttribute('text-editor-app')
     const virtualElem = virtualDom?.body.querySelector(`[text-editor-app="${id}"]`)
     if (virtualElem) {
       virtualElem.innerHTML = el.innerHTML
       setVirtualDom(virtualDom)
+      setsStyleBtnText()
     }
   })
 
@@ -31,6 +42,7 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
     if (el.parentNode?.nodeName === 'A' || el.parentNode?.nodeName === 'BUTTON') {
       e.preventDefault()
       onClick(el)
+      setsStyleBtnText()
     }
   })
 }

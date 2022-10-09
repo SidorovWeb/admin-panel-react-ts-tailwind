@@ -14,7 +14,7 @@ export const controlImgSlice = createSlice({
   name: 'controlImg',
   initialState,
   reducers: {
-    getDataImg: (state, action: PayloadAction<{ id: number; text: string }>) => {
+    setDataImg: (state, action: PayloadAction<{ id: number; text: string }>) => {
       state.id = action.payload.id
       state.text = action.payload.text
     },

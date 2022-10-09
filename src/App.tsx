@@ -71,9 +71,8 @@ export const App: FC = () => {
           return dom
         })
         .then((dom) => {
-          const serializeDOMT = serializeDOMToString(dom)
-
-          saveTempPage(serializeDOMT)
+          const serializeDOM = serializeDOMToString(dom)
+          saveTempPage(serializeDOM)
         })
         .catch((e) => toast.error(e))
     }
@@ -154,6 +153,10 @@ export const App: FC = () => {
       }
 
       iframe.contentDocument.head.appendChild(style)
+      iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
+        const htmlEl = el as HTMLImageElement
+        processingImages(htmlEl, iframe)
+      })
     }
   }
 
@@ -167,8 +170,12 @@ export const App: FC = () => {
       <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
       {!loading && (
         <>
-          <Panel />
-          {VD && <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />}
+          {VD && (
+            <>
+              <Panel virtualDom={VD} setVirtualDom={setVDom} />
+              <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
+            </>
+          )}
         </>
       )}
       {VD && (

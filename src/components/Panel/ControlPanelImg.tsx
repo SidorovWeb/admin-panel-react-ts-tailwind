@@ -12,7 +12,7 @@ interface IControlPanelImg {
 export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDom, setLoading }) => {
   const iframe = document.querySelector('iframe')
   const btnsEditorImg = useRef(null) as any
-  const { getDataImg } = userActions()
+  const { setDataImg } = userActions()
 
   const onMouseOver = () => {
     const id = btnsEditorImg.current.getAttribute('img-editor-id')
@@ -47,7 +47,7 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
       if (virtualDom) {
         const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
         const text = img.getAttribute('alt') ?? ''
-        getDataImg({ id, text })
+        setDataImg({ id, text })
       }
     }
   }
@@ -60,7 +60,7 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
       onMouseOut={onMouseOut}
     >
       <button
-        className={`btn-upload-img block btn-primary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg `}
+        className={`btn-upload-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg `}
         type='button'
         onClick={uploadImg}
       >
@@ -68,7 +68,7 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
       </button>
 
       <button
-        className={`btn-alt-img block btn-primary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg`}
+        className={`btn-alt-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg`}
         type='button'
         onClick={getData}
         data-bs-toggle='modal'

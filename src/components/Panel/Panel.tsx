@@ -1,24 +1,25 @@
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import Draggable, { DraggableData } from 'react-draggable'
 import { Button } from '../UI/Button'
-import {
-  MdLogout,
-  MdOutlineDragIndicator,
-  MdOutlineEditNote,
-  MdOutlineSync,
-  MdPageview,
-  MdSave,
-  MdArchive,
-  MdCode,
-} from 'react-icons/md'
+import { MdLogout, MdOutlineEditNote, MdOutlineSync, MdPageview, MdSave, MdArchive } from 'react-icons/md'
+import { AiFillEdit } from 'react-icons/ai'
+import { BiCodeAlt, BiMove } from 'react-icons/bi'
 import { userActions } from '../../hooks/actions'
+import { PanelEditorText } from './PanelEditorText'
+import { useAppSelector } from '../../hooks/redux'
 
-export const Panel: FC = () => {
+interface IPanel {
+  virtualDom: Document
+  setVirtualDom: (dom: Document) => void
+}
+
+export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
+  const iframe = document.querySelector('iframe')
   const dragContainer = useRef() as MutableRefObject<HTMLDivElement>
   const dragHandle = useRef() as MutableRefObject<HTMLButtonElement>
-  const dragInner = useRef() as MutableRefObject<HTMLDivElement>
   const [posDraggable, setPosDraggable] = useState<any>()
   const { activateCodeEditor } = userActions()
+  const textId = useAppSelector((state) => state.textEditorPanel.id)
 
   useEffect(() => {
     const position = JSON.parse(localStorage.getItem('apsw-draggable-position')!) as { x: number; y: number }
@@ -26,8 +27,10 @@ export const Panel: FC = () => {
 
     if (position) {
       setPosDraggable({ position: { x: position.x, y: position.y }, direction })
+      dragContainer.current.classList.add(`DragContainer-${direction}`)
     } else {
       setPosDraggable({ position: { x: 20, y: 20 }, direction: `row` })
+      dragContainer.current.classList.add(`DragContainer-row`)
     }
   }, [])
 
@@ -47,26 +50,37 @@ export const Panel: FC = () => {
   }
 
   const flipElement = () => {
-    let direction
-    if (!dragContainer.current.classList.contains('draggable-flip_active')) {
-      dragContainer.current.classList.add('draggable-flip_active')
-      dragInner.current.style.flexDirection = 'column'
-      direction = 'column'
+    if (dragContainer.current.classList.contains('DragContainer-row')) {
+      dragContainer.current.classList.remove(`DragContainer-row`)
+      dragContainer.current.classList.add(`DragContainer-column`)
+      localStorage.setItem('apsw-draggable-direction', JSON.stringify('column'))
     } else {
-      dragContainer.current.classList.remove('draggable-flip_active')
-      dragInner.current.style.flexDirection = 'row'
-      direction = 'row'
+      dragContainer.current.classList.remove(`DragContainer-column`)
+      dragContainer.current.classList.add(`DragContainer-row`)
+      localStorage.setItem('apsw-draggable-direction', JSON.stringify('row'))
     }
-
-    localStorage.setItem('apsw-draggable-direction', JSON.stringify(direction))
   }
 
   const activatesCodeEditor = () => {
     activateCodeEditor()
   }
 
+  const onclick = () => {
+    const panelEditorText = document.querySelector('.panel-editor-text') as HTMLElement
+    panelEditorText.style.display = 'flex'
+    if (textId) {
+      const textEl = iframe?.contentDocument?.body.querySelector(`[text-editor-app="${textId}"]`) as HTMLElement
+      textEl.setAttribute('contentEditable', 'true')
+      textEl.focus()
+    }
+
+    setTimeout(() => {
+      panelEditorText.style.opacity = '1'
+    }, 115)
+  }
+
   return (
-    <div className='DragIndicator__container' ref={dragContainer}>
+    <div ref={dragContainer}>
       {posDraggable && (
         <Draggable
           handle='.DragHandle'
@@ -75,43 +89,45 @@ export const Panel: FC = () => {
           onStart={handleStart}
           onStop={handleEnd}
         >
-          <div
-            className='fixed w-auto  z-998 bg-slate-700 bg-opacity-90 flex items-center rounded overflow-hidden shadow-md p-1'
-            ref={dragInner}
-            style={{
-              flexDirection: posDraggable.direction,
-            }}
-          >
-            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' onClick={activatesCodeEditor}>
-              <MdCode className='w-full h-[30px]' />
-            </Button>
-            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalEditorMeta'>
-              <MdOutlineEditNote className='w-full  h-[30px]' />
-            </Button>
-            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalChoose'>
-              <MdPageview className='w-full h-[30px]' />
-            </Button>
-            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#confirmModal'>
-              <MdSave className='w-full h-[30px]' />
-            </Button>
-            <Button clName='btn-default !p-1 h-[38px] m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
-              <MdArchive className='w-full h-[30px] text-white' />
-            </Button>
-            <Button clName='btn-default !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalLogout'>
-              <MdLogout className='w-full h-[30px]' />
-            </Button>
+          <div className='DragContainer fixed w-auto z-998 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-md p-2 flex'>
+            <div className='DragInner'>
+              <div className='DragBlockPanel flex'>
+                <Button clName='btn-secondary !p-1 h-[38px]  m-[2px]' onClick={onclick}>
+                  <AiFillEdit className='h-[24px] w-full' />
+                </Button>
+                <Button clName='btn-secondary !p-1 h-[38px]  m-[2px]' onClick={activatesCodeEditor}>
+                  <BiCodeAlt className='w-full h-[30px]' />
+                </Button>
+                <Button clName='btn-secondary !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalEditorMeta'>
+                  <MdOutlineEditNote className='w-full  h-[30px]' />
+                </Button>
+                <Button clName='btn-secondary !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalChoose'>
+                  <MdPageview className='w-full h-[30px]' />
+                </Button>
+                <Button clName='btn-secondary !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#confirmModal'>
+                  <MdSave className='w-full h-[30px]' />
+                </Button>
+                <Button clName='btn-secondary !p-1 h-[38px] m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
+                  <MdArchive className='w-full h-[30px] text-white' />
+                </Button>
+                <Button clName='btn-secondary !p-1 h-[38px]  m-[2px]' dataBsToggle dataBsTarget='#modalLogout'>
+                  <MdLogout className='w-full h-[30px]' />
+                </Button>
+              </div>
+              <PanelEditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+            </div>
 
             <button
-              className=' hover:bg-slate-600 w-[38px]  m-[2px] h-[38px] p-1 active:hover:bg-slate-700  rounded'
+              className='DragHandleFlip bg-gray-600 hover:bg-gray-700 w-[38px]  m-[2px] p-1 active:hover:bg-gray-800  rounded'
               onClick={flipElement}
             >
               <MdOutlineSync className='w-full h-[24px] fill-slate-400 ' />
             </button>
             <button
-              className='DragHandle w-[38px] h-[38px]  m-[2px] hover:bg-slate-600 p-1 active:hover:bg-slate-700  rounded'
+              className='DragHandle bg-gray-600 w-[38px] m-[2px] hover:bg-gray-700 p-1 active:hover:bg-gray-800  rounded'
               ref={dragHandle}
             >
-              <MdOutlineDragIndicator className='w-full h-[24px] fill-slate-400' />
+              <BiMove className='w-full h-[24px] fill-slate-400 text-slate-400' />
             </button>
           </div>
         </Draggable>

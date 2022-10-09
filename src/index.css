@@ -21,3 +21,35 @@
 .btn-success {
   @apply bg-green-600 text-white hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
 }
+
+.DragContainer-column .DragContainer {
+  flex-direction: column;
+  display: flex;
+}
+
+.DragContainer-column .DragBlockPanel {
+  flex-direction: column;
+}
+
+.DragContainer-column .DragInner {
+  flex-direction: row;
+  display: flex;
+}
+
+.DragContainer-row .DragTextPanel {
+  margin-top: 6px;
+}
+
+.DragContainer-column .DragTextPanel {
+  flex-direction: column;
+  margin-left: 6px;
+  margin-top: 0 !important;
+}
+
+.DragContainer-column .DragHandle {
+  width: 100%;
+}
+.DragContainer-column .DragHandleFlip {
+  width: 100%;
+  margin-top: 2px;
+}

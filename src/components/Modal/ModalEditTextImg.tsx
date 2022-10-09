@@ -11,7 +11,7 @@ interface IModalEditTextImg {
 
 export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtualDom }) => {
   const { id, text } = useAppSelector((state) => state.controlImg)
-  const { getDataImg } = userActions()
+  const { setDataImg } = userActions()
   const [newText, setNewText] = useState('')
   const iframe = document.querySelector('iframe')
   const virtualElem = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
@@ -27,7 +27,7 @@ export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtual
 
   const save = () => {
     img.setAttribute('alt', newText)
-    getDataImg({ id, text: newText })
+    setDataImg({ id, text: newText })
     virtualElem.alt = img.alt
     setVirtualDom(virtualDom)
   }

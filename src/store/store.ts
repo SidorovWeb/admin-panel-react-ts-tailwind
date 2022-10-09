@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { codeEditorReducer } from './CodeEditor/CodeEditorSlice'
 import { controlImgReducer } from './ControlImg/ControlImgSlice'
+import { textEditorPanelReducer } from './TextEditorPanel/TextEditorPanel'
 // ...
 
 export const store = configureStore({
   reducer: {
     controlImg: controlImgReducer,
     codeEditor: codeEditorReducer,
-    // comments: commentsReducer,
-    // users: usersReducer,
+    textEditorPanel: textEditorPanelReducer,
   },
 })
 
