@@ -5,7 +5,7 @@ import { MdLogout, MdOutlineEditNote, MdOutlineSync, MdPageview, MdSave, MdArchi
 import { AiFillEdit } from 'react-icons/ai'
 import { BiCodeAlt, BiMove } from 'react-icons/bi'
 import { userActions } from '../../hooks/actions'
-import { PanelEditorText } from './PanelEditorText'
+import { EditorText } from '../Editor/EditorText'
 import { useAppSelector } from '../../hooks/redux'
 
 interface IPanel {
@@ -114,7 +114,7 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
                   <MdLogout className='w-full h-[30px]' />
                 </Button>
               </div>
-              <PanelEditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+              <EditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
             </div>
 
             <button

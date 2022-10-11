@@ -40,16 +40,33 @@
   margin-top: 6px;
 }
 
-.DragContainer-column .DragTextPanel {
+.DragContainer-row .DragTextPanel {
   flex-direction: column;
+}
+
+.DragContainer-column .DragTextPanel {
+  flex-direction: row;
+}
+
+.DragContainer-column .DragTextPanel-top {
+  flex-direction: column;
+  display: flex;
   margin-left: 6px;
-  margin-top: 0 !important;
+}
+
+.DragContainer-column .DragTextPanel-bottom {
+  flex-direction: column;
+  display: flex;
+  margin-left: 6px;
 }
 
 .DragContainer-column .DragHandle {
   width: 100%;
 }
+.DragContainer-row .DragHandleFlip {
+  margin-left: 14px;
+}
 .DragContainer-column .DragHandleFlip {
   width: 100%;
-  margin-top: 2px;
+  margin-top: 14px;
 }
