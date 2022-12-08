@@ -43,32 +43,36 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
     if (textId) {
       const textEl = iframe?.contentDocument?.body.querySelector(`[text-editor-app="${textId}"]`) as HTMLElement
       setCurrentEl(textEl)
-      if (textEl.parentElement) setParent(textEl.parentElement)
+      if (textEl?.parentElement) setParent(textEl.parentElement)
     }
   }, [textId])
 
   useEffect(() => {
-    setAlignLeft(false)
-    setAlignCenter(false)
-    setAlignRight(false)
-    setBold(false)
-    setItalic(false)
-    setUnderline(false)
-    setLineThrough(false)
-    setLower(false)
-    setUpper(false)
-    setStyleTextAlign()
-    setStyleFontWeight()
-    setStyleFontStyle()
-    setStyleDecoration()
-    setStyleTransform()
+    if (parent) {
+      setAlignLeft(false)
+      setAlignCenter(false)
+      setAlignRight(false)
+      setBold(false)
+      setItalic(false)
+      setUnderline(false)
+      setLineThrough(false)
+      setLower(false)
+      setUpper(false)
+      setStyleTextAlign()
+      setStyleFontWeight()
+      setStyleFontStyle()
+      setStyleDecoration()
+      setStyleTransform()
+    }
   }, [parent])
 
   const removeProperty = (prop: string) => {
     const virtualElem = virtualDom?.body.querySelector(`[text-editor-app="${textId}"]`)?.parentElement as HTMLElement
-    parent?.style.removeProperty(prop)
-    virtualElem.style.removeProperty(prop)
-    setVirtualDom(virtualDom)
+    if (parent) {
+      parent?.style.removeProperty(prop)
+      virtualElem.style.removeProperty(prop)
+      setVirtualDom(virtualDom)
+    }
   }
 
   const setStyleTextAlign = () => {

@@ -19,6 +19,7 @@ import { ControlPanelImg } from './components/Editor/EditorImage'
 import { IAuth } from './interface/auth'
 import { ModalEditTextImg } from './components/Modal/ModalEditTextImg'
 import { CodeEditor } from './components/Editor/CodeEditor'
+import { FindImages } from './components/FindImages/FindImages'
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
@@ -149,14 +150,18 @@ export const App: FC = () => {
           outline: 3px solid green !important;
           outline-offset: 0.5px !important;
         }
+        :any-link .text-editor-app:hover {
+          outline: 3px solid red !important;
+          outline-offset: 0.5px !important;
+        }
+        :any-link .text-editor-app:focus {
+          outline: 3px solid green !important;
+          outline-offset: 0.5px !important;
+        }
         `
       }
 
       iframe.contentDocument.head.appendChild(style)
-      iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
-        const htmlEl = el as HTMLImageElement
-        processingImages(htmlEl, iframe)
-      })
     }
   }
 
@@ -168,27 +173,20 @@ export const App: FC = () => {
     <>
       <Spinner active={loading} />
       <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
-      {!loading && (
-        <>
-          {VD && (
-            <>
-              <Panel virtualDom={VD} setVirtualDom={setVDom} />
-              <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
-            </>
-          )}
-        </>
-      )}
-      {VD && (
+      {!loading && VD && (
         <>
           <ModalEditorMeta virtualDom={VD} save={save} currentPage={currentPage} />
           <ModalBackup />
           <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
-          <CodeEditor VirtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} save={save} />
+          <CodeEditor VirtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} />
+          <Panel virtualDom={VD} setVirtualDom={setVDom} />
+          <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
+          <ModalConfirm save={save} />
+          <ModalLogout />
+          <FindImages virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
         </>
       )}
       <ModalChoose setCurrentPage={setCurrentPage} />
-      <ModalConfirm save={save} />
-      <ModalLogout />
       <ToastContainer
         position='top-center'
         autoClose={3000}

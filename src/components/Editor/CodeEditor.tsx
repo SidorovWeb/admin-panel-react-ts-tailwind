@@ -23,16 +23,16 @@ interface ICodeEditor {
   currentPage: string
   saveTempPage: (dom: string, dd?: any) => void
   VirtualDom: Document
-  save: () => void
 }
 interface IFiles {
   files: string[]
   path: string[]
 }
 
-export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempPage, save }) => {
+export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempPage }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const { inactiveCodeEditor } = userActions()
+  const serializer = new XMLSerializer()
   const codeEditor = useRef<HTMLDivElement>(null)
   const codeEditorTop = useRef<HTMLDivElement>(null)
   const codeEditorBottom = useRef<HTMLDivElement>(null)
@@ -133,7 +133,6 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
 
     switch (mode) {
       case 'html':
-        const serializer = new XMLSerializer()
         setPropsByMode({
           mode: 'html',
           value: serializer.serializeToString(VirtualDom),
@@ -166,10 +165,13 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
   const savesCode = () => {
     switch (mode) {
       case 'html':
-        saveTempPage(data)
-
+        const newHtml = data ? data : serializer.serializeToString(VirtualDom)
+        saveTempPage(newHtml)
         axios
-          .post(`${pathAPI}savePage.php`, { pageName: currentPage, html: data })
+          .post(`${pathAPI}savePage.php`, {
+            pageName: currentPage,
+            html: newHtml,
+          })
           .then(() => {
             setTimeout(() => {
               toast.success(`Успешно опубликовано`)
@@ -214,7 +216,7 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
   return (
     <div ref={codeEditor} className='fade hidden codeEditor fixed inset-0 overflow-y-auto z-30 bg-white'>
       <div className='px-4 pt-6' ref={codeEditorTop}>
-        <div className='font-bold text-left text-xl mb-2'>Редактор кода</div>
+        <div className='font-bold text-left text-2xl mb-2'>Редактор кода</div>
         <CodeEditorTabs mode={mode} setMode={setMode} />
         <div className='pb-4 flex justify-between items-center space-x-2'>
           <>

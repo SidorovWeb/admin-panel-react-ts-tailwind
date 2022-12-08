@@ -27,7 +27,7 @@ export const wrapTextNodes = (dom: any) => {
       if (wrapper) {
         node.parentNode?.replaceChild(wrapper, node)
         wrapper.appendChild(node)
-        wrapper.setAttribute('text-editor-app', i)
+        wrapper.setAttribute('text-editor-app', i + 1)
       }
     })
   }

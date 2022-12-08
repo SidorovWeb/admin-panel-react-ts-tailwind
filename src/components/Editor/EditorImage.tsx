@@ -2,6 +2,7 @@ import { FC, useRef } from 'react'
 import { MdImage } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 import { uploadImage } from '../../helpers/Images'
+import { BiImageAdd } from 'react-icons/bi'
 
 interface IControlPanelImg {
   virtualDom: Document
@@ -64,7 +65,7 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
         type='button'
         onClick={uploadImg}
       >
-        <MdImage className='h-full w-full' />
+        <BiImageAdd className='h-full w-full' />
       </button>
 
       <button

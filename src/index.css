@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: Montserrat, Helvetica, Arial, sans-serif;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
 .btn-default {
   @apply bg-transparent text-white hover:bg-slate-700 focus:bg-slate-700 active:bg-slate-800;
 }
@@ -62,6 +68,7 @@
 
 .DragContainer-column .DragHandle {
   width: 100%;
+  height: 34px;
 }
 .DragContainer-row .DragHandleFlip {
   margin-left: 14px;
@@ -69,4 +76,5 @@
 .DragContainer-column .DragHandleFlip {
   width: 100%;
   margin-top: 14px;
+  height: 34px;
 }

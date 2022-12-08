@@ -13,7 +13,11 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
     el.focus()
   }
 
-  el.addEventListener('click', () => {
+  el.addEventListener('click', (e) => {
+    // if (el.parentNode?.nodeName === 'A') {
+    //   e.stopPropagation()
+    // }
+
     onClick(el)
     setsStyleBtnText()
   })
