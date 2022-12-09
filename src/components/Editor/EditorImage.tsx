@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react'
+import { ChangeEvent, FC, useRef } from 'react'
 import { MdImage } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 import { uploadImage } from '../../helpers/Images'
@@ -31,17 +31,17 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
     btnsEditorImg.current.style.opacity = '1'
   }
 
-  const uploadImg = () => {
+  const uploadImg = (e: ChangeEvent<HTMLInputElement>) => {
     const id = btnsEditorImg.current.getAttribute('img-editor-id')
     if (id) {
-      if (virtualDom) {
+      if (virtualDom && e.target.files && e.target.files[0]) {
         const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
-        uploadImage(img, id, virtualDom, setVirtualDom, setLoading)
+        uploadImage(img, id, virtualDom, setVirtualDom, e.target.files[0])
       }
     }
   }
 
-  const getData = () => {
+  const getDataImg = () => {
     const id = btnsEditorImg.current.getAttribute('img-editor-id')
 
     if (id) {
@@ -61,17 +61,19 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
       onMouseOut={onMouseOut}
     >
       <button
-        className={`btn-upload-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg `}
+        className={`btn-upload-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg relative`}
         type='button'
-        onClick={uploadImg}
       >
+        <label className='flex flex-col items-center cursor-pointer absolute inset-0'>
+          <input type='file' className='hidden' onChange={(e) => uploadImg(e)} />
+        </label>
         <BiImageAdd className='h-full w-full' />
       </button>
 
       <button
         className={`btn-alt-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg`}
         type='button'
-        onClick={getData}
+        onClick={getDataImg}
         data-bs-toggle='modal'
         data-bs-target='#modalEditTextImg'
       >

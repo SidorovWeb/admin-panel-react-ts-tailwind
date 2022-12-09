@@ -178,12 +178,13 @@ export const App: FC = () => {
           <ModalEditorMeta virtualDom={VD} save={save} currentPage={currentPage} />
           <ModalBackup />
           <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
-          <CodeEditor VirtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} />
           <Panel virtualDom={VD} setVirtualDom={setVDom} />
           <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
           <ModalConfirm save={save} />
           <ModalLogout />
-          <FindImages virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
+          <CodeEditor virtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} />
+
+          <FindImages virtualDom={VD} setVirtualDom={setVDom} />
         </>
       )}
       <ModalChoose setCurrentPage={setCurrentPage} />

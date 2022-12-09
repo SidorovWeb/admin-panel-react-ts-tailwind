@@ -44,50 +44,32 @@ export const uploadImage = (
   id: string,
   virtualDom: Document,
   setVirtualDom: (dom: Document) => void,
-  setLoading: (state: boolean) => void
+  file?: File
 ) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const virtualElem = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
-    const btnUpload = document.querySelector('.btn-upload-img') as HTMLElement
-    document.querySelectorAll('.img-upload-editor-app').forEach((u) => u.remove())
-    const imgUpload = document.createElement('INPUT') as HTMLInputElement
-    imgUpload.setAttribute('type', 'file')
-    imgUpload.setAttribute('accept', 'image/*')
-    imgUpload.style.display = 'none'
-    imgUpload.classList.add('img-upload-editor-app')
-    btnUpload?.after(imgUpload)
-    imgUpload?.click()
-    imgUpload?.addEventListener('change', () => {
-      if (imgUpload.files && imgUpload.files[0]) {
-        const formDate = new FormData()
-        formDate.append('image', imgUpload.files[0])
-        setLoading(true)
-        axios
-          .post(`${pathAPI}uploadImage.php`, formDate, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .then((res) => {
-            const path = import.meta.env.MODE === 'development' ? '../api/' : '../api/'
-            img.src = `${path}img/${res.data.src}`
-            if (virtualElem) {
-              virtualElem.src = img.src
-              setVirtualDom(virtualDom)
-              toast.success('Успешно загружено')
-              resolve(img.src)
-            }
-          })
-          .catch((e) => {
-            toast.error(`Загрузить не удалось! ${e}`)
-          })
-          .finally(() => {
-            imgUpload.value = ''
-            imgUpload.remove()
-            setLoading(false)
-          })
-        // })
-      }
-    })
+    if (file) {
+      const formDate = new FormData()
+      formDate.append('image', file)
+      axios
+        .post(`${pathAPI}uploadImage.php`, formDate, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          const path = import.meta.env.MODE === 'development' ? '../api/' : '../api/'
+          img.src = `${path}img/${res.data.src}`
+          if (virtualElem) {
+            virtualElem.src = img.src
+            setVirtualDom(virtualDom)
+            toast.success('Успешно загружено')
+            resolve(img.src)
+          }
+        })
+        .catch((e) => {
+          toast.error(`Загрузить не удалось! ${e}`)
+        })
+    }
   })
 }

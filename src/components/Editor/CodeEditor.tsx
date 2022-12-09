@@ -12,6 +12,7 @@ import { pathAPI } from '../../Constants'
 import { useAppSelector } from '../../hooks/redux'
 import { userActions } from '../../hooks/actions'
 import { rect } from '../../helpers/utils'
+import { FindImages } from '../FindImages/FindImages'
 
 interface IPropsByMode {
   mode: string
@@ -22,14 +23,14 @@ interface IPropsByMode {
 interface ICodeEditor {
   currentPage: string
   saveTempPage: (dom: string, dd?: any) => void
-  VirtualDom: Document
+  virtualDom: Document
 }
 interface IFiles {
   files: string[]
   path: string[]
 }
 
-export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempPage }) => {
+export const CodeEditor: FC<ICodeEditor> = ({ virtualDom, currentPage, saveTempPage }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const { inactiveCodeEditor } = userActions()
   const serializer = new XMLSerializer()
@@ -135,7 +136,7 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
       case 'html':
         setPropsByMode({
           mode: 'html',
-          value: serializer.serializeToString(VirtualDom),
+          value: serializer.serializeToString(virtualDom),
           extensions: html({ autoCloseTags: true, matchClosingTags: true }),
         })
         break
@@ -165,7 +166,7 @@ export const CodeEditor: FC<ICodeEditor> = ({ VirtualDom, currentPage, saveTempP
   const savesCode = () => {
     switch (mode) {
       case 'html':
-        const newHtml = data ? data : serializer.serializeToString(VirtualDom)
+        const newHtml = data ? data : serializer.serializeToString(virtualDom)
         saveTempPage(newHtml)
         axios
           .post(`${pathAPI}savePage.php`, {
