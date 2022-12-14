@@ -3,10 +3,10 @@ import { MdBlurOn, MdClose, MdFormatColorText, MdOutlineFormatColorFill } from '
 import { Button } from '../UI/Button'
 import { ChromePicker } from 'react-color'
 
-interface IEditorColor {
+interface IPanelColor {
   setStyle: (properties: string, value: string) => void
 }
-export const EditorColor: FC<IEditorColor> = ({ setStyle }) => {
+export const PanelColor: FC<IPanelColor> = ({ setStyle }) => {
   const [color, setColor] = useState('#ffffff') as any
   const [name, setName] = useState('')
   const [colorPicker, setColorPicker] = useState(false)
@@ -63,10 +63,10 @@ export const EditorColor: FC<IEditorColor> = ({ setStyle }) => {
         </>
       ) : (
         <>
-          <Button clName={`btn-secondary ${cl}`} onClick={() => onClick('text')}>
+          <Button clName={`btn-default ${cl}`} onClick={() => onClick('text')}>
             <MdFormatColorText className='h-[20px] w-full' />
           </Button>
-          <Button clName={`btn-secondary ${cl}`} onClick={() => onClick('background')}>
+          <Button clName={`btn-default ${cl}`} onClick={() => onClick('background')}>
             <MdOutlineFormatColorFill className='h-[20px] w-full' />
           </Button>
         </>
@@ -89,7 +89,7 @@ export const EditorColor: FC<IEditorColor> = ({ setStyle }) => {
           </Button>
         </>
       ) : (
-        <Button clName={`btn-secondary ${cl}`} onClick={includesBlur}>
+        <Button clName={`btn-default ${cl}`} onClick={includesBlur}>
           <MdBlurOn className='h-[20px] w-full' />
         </Button>
       )}

@@ -4,13 +4,13 @@ import { userActions } from '../../hooks/actions'
 import { uploadImage } from '../../helpers/Images'
 import { BiImageAdd } from 'react-icons/bi'
 
-interface IControlPanelImg {
+interface IPanelImage {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
   setLoading: (state: boolean) => void
 }
 
-export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDom, setLoading }) => {
+export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom, setLoading }) => {
   const iframe = document.querySelector('iframe')
   const btnsEditorImg = useRef(null) as any
   const { setDataImg } = userActions()
@@ -36,7 +36,7 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
     if (id) {
       if (virtualDom && e.target.files && e.target.files[0]) {
         const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
-        uploadImage(img, id, virtualDom, setVirtualDom, e.target.files[0])
+        uploadImage({ img, id, virtualDom, setVirtualDom, file: e.target.files[0] })
       }
     }
   }
@@ -61,23 +61,23 @@ export const ControlPanelImg: FC<IControlPanelImg> = ({ virtualDom, setVirtualDo
       onMouseOut={onMouseOut}
     >
       <button
-        className={`btn-upload-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg relative`}
+        className={`btn-upload-img block btn-default h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg relative`}
         type='button'
       >
         <label className='flex flex-col items-center cursor-pointer absolute inset-0'>
           <input type='file' className='hidden' onChange={(e) => uploadImg(e)} />
         </label>
-        <BiImageAdd className='h-full w-full' />
+        <BiImageAdd className='h-full w-full p-1 ml-[0.5px]' />
       </button>
 
       <button
-        className={`btn-alt-img block btn-secondary h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg`}
+        className={`btn-alt-img block btn-default h-[30px] w-[30px] rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg`}
         type='button'
         onClick={getDataImg}
         data-bs-toggle='modal'
         data-bs-target='#modalEditTextImg'
       >
-        ALT
+        Alt
       </button>
     </div>
   )

@@ -15,11 +15,10 @@ import { processingImages } from './helpers/Images'
 import { Login } from './components/Login/Login'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 import { ModalLogout } from './components/Modal/ModalLogout'
-import { ControlPanelImg } from './components/Editor/EditorImage'
+import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
 import { ModalEditTextImg } from './components/Modal/ModalEditTextImg'
-import { CodeEditor } from './components/Editor/CodeEditor'
-import { FindImages } from './components/FindImages/FindImages'
+import { Editor } from './components/Editor/Editor'
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
@@ -132,7 +131,7 @@ export const App: FC = () => {
 
       iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
         const htmlEl = el as HTMLImageElement
-        processingImages(htmlEl, iframe)
+        processingImages({ el: htmlEl, iframe })
       })
     }
   }
@@ -179,25 +178,22 @@ export const App: FC = () => {
           <ModalBackup />
           <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
           <Panel virtualDom={VD} setVirtualDom={setVDom} />
-          <ControlPanelImg virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
+          <PanelImage virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
           <ModalConfirm save={save} />
           <ModalLogout />
-          <CodeEditor virtualDom={VD} saveTempPage={saveTempPage} currentPage={currentPage} />
-
-          <FindImages virtualDom={VD} setVirtualDom={setVDom} />
+          <Editor virtualDom={VD} setVirtualDom={setVDom} saveTempPage={saveTempPage} currentPage={currentPage} />
         </>
       )}
       <ModalChoose setCurrentPage={setCurrentPage} />
       <ToastContainer
         position='top-center'
-        autoClose={3000}
-        hideProgressBar={true}
+        autoClose={4000}
+        // hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss={false}
         draggable={false}
-        pauseOnHover={false}
+        pauseOnHover={true}
         transition={Slide}
       />
     </>

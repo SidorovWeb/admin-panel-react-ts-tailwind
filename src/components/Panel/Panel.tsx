@@ -1,12 +1,19 @@
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import Draggable, { DraggableData } from 'react-draggable'
 import { Button } from '../UI/Button'
-import { MdOutlineEditNote, MdOutlineSync, MdImageSearch, MdOutlineLogout, MdOutlineBackup } from 'react-icons/md'
+import {
+  MdOutlineEditNote,
+  MdOutlineSync,
+  MdImageSearch,
+  MdOutlineLogout,
+  MdOutlineBackup,
+  MdOutlinePublishedWithChanges,
+} from 'react-icons/md'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BiMove } from 'react-icons/bi'
 import { VscCode, VscGoToFile, VscSave } from 'react-icons/vsc'
 import { userActions } from '../../hooks/actions'
-import { EditorText } from '../Editor/EditorText'
+import { PanelText } from './PanelText'
 import { useAppSelector } from '../../hooks/redux'
 
 interface IPanel {
@@ -95,51 +102,41 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
           <div className='DragContainer fixed w-auto z-998 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-md p-2 flex'>
             <div className='DragInner'>
               <div className='DragBlockPanel flex'>
-                <Button clName='btn-secondary !p-1 w-[34px] h-[34px] m-[2px]' onClick={onclick}>
+                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' onClick={onclick}>
                   <AiOutlineEdit className='w-full h-full' />
                 </Button>
-                <Button clName='btn-secondary !p-1 w-[34px] h-[34px] m-[2px]' onClick={activatesCodeEditor}>
+                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' onClick={activatesCodeEditor}>
                   <VscCode className='w-full h-full' />
                 </Button>
                 <Button
-                  clName='btn-secondary !p-1 w-[34px] h-[34px] m-[2px]'
+                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]'
                   dataBsToggle
                   dataBsTarget='#modalEditorMeta'
                 >
                   <MdOutlineEditNote className='w-full  h-full' />
                 </Button>
-                {/* <Button clName='btn-secondary !p-1 w-[34px] h-[34px] m-[2px]'>
-                  <MdImageSearch className='w-full h-full' />
-                </Button> */}
-
-                <Button clName='btn-secondary !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalChoose'>
+                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalChoose'>
                   <VscGoToFile className='w-full h-full' />
                 </Button>
 
-                <Button clName='btn-secondary !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
+                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
                   <MdOutlineBackup className='w-full h-full text-white' />
                 </Button>
                 <Button clName='btn-success !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#confirmModal'>
-                  <VscSave className='w-full h-full' />
+                  <MdOutlinePublishedWithChanges className='w-full h-full' />
                 </Button>
                 <Button clName='btn-danger !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalLogout'>
                   <MdOutlineLogout className='w-full h-full' />
                 </Button>
               </div>
-              <EditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+              <PanelText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
             </div>
 
-            <button
-              className='DragHandleFlip bg-gray-600 hover:bg-gray-700 w-[34px] m-[2px] p-1 active:hover:bg-gray-800  rounded'
-              onClick={flipElement}
-            >
-              <MdOutlineSync className='w-full h-full fill-slate-400 ' />
+            <button className='DragHandleFlip btn-default w-[34px] m-[2px] p-1 rounded' onClick={flipElement}>
+              <MdOutlineSync className='w-full h-full' />
             </button>
-            <button
-              className='DragHandle bg-gray-600 w-[34px] m-[2px] hover:bg-gray-700 p-1 active:hover:bg-gray-800  rounded'
-              ref={dragHandle}
-            >
-              <BiMove className='w-full h-full fill-slate-400 text-slate-400' />
+            <button className='DragHandle btn-default w-[34px] m-[2px] p-1 rounded' ref={dragHandle}>
+              <BiMove className='w-full h-full' />
             </button>
           </div>
         </Draggable>

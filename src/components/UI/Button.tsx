@@ -23,7 +23,7 @@ export const Button: FC<IButtonProps> = ({
     <button
       disabled={disabled}
       type='button'
-      className={`inline-block py-2 px-3 font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out ${clName} ${
+      className={`inline-block py-2 px-3 font-medium text-xs leading-tight  rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out ${clName} ${
         disabled ? 'opacity-50 cursor-not-allowed' : ''
       }`}
       data-bs-dismiss={dataBsDismiss ? 'modal' : ''}
@@ -35,3 +35,5 @@ export const Button: FC<IButtonProps> = ({
     </button>
   )
 }
+
+// uppercase

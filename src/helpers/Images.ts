@@ -3,7 +3,12 @@ import { toast } from 'react-toastify'
 import { pathAPI } from '../Constants'
 import { rect } from './utils'
 
-export const processingImages = (el: HTMLImageElement, iframe: HTMLIFrameElement) => {
+interface iProcessingImages {
+  el: HTMLImageElement
+  iframe: HTMLIFrameElement
+}
+
+export const processingImages = ({ el, iframe }: iProcessingImages) => {
   const parent = el.parentNode as HTMLElement
   const id = el.getAttribute('img-editor-app')
   let btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
@@ -39,18 +44,21 @@ export const processingImages = (el: HTMLImageElement, iframe: HTMLIFrameElement
   })
 }
 
-export const uploadImage = (
-  img: HTMLImageElement,
-  id: string,
-  virtualDom: Document,
-  setVirtualDom: (dom: Document) => void,
+interface IUploadImage {
+  img: HTMLImageElement
+  id: number
+  virtualDom: Document
+  setVirtualDom: (dom: Document) => void
   file?: File
-) => {
+}
+
+export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploadImage) => {
   return new Promise((resolve) => {
     const virtualElem = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
     if (file) {
       const formDate = new FormData()
       formDate.append('image', file)
+
       axios
         .post(`${pathAPI}uploadImage.php`, formDate, {
           headers: {
@@ -59,11 +67,12 @@ export const uploadImage = (
         })
         .then((res) => {
           const path = import.meta.env.MODE === 'development' ? '../api/' : '../api/'
-          img.src = `${path}img/${res.data.src}`
+
           if (virtualElem) {
+            img.src = `${path}img/${res.data.src}`
             virtualElem.src = img.src
             setVirtualDom(virtualDom)
-            toast.success('Успешно загружено')
+            toast.success('Успешно загружено на сервер в папку ./api/img')
             resolve(img.src)
           }
         })

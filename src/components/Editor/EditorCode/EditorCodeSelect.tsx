@@ -1,12 +1,12 @@
 import { FC, useState } from 'react'
 
-interface ICodeSelect {
+interface IEditorCodeSelect {
   array: string[]
   setSelect: (v: string) => void
   theme?: string
 }
 
-export const CodeSelect: FC<ICodeSelect> = ({ array, setSelect, theme }) => {
+export const EditorCodeSelect: FC<IEditorCodeSelect> = ({ array, setSelect, theme }) => {
   const [value, setValue] = useState('')
   const select = (value: string) => {
     setSelect(value)
@@ -19,7 +19,7 @@ export const CodeSelect: FC<ICodeSelect> = ({ array, setSelect, theme }) => {
   return (
     <div className='theme-selector flex space-x-2 items-center'>
       <select
-        className='pr-8 form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example'
+        className='pr-8 cursor-pointer form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example'
         value={theme ?? value}
         onChange={(e) => select(e.target.value)}
       >

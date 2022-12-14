@@ -11,14 +11,14 @@ import {
 } from 'react-icons/md'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
-import { EditorColor } from './EditorColor'
+import { PanelColor } from './PanelColor'
 
-interface IEditorText {
+interface IPanelText {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
 }
 
-export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
+export const PanelText: FC<IPanelText> = ({ virtualDom, setVirtualDom }) => {
   const [currentEl, setCurrentEl] = useState<HTMLElement>()
   const [parent, setParent] = useState<HTMLElement>()
 
@@ -196,7 +196,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
     >
       <div className='DragTextPanel-top flex items-start'>
         <Button
-          clName={`${alignLeft ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${alignLeft ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('text-align', 'left')
             setStyleTextAlign()
@@ -205,7 +205,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdFormatAlignLeft className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${alignCenter ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${alignCenter ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('text-align', 'center')
             setStyleTextAlign()
@@ -214,7 +214,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdFormatAlignJustify className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${alignRight ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${alignRight ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('text-align', 'right')
             setStyleTextAlign()
@@ -223,7 +223,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdFormatAlignRight className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${bold ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${bold ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('font-weight', 'bold')
             setStyleFontWeight()
@@ -232,7 +232,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdFormatBold className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${italic ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${italic ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('font-style', 'italic')
             setStyleFontStyle()
@@ -241,7 +241,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdFormatItalic className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${underline ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${underline ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('text-decoration', 'underline')
             setStyleDecoration()
@@ -250,7 +250,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdFormatUnderlined className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${lineThrough ? 'btn-primary' : 'btn-secondary'} ${cl}`}
+          clName={`${lineThrough ? 'btn-primary' : 'btn-default'} ${cl}`}
           onClick={() => {
             setStyle('text-decoration', 'line-through')
             setStyleDecoration()
@@ -259,7 +259,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdStrikethroughS className='h-[24px] w-full' />
         </Button>
         <Button
-          clName={`${upper ? 'btn-primary' : 'btn-secondary'} ${cl} uppercase`}
+          clName={`${upper ? 'btn-primary' : 'btn-default'} ${cl} uppercase`}
           onClick={() => {
             setStyle('text-transform', 'uppercase')
             setStyleTransform()
@@ -268,7 +268,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           AA
         </Button>
         <Button
-          clName={`${lower ? 'btn-primary' : 'btn-secondary'}  ${cl} lowercase`}
+          clName={`${lower ? 'btn-primary' : 'btn-default'}  ${cl} lowercase`}
           onClick={() => {
             setStyle('text-transform', 'lowercase')
             setStyleTransform()
@@ -280,7 +280,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           <MdClose className='h-[20px] w-full' />
         </Button>
       </div>
-      <EditorColor setStyle={setStyle} />
+      <PanelColor setStyle={setStyle} />
     </div>
   )
 }
