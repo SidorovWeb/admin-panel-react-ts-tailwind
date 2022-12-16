@@ -30,8 +30,8 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
   const [imagesList, setImagesList] = useState<IMapImages[]>()
   const [filteredImages, setFilteredImages] = useState<IMapImages[]>()
   const [search, setSearch] = useState('')
-  const { setDataImg } = userActions()
-  const { id, text } = useAppSelector((state) => state.controlImg)
+  const { setText } = userActions()
+  const { id, text } = useAppSelector((state) => state.setText)
 
   useEffect(() => {
     const images = iframe?.contentDocument?.body.querySelectorAll(`.img-editor-app`)
@@ -39,7 +39,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
       images &&
       [...images].map((i) => {
         const img = i as HTMLImageElement
-        const id = img.getAttribute('img-editor-app') as string
+        const id = Number(img.getAttribute('img-editor-app'))
         const src = img.currentSrc as string
         const name = img.getAttribute('alt') as string
         const width = img.naturalWidth as number
@@ -47,7 +47,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
 
         return {
           img,
-          id: Number(id),
+          id,
           src,
           name,
           width,
@@ -82,19 +82,19 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
     }
   }, [text])
 
-  const filtersImages = (str?: string) => {
+  const filter = (str?: string) => {
     if (!str) {
       setFilteredImages(imagesList)
       return
     }
     if (imagesList && str) {
-      const fil = imagesList.filter((obj) => obj.name.toLowerCase().trim().includes(str.toLowerCase().trim()))
-      setFilteredImages(fil)
+      const filtered = imagesList.filter((obj) => obj.name.toLowerCase().trim().includes(str.toLowerCase().trim()))
+      setFilteredImages(filtered)
     }
   }
 
   const onSearch = (str: string) => {
-    filtersImages(str)
+    filter(str)
     setSearch(str)
   }
 
@@ -110,9 +110,9 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
     }
   }
 
-  const getDataImg = (name: string, id: number) => {
+  const editingText = (name: string, id: number) => {
     if (virtualDom) {
-      setDataImg({ id: id, text: name })
+      setText({ id: id, text: name, element: 'img', selector: `[img-editor-app="${id}"]` })
     }
   }
 
@@ -165,10 +165,10 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center w-full'>
         {filteredImages &&
-          [...filteredImages].map((img, idx) => (
+          [...filteredImages].map((img) => (
             <div
               className='flex justify-center hover:shadow-lg transition duration-300 ease-in-out rounded-lg'
-              key={idx}
+              key={img.id}
             >
               <div className='rounded-lg shadow-lg bg-white w-full'>
                 <img
@@ -198,7 +198,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
                   </Button>
                   <Button
                     clName='btn-default mb-4'
-                    onClick={() => getDataImg(img.name, img.id)}
+                    onClick={() => editingText(img.name, img.id)}
                     dataBsToggle
                     dataBsTarget='#modalEditTextImg'
                   >

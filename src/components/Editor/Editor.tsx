@@ -8,7 +8,6 @@ import {
   MdOutlinePublishedWithChanges,
   MdOutlineShortText,
 } from 'react-icons/md'
-import { VscSave } from 'react-icons/vsc'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
@@ -20,10 +19,9 @@ interface IEditor {
   currentPage: string
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
-  saveTempPage: (dom: string, dd?: any) => void
 }
 
-export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom, saveTempPage }) => {
+export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const [switcher, setSwitcher] = useState('Dashboard')
   const [published, setPublished] = useState('')
@@ -44,7 +42,6 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom, sa
         <div className='max-w-[1280px] m-auto px-[30px] w-full flex items-center justify-between'>
           APSA
           <div className='flex items-center space-x-2'>
-            {/* onClick={savesCode} */}
             <Button clName='btn-success flex items-center' onClick={() => setPublished(switcher)}>
               <MdOutlinePublishedWithChanges className='w-full h-[15px] -mt-[2px] mr-1' />
               Опубликовать
@@ -58,7 +55,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom, sa
       </div>
       <div className='finder-container max-w-[1280px] m-auto px-[30px]'>
         <div className='finder-main flex mt-10'>
-          <div className='finder-sidebar space-y-4 pr-8 w-[200px]'>
+          <div className='finder-sidebar space-y-4 pr-[80px]'>
             <a
               href='!#'
               className={`${
@@ -112,7 +109,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom, sa
               <p>Code</p>
             </a>
           </div>
-          <div className='finder-content flex-1 min-h-screen'>
+          <div className='finder-content flex-1 min-h-screen pb-10'>
             <div className='font-bold text-left text-4xl mb-2'>{switcher}</div>
             {switcher === 'Dashboard' && (
               <>
@@ -130,12 +127,12 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom, sa
               </>
             )}
             {switcher === 'Images' && <EditorImages virtualDom={virtualDom} setVirtualDom={setVirtualDom} />}
-            {switcher === 'Text' && <EditorText />}
+            {switcher === 'Text' && <EditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />}
             {switcher === 'Code' && (
               <EditorCode
                 virtualDom={virtualDom}
-                saveTempPage={saveTempPage}
                 currentPage={currentPage}
+                setVirtualDom={setVirtualDom}
                 published={published}
                 setPublished={setPublished}
               />

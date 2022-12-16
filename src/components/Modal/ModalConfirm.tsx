@@ -1,18 +1,24 @@
 import { FC } from 'react'
+import { toPublish } from '../../helpers/utils'
 import { Button } from '../UI/Button'
 import Modal from './Modal'
 
 interface ModalConfirmProps {
-  save: () => void
+  virtualDom: Document
+  currentPage: string
 }
 
-export const ModalConfirm: FC<ModalConfirmProps> = ({ save }) => {
+export const ModalConfirm: FC<ModalConfirmProps> = ({ currentPage, virtualDom }) => {
   return (
     <Modal
       title='Опубликовать изменения'
       id='confirmModal'
       footer={
-        <Button clName='btn-success' dataBsDismiss onClick={save}>
+        <Button
+          clName='btn-success'
+          dataBsDismiss
+          onClick={() => toPublish({ newVirtualDom: virtualDom, currentPage })}
+        >
           Опубликовать
         </Button>
       }

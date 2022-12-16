@@ -1,14 +1,13 @@
 import { FC } from 'react'
-import { Button } from '../../UI/Button'
+import { Button } from '../UI/Button'
 
-interface IEditorCodeTabs {
+interface ITabs {
   mode: string
   setMode: (m: string) => void
+  tabs: string[]
 }
 
-export const EditorCodeTabs: FC<IEditorCodeTabs> = ({ mode, setMode }) => {
-  const tabs = ['HTML', 'CSS', 'JS']
-
+export const Tabs: FC<ITabs> = ({ mode, setMode, tabs }) => {
   const changeMode = (textContent: string) => {
     setMode(textContent.toLowerCase())
   }

@@ -1,3 +1,26 @@
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { pathAPI } from '../Constants'
+import { serializeDOMToString, unWrapTextNode, wrapImages } from './dom-helpers'
+
+interface IToPublish {
+  newVirtualDom: Document
+  currentPage: string
+}
+
+export const toPublish = ({ newVirtualDom, currentPage }: IToPublish) => {
+  unWrapTextNode(newVirtualDom)
+  wrapImages(newVirtualDom)
+  const html = serializeDOMToString(newVirtualDom)
+
+  axios
+    .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
+    .then(() => {
+      toast.success('Успешно опубликовано!')
+    })
+    .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
+}
+
 export const rect = (el: HTMLElement) => {
   const top = el.getBoundingClientRect().top + document.documentElement.scrollTop
   const left = el.getBoundingClientRect().left

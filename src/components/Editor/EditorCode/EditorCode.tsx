@@ -3,11 +3,12 @@ import CodeMirror from '@uiw/react-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
-import { EditorCodeTabs } from './EditorCodeTabs'
+import { Tabs } from '../../Tabs/Tabs'
 import { EditorCodeSelect } from './EditorCodeSelect'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
+import { parseStrDom, serializeDOMToString, unWrapTextNode, wrapImages } from '../../../helpers/dom-helpers'
 
 interface IPropsByMode {
   mode: string
@@ -17,8 +18,8 @@ interface IPropsByMode {
 
 interface IEditorCode {
   currentPage: string
-  saveTempPage: (dom: string, dd?: any) => void
   virtualDom: Document
+  setVirtualDom: (dom: Document) => void
   published: string
   setPublished: (str: string) => void
 }
@@ -27,7 +28,7 @@ interface IFiles {
   path: string[]
 }
 
-export const EditorCode: FC<IEditorCode> = ({ virtualDom, currentPage, saveTempPage, published, setPublished }) => {
+export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, currentPage, published, setPublished }) => {
   const serializer = new XMLSerializer()
   const codeMirrorWrapperRef = useRef<HTMLDivElement>(null)
   const [codeMirrorWidth, setCodeMirrorWidth] = useState<number>()
@@ -152,28 +153,28 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, currentPage, saveTempP
     switch (mode) {
       case 'html':
         const newHtml = data ? data : serializer.serializeToString(virtualDom)
-        saveTempPage(newHtml)
+        axios.post(`${pathAPI}saveTempPage.php`, { html: newHtml })
+
+        const document = parseStrDom(newHtml)
+        setVirtualDom(document)
+        unWrapTextNode(document)
+        wrapImages(document)
+
+        const html = serializeDOMToString(document)
         axios
-          .post(`${pathAPI}savePage.php`, {
-            pageName: currentPage,
-            html: newHtml,
-          })
+          .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
           .then(() => {
-            setTimeout(() => {
-              toast.success(`Успешно опубликовано`)
-            }, 500)
+            toast.success('Успешно опубликовано!')
           })
-          .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
+          .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
 
         break
       case 'js':
         const idxJs = jsFiles?.files.indexOf(jsFileName) !== -1 ? jsFiles?.files.indexOf(jsFileName) : 0
         axios
           .post(`${pathAPI}saveFile.php`, { pathToFile: jsFiles?.path[idxJs ?? 0], data: data })
-          .then((res) => {
-            setTimeout(() => {
-              toast.success(`Успешно опубликовано`)
-            }, 500)
+          .then(() => {
+            toast.success('Успешно опубликовано!')
           })
           .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
         break
@@ -181,10 +182,8 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, currentPage, saveTempP
         const idxCss = cssFiles?.files.indexOf(cssFileName) !== -1 ? cssFiles?.files.indexOf(cssFileName) : 0
         axios
           .post(`${pathAPI}saveFile.php`, { pathToFile: cssFiles?.path[idxCss ?? 0], data: data })
-          .then((res) => {
-            setTimeout(() => {
-              toast.success(`Успешно опубликовано`)
-            }, 500)
+          .then(() => {
+            toast.success('Успешно опубликовано!')
           })
           .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
         break
@@ -194,7 +193,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, currentPage, saveTempP
   return (
     <div className='px-4'>
       <div>
-        <EditorCodeTabs mode={mode} setMode={setMode} />
+        <Tabs mode={mode} setMode={setMode} tabs={['HTML', 'CSS', 'JS']} />
         <div className='pb-4 flex justify-between items-center space-x-2'>
           <>
             {propsByMode && propsByMode.mode === 'html' && <div className='font-bold mr-auto'>{currentPage}</div>}

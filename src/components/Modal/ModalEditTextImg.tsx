@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
@@ -10,15 +10,28 @@ interface IModalEditTextImg {
 }
 
 export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtualDom }) => {
-  const { id, text } = useAppSelector((state) => state.controlImg)
-  const { setDataImg } = userActions()
-  const [newText, setNewText] = useState('')
   const iframe = document.querySelector('iframe')
-  const virtualElem = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
-  const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
+  const { id, text, element, selector } = useAppSelector((state) => state.setText)
+  const [newText, setNewText] = useState('')
+  const [virtualElem, setVirtualElem] = useState() as any
+  const [elText, setElText] = useState<HTMLElement>()
+  const [elImg, setElImg] = useState<HTMLImageElement>()
+  const { setText } = userActions()
 
   useEffect(() => {
-    setNewText(text)
+    if (text !== '') {
+      setNewText(text)
+      const virEl = virtualDom?.body.querySelector(selector) as any
+      setVirtualElem(virEl)
+      const currentEl = iframe?.contentDocument?.body.querySelector(selector) as any
+
+      if (element === 'img') {
+        setElImg(currentEl)
+      }
+      if (element === 'text') {
+        setElText(currentEl)
+      }
+    }
   }, [text])
 
   const onChange = (value: string) => {
@@ -26,9 +39,16 @@ export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtual
   }
 
   const save = () => {
-    img.setAttribute('alt', newText)
-    setDataImg({ id, text: newText })
-    virtualElem.alt = img.alt
+    if (elImg && element === 'img') {
+      elImg.setAttribute('alt', newText)
+      virtualElem.alt = elImg.alt
+    }
+    if (elText && element === 'text') {
+      elText.innerHTML = newText
+      virtualElem.innerHTML = newText
+      setText({ id, text: newText, element, selector })
+    }
+
     setVirtualDom(virtualDom)
   }
 

@@ -23,7 +23,7 @@ import { Editor } from './components/Editor/Editor'
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
   const [currentPage, setCurrentPage] = useState('index.html')
-  const [VD, setVDom] = useState<Document | null>()
+  const [virtualDom, setVirtualDom] = useState<Document | null>()
   const [loading, setLoading] = useState(true)
   const [isAuth, setIsAuth] = useState(false)
 
@@ -67,7 +67,7 @@ export const App: FC = () => {
         .then(wrapTextNodes)
         .then(wrapImages)
         .then((dom) => {
-          setVDom(dom)
+          setVirtualDom(dom)
           return dom
         })
         .then((dom) => {
@@ -79,14 +79,14 @@ export const App: FC = () => {
   }, [currentPage, isAuth])
 
   useEffect(() => {
-    if (VD && loading === false && iframe) {
+    if (virtualDom && loading === false && iframe) {
       injectStyles(iframe)
       enableEditing(iframe)
     }
-  }, [VD, loading])
+  }, [virtualDom, loading])
 
   const saveTempPage = (htmlDom: string) => {
-    setVDom(parseStrDom(htmlDom))
+    setVirtualDom(parseStrDom(htmlDom))
     const path = import.meta.env.MODE === 'development' ? '../api/' : './../'
     axios
       .post(`${pathAPI}saveTempPage.php`, { html: htmlDom })
@@ -103,30 +103,24 @@ export const App: FC = () => {
       .catch((e) => toast.error(e))
   }
 
-  const save = () => {
-    setLoading(true)
-    const newDom = VD?.cloneNode(true)
+  // const save = () => {
+  //   unWrapTextNode(virtualDom)
+  //   wrapImages(virtualDom)
+  //   const html = serializeDOMToString(virtualDom)
 
-    if (newDom) {
-      unWrapTextNode(newDom)
-      wrapImages(newDom)
-      const html = serializeDOMToString(newDom)
-
-      axios
-        .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
-        .then(() => {
-          toast.success('Успешно опубликовано!')
-        })
-        .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
-        .finally(() => setLoading(false))
-    }
-  }
+  //   axios
+  //     .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
+  //     .then(() => {
+  //       toast.success('Успешно опубликовано!')
+  //     })
+  //     .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
+  // }
 
   const enableEditing = (iframe: HTMLIFrameElement) => {
-    if (VD) {
+    if (virtualDom) {
       iframe?.contentDocument?.body.querySelectorAll('.text-editor-app').forEach((el) => {
         const htmlEl = el as HTMLElement
-        processingText(htmlEl, VD, setVDom)
+        processingText(htmlEl, virtualDom, setVirtualDom)
       })
 
       iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
@@ -172,23 +166,22 @@ export const App: FC = () => {
     <>
       <Spinner active={loading} />
       <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
-      {!loading && VD && (
+      {!loading && virtualDom && (
         <>
-          <ModalEditorMeta virtualDom={VD} save={save} currentPage={currentPage} />
+          {/* <ModalEditorMeta virtualDom={virtualDom} save={save} currentPage={currentPage} /> */}
           <ModalBackup />
-          <ModalEditTextImg virtualDom={VD} setVirtualDom={setVDom} />
-          <Panel virtualDom={VD} setVirtualDom={setVDom} />
-          <PanelImage virtualDom={VD} setVirtualDom={setVDom} setLoading={setLoading} />
-          <ModalConfirm save={save} />
+          <ModalEditTextImg virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+          <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+          <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+          <ModalConfirm virtualDom={virtualDom} currentPage={currentPage} />
           <ModalLogout />
-          <Editor virtualDom={VD} setVirtualDom={setVDom} saveTempPage={saveTempPage} currentPage={currentPage} />
+          <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
         </>
       )}
       <ModalChoose setCurrentPage={setCurrentPage} />
       <ToastContainer
         position='top-center'
         autoClose={4000}
-        // hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}

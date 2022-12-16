@@ -7,13 +7,12 @@ import { BiImageAdd } from 'react-icons/bi'
 interface IPanelImage {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
-  setLoading: (state: boolean) => void
 }
 
-export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom, setLoading }) => {
+export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom }) => {
   const iframe = document.querySelector('iframe')
   const btnsEditorImg = useRef(null) as any
-  const { setDataImg } = userActions()
+  const { setText } = userActions()
 
   const onMouseOver = () => {
     const id = btnsEditorImg.current.getAttribute('img-editor-id')
@@ -48,7 +47,7 @@ export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom, setLoad
       if (virtualDom) {
         const img = iframe?.contentDocument?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
         const text = img.getAttribute('alt') ?? ''
-        setDataImg({ id, text })
+        setText({ id, text, element: 'img', selector: `[img-editor-app="${id}"]` })
       }
     }
   }
