@@ -1,10 +1,10 @@
 import { FC } from 'react'
 
-interface SpinnerProps {
+interface IOnFullScreen {
   active: boolean
 }
 
-export const Spinner: FC<SpinnerProps> = ({ active }) => {
+export const OnFullScreen: FC<IOnFullScreen> = ({ active }) => {
   return (
     <>
       {active && (

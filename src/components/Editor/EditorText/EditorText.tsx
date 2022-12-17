@@ -1,12 +1,17 @@
-import React, { FC, useEffect, useState } from 'react'
-import { MdOutlineMode, MdOutlineSearch } from 'react-icons/md'
+import { FC, useEffect, useState } from 'react'
+import { MdOutlineSearch } from 'react-icons/md'
+import { parseStrDom } from '../../../helpers/dom-helpers'
+import { toPublish } from '../../../helpers/utils'
 import { userActions } from '../../../hooks/actions'
 import { useAppSelector } from '../../../hooks/redux'
+import { MiniSpinner } from '../../Spinners/MiniSpinner'
 import { Tabs } from '../../Tabs/Tabs'
+import { PublishedButton } from '../../UI/PublishedButton'
 
 interface IEditorText {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
+  currentPage: string
 }
 
 interface IMapText {
@@ -21,8 +26,9 @@ interface IFilterText {
   search?: string
 }
 
-export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
+export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, currentPage }) => {
   const iframe = document.querySelector('iframe')
+  const serializer = new XMLSerializer()
   const [textList, setTextList] = useState<IMapText[]>()
   const [filteredText, setFilteredText] = useState<IMapText[]>()
   const [search, setSearch] = useState('')
@@ -30,9 +36,11 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
   const { setText } = userActions()
   const { text } = useAppSelector((state) => state.setText)
   const [oldText, setOldText] = useState('All')
+  const [isSpinner, setIsSpinner] = useState(true)
 
   useEffect(() => {
     getTextNode()
+    setIsSpinner(false)
   }, [])
 
   useEffect(() => {
@@ -144,8 +152,15 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
     }
   }
 
+  const published = () => {
+    const newHtml = serializer.serializeToString(virtualDom)
+    const document = parseStrDom(newHtml)
+
+    toPublish({ newVirtualDom: document, currentPage })
+  }
+
   return (
-    <div>
+    <>
       <Tabs mode={mode} setMode={setMode} tabs={['All', 'Headline', 'Links', 'Buttons', 'Text']} />
       <div className='mb-3 relative w-full'>
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
@@ -158,6 +173,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
+      {isSpinner && <MiniSpinner active={isSpinner} />}
       <div className='flex flex-col'>
         <div className='sm:-mx-6 lg:-mx-8'>
           <div className='py-2 sm:px-6 lg:px-8'>
@@ -177,14 +193,15 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredText &&
+                  {!isSpinner &&
+                    filteredText &&
                     filteredText.map((text) => (
                       <tr
                         className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100 flex items-start justify-start cursor-pointer p-4'
                         key={text.id}
                         onClick={() => editingText(text.text, text.id)}
                         data-bs-toggle='modal'
-                        data-bs-target='#modalEditTextImg'
+                        data-bs-target='#modalEditText'
                       >
                         <td className='text-gray-900 font-light min-w-[40px]'>{text.id}</td>
                         <td className='text-gray-900 font-light px-6 min-w-[110px]'>{text.tagName}</td>
@@ -197,6 +214,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom }) => {
           </div>
         </div>
       </div>
-    </div>
+      <PublishedButton onClick={published} />
+    </>
   )
 }

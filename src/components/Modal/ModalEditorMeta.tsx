@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from 'react'
 import { MdContentCopy } from 'react-icons/md'
 import { toast } from 'react-toastify'
+import { toPublish } from '../../helpers/utils'
 import { Button } from '../UI/Button'
 import Modal from './Modal'
 
 interface ModalEditorMetaProps {
   virtualDom: Document
-  save: () => void
   currentPage: string
 }
 
-export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, save, currentPage }) => {
+export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, currentPage }) => {
   const [title, setTitle] = useState('')
   const [keywords, setKeywords] = useState('')
   const [description, setDescription] = useState('')
@@ -66,7 +66,7 @@ export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, save, cu
           dataBsDismiss
           onClick={() => {
             applyMeta()
-            save()
+            toPublish({ newVirtualDom: virtualDom, currentPage })
           }}
         >
           Сохранить

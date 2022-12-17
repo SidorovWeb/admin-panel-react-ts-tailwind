@@ -74,7 +74,7 @@ export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom }) => {
         type='button'
         onClick={getDataImg}
         data-bs-toggle='modal'
-        data-bs-target='#modalEditTextImg'
+        data-bs-target='#modalEditText'
       >
         Alt
       </button>

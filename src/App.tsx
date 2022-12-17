@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 import { parseStrDom, serializeDOMToString, unWrapTextNode, wrapImages, wrapTextNodes } from './helpers/dom-helpers'
 import { processingText } from './helpers/Text'
 import 'react-toastify/dist/ReactToastify.css'
-import { Spinner } from './components/Spinner/Spinner'
+import { OnFullScreen } from './components/Spinners/OnFullScreen'
 import { ModalConfirm } from './components/Modal/ModalConfirm'
 import { ModalChoose } from './components/Modal/ModalChoose'
 import { Panel } from './components/Panel/Panel'
@@ -17,7 +17,7 @@ import { Slide, toast, ToastContainer } from 'react-toastify'
 import { ModalLogout } from './components/Modal/ModalLogout'
 import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
-import { ModalEditTextImg } from './components/Modal/ModalEditTextImg'
+import { ModalEditText } from './components/Modal/ModalEditText'
 import { Editor } from './components/Editor/Editor'
 
 export const App: FC = () => {
@@ -164,13 +164,13 @@ export const App: FC = () => {
     </>
   ) : (
     <>
-      <Spinner active={loading} />
+      <OnFullScreen active={loading} />
       <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
       {!loading && virtualDom && (
         <>
-          {/* <ModalEditorMeta virtualDom={virtualDom} save={save} currentPage={currentPage} /> */}
+          <ModalEditorMeta virtualDom={virtualDom} currentPage={currentPage} />
           <ModalBackup />
-          <ModalEditTextImg virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+          <ModalEditText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
           <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
           <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
           <ModalConfirm virtualDom={virtualDom} currentPage={currentPage} />

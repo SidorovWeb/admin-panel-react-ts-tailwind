@@ -1,16 +1,9 @@
-import React, { FC, useState } from 'react'
-import {
-  MdBarChart,
-  MdCode,
-  MdOutlineImage,
-  MdOutlineImageSearch,
-  MdOutlineLogout,
-  MdOutlinePublishedWithChanges,
-  MdOutlineShortText,
-} from 'react-icons/md'
+import { FC, useState } from 'react'
+import { MdBarChart, MdCode, MdOutlineImage, MdOutlineLogout, MdOutlineShortText } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
+import { Dashboard } from './Dashboard/Dashboard'
 import { EditorCode } from './EditorCode/EditorCode'
 import { EditorImages } from './EditorImages/EditorImages'
 import { EditorText } from './EditorText/EditorText'
@@ -24,7 +17,6 @@ interface IEditor {
 export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const [switcher, setSwitcher] = useState('Dashboard')
-  const [published, setPublished] = useState('')
   const { inactiveCodeEditor } = userActions()
 
   const close = () => {
@@ -42,10 +34,6 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
         <div className='max-w-[1280px] m-auto px-[30px] w-full flex items-center justify-between'>
           APSA
           <div className='flex items-center space-x-2'>
-            <Button clName='btn-success flex items-center' onClick={() => setPublished(switcher)}>
-              <MdOutlinePublishedWithChanges className='w-full h-[15px] -mt-[2px] mr-1' />
-              Опубликовать
-            </Button>
             <Button clName='btn-default flex items-center' onClick={close}>
               <MdOutlineLogout className='w-full h-[15px] -mt-[2px] mr-1' />
               <p>Закрыть</p>
@@ -54,7 +42,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
         </div>
       </div>
       <div className='finder-container max-w-[1280px] m-auto px-[30px]'>
-        <div className='finder-main flex mt-10'>
+        <div className='finder-main flex mt-10 mb-20'>
           <div className='finder-sidebar space-y-4 pr-[80px]'>
             <a
               href='!#'
@@ -109,33 +97,17 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
               <p>Code</p>
             </a>
           </div>
-          <div className='finder-content flex-1 min-h-screen pb-10'>
-            <div className='font-bold text-left text-4xl mb-2'>{switcher}</div>
-            {switcher === 'Dashboard' && (
-              <>
-                <div className='charts grid grid-cols-2 gap-2'>
-                  <div className='charts-pie bg-slate-400'>pie</div>
-                  <div className='carts-file-list bg-red-50 grid grid-cols-2 gap-2'>
-                    <div className='bg-orange-200'>HTML:</div>
-                    <div className='bg-orange-200'>CSS:</div>
-                    <div className='bg-orange-200'>JS:</div>
-                    <div className='bg-orange-200'>IMG</div>
-                    <div className='bg-orange-200'>Backups:</div>
-                    <div className='bg-orange-200'>Create Backups</div>
-                  </div>
-                </div>
-              </>
+          <div className='finder-content flex flex-col flex-1 min-h-screen relative'>
+            <div className='font-bold text-left text-4xl mb-10'>{switcher}</div>
+            {switcher === 'Dashboard' && <Dashboard />}
+            {switcher === 'Images' && (
+              <EditorImages virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
             )}
-            {switcher === 'Images' && <EditorImages virtualDom={virtualDom} setVirtualDom={setVirtualDom} />}
-            {switcher === 'Text' && <EditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />}
+            {switcher === 'Text' && (
+              <EditorText virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
+            )}
             {switcher === 'Code' && (
-              <EditorCode
-                virtualDom={virtualDom}
-                currentPage={currentPage}
-                setVirtualDom={setVirtualDom}
-                published={published}
-                setPublished={setPublished}
-              />
+              <EditorCode virtualDom={virtualDom} currentPage={currentPage} setVirtualDom={setVirtualDom} />
             )}
           </div>
         </div>

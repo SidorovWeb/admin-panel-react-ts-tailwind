@@ -8,7 +8,10 @@ import { EditorCodeSelect } from './EditorCodeSelect'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
-import { parseStrDom, serializeDOMToString, unWrapTextNode, wrapImages } from '../../../helpers/dom-helpers'
+import { parseStrDom, unWrapTextNode, wrapImages } from '../../../helpers/dom-helpers'
+import { toPublish } from '../../../helpers/utils'
+import { PublishedButton } from '../../UI/PublishedButton'
+import { MiniSpinner } from '../../Spinners/MiniSpinner'
 
 interface IPropsByMode {
   mode: string
@@ -20,15 +23,13 @@ interface IEditorCode {
   currentPage: string
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
-  published: string
-  setPublished: (str: string) => void
 }
 interface IFiles {
   files: string[]
   path: string[]
 }
 
-export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, currentPage, published, setPublished }) => {
+export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, currentPage }) => {
   const serializer = new XMLSerializer()
   const codeMirrorWrapperRef = useRef<HTMLDivElement>(null)
   const [codeMirrorWidth, setCodeMirrorWidth] = useState<number>()
@@ -47,6 +48,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   const [jsData, setJsData] = useState('')
 
   const [propsByMode, setPropsByMode] = useState<IPropsByMode>()
+  const [isSpinner, setIsSpinner] = useState(true)
 
   const getList = async (nameFile: string, setFun: (v: any) => void) => {
     return await axios
@@ -70,6 +72,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   useEffect(() => {
     getList('cssList.php', setCssFiles)
     getList('jsList.php', setJsFiles)
+    setIsSpinner(false)
   }, [])
 
   const calculatesHeightCodeEditor = () => {
@@ -142,14 +145,18 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   const onChange = useCallback((value: string) => {
     setData(value)
   }, [])
-  useEffect(() => {
-    if (published === 'Code') {
-      savesCode()
-      setPublished('')
-    }
-  }, [published])
 
-  const savesCode = () => {
+  const overwriteFile = (files: IFiles, fileName: string) => {
+    const idxCss = files?.files.indexOf(fileName) !== -1 ? files?.files.indexOf(fileName) : 0
+    axios
+      .post(`${pathAPI}saveFile.php`, { pathToFile: files?.path[idxCss ?? 0], data: data })
+      .then(() => {
+        toast.success('Успешно опубликовано!')
+      })
+      .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
+  }
+
+  const published = () => {
     switch (mode) {
       case 'html':
         const newHtml = data ? data : serializer.serializeToString(virtualDom)
@@ -157,74 +164,67 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
 
         const document = parseStrDom(newHtml)
         setVirtualDom(document)
+
         unWrapTextNode(document)
         wrapImages(document)
 
-        const html = serializeDOMToString(document)
-        axios
-          .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
-          .then(() => {
-            toast.success('Успешно опубликовано!')
-          })
-          .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
-
+        toPublish({ newVirtualDom: document, currentPage })
         break
       case 'js':
-        const idxJs = jsFiles?.files.indexOf(jsFileName) !== -1 ? jsFiles?.files.indexOf(jsFileName) : 0
-        axios
-          .post(`${pathAPI}saveFile.php`, { pathToFile: jsFiles?.path[idxJs ?? 0], data: data })
-          .then(() => {
-            toast.success('Успешно опубликовано!')
-          })
-          .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
+        if (jsFiles) {
+          overwriteFile(jsFiles, jsFileName)
+        }
         break
       case 'css':
-        const idxCss = cssFiles?.files.indexOf(cssFileName) !== -1 ? cssFiles?.files.indexOf(cssFileName) : 0
-        axios
-          .post(`${pathAPI}saveFile.php`, { pathToFile: cssFiles?.path[idxCss ?? 0], data: data })
-          .then(() => {
-            toast.success('Успешно опубликовано!')
-          })
-          .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
+        if (cssFiles) {
+          overwriteFile(cssFiles, cssFileName)
+        }
         break
     }
   }
 
   return (
-    <div className='px-4'>
-      <div>
-        <Tabs mode={mode} setMode={setMode} tabs={['HTML', 'CSS', 'JS']} />
-        <div className='pb-4 flex justify-between items-center space-x-2'>
-          <>
-            {propsByMode && propsByMode.mode === 'html' && <div className='font-bold mr-auto'>{currentPage}</div>}
-            {propsByMode && propsByMode.mode === 'css' && cssFiles?.files && (
-              <div className='font-bold mr-auto'>
-                <EditorCodeSelect array={cssFiles.files} setSelect={setCssFileName} />
-              </div>
-            )}
-            {propsByMode && propsByMode.mode === 'javascript' && jsFiles?.files && (
-              <div className='font-bold mr-auto'>
-                <EditorCodeSelect array={jsFiles.files} setSelect={setJsFileName} />
-              </div>
-            )}
-          </>
-          <div className='font-bold mr-auto'>
-            <EditorCodeSelect array={themes} setSelect={setTheme} theme={theme} />
-          </div>
+    <>
+      <Tabs mode={mode} setMode={setMode} tabs={['HTML', 'CSS', 'JS']} />
+
+      <div className='pb-4 flex justify-between items-center space-x-2'>
+        <>
+          {propsByMode && propsByMode.mode === 'html' && <div className='font-bold mr-auto'>{currentPage}</div>}
+          {propsByMode && propsByMode.mode === 'css' && cssFiles?.files && (
+            <div className='font-bold mr-auto'>
+              <EditorCodeSelect array={cssFiles.files} setSelect={setCssFileName} />
+            </div>
+          )}
+          {propsByMode && propsByMode.mode === 'javascript' && jsFiles?.files && (
+            <div className='font-bold mr-auto'>
+              <EditorCodeSelect array={jsFiles.files} setSelect={setJsFileName} />
+            </div>
+          )}
+        </>
+        <div className='font-bold mr-auto'>
+          <EditorCodeSelect array={themes} setSelect={setTheme} theme={theme} />
         </div>
       </div>
-
-      <div className='rounded relative w-full' ref={codeMirrorWrapperRef}>
-        <CodeMirror
-          height='100vh'
-          className='absolute inset-0 w-full h-full'
-          width={`${codeMirrorWidth}px`}
-          value={propsByMode && propsByMode.value}
-          theme={theme}
-          extensions={[propsByMode && propsByMode.extensions]}
-          onChange={onChange}
-        />
-      </div>
-    </div>
+      {isSpinner && <MiniSpinner active={isSpinner} />}
+      {!isSpinner && (
+        <>
+          <div className='rounded relative w-full h-full' ref={codeMirrorWrapperRef}>
+            <CodeMirror
+              height='100%'
+              basicSetup={{
+                foldGutter: false,
+              }}
+              className='absolute inset-0 w-full h-full'
+              width={`${codeMirrorWidth}px`}
+              value={propsByMode && propsByMode.value}
+              theme={theme}
+              extensions={[propsByMode && propsByMode.extensions]}
+              onChange={onChange}
+            />
+          </div>
+          <PublishedButton onClick={published} />
+        </>
+      )}
+    </>
   )
 }

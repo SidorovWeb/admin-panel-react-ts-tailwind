@@ -1,16 +1,17 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
 import Modal from './Modal'
 
-interface IModalEditTextImg {
+interface IModalEditText {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
 }
 
-export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtualDom }) => {
+export const ModalEditText: FC<IModalEditText> = ({ virtualDom, setVirtualDom }) => {
   const iframe = document.querySelector('iframe')
+  const input = useRef<HTMLInputElement>(null)
   const { id, text, element, selector } = useAppSelector((state) => state.setText)
   const [newText, setNewText] = useState('')
   const [virtualElem, setVirtualElem] = useState() as any
@@ -42,6 +43,7 @@ export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtual
     if (elImg && element === 'img') {
       elImg.setAttribute('alt', newText)
       virtualElem.alt = elImg.alt
+      setText({ id, text: newText, element, selector })
     }
     if (elText && element === 'text') {
       elText.innerHTML = newText
@@ -55,7 +57,7 @@ export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtual
   return (
     <Modal
       title='Редактирование'
-      id='modalEditTextImg'
+      id='modalEditText'
       footer={
         <Button clName='btn-success' dataBsDismiss onClick={save}>
           Сохранить
@@ -66,10 +68,11 @@ export const ModalEditTextImg: FC<IModalEditTextImg> = ({ virtualDom, setVirtual
         <input
           type='text'
           className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out
-    !mt-1 !mb-2 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+!mt-1 !mb-2 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
           placeholder='Введите текст'
           onChange={(e) => onChange(e.target.value)}
           value={newText}
+          ref={input}
         />
       </form>
     </Modal>

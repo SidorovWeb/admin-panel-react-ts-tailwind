@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react'
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import { Button } from '../../UI/Button'
 import { uploadImage } from '../../../helpers/Images'
 import { FiSearch } from 'react-icons/fi'
@@ -7,12 +7,16 @@ import { pathAPI } from '../../../Constants'
 import { toast } from 'react-toastify'
 import { userActions } from '../../../hooks/actions'
 import { useAppSelector } from '../../../hooks/redux'
-import { convertBytes, imageSize } from '../../../helpers/utils'
+import { convertBytes, imageSize, toPublish } from '../../../helpers/utils'
 import { MdOutlineSearch } from 'react-icons/md'
+import { parseStrDom } from '../../../helpers/dom-helpers'
+import { PublishedButton } from '../../UI/PublishedButton'
+import { MiniSpinner } from '../../Spinners/MiniSpinner'
 
 interface IEditorImages {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
+  currentPage: string
 }
 
 interface IMapImages {
@@ -25,13 +29,24 @@ interface IMapImages {
   size: number
 }
 
-export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) => {
+interface INewList {
+  id: number
+  text?: string
+  src?: string
+  width?: number
+  height?: number
+  size?: number
+}
+
+export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, currentPage }) => {
   const iframe = document.querySelector('iframe')
   const [imagesList, setImagesList] = useState<IMapImages[]>()
   const [filteredImages, setFilteredImages] = useState<IMapImages[]>()
   const [search, setSearch] = useState('')
   const { setText } = userActions()
   const { id, text } = useAppSelector((state) => state.setText)
+  const [isSpinner, setIsSpinner] = useState(true)
+  const serializer = new XMLSerializer()
 
   useEffect(() => {
     const images = iframe?.contentDocument?.body.querySelectorAll(`.img-editor-app`)
@@ -73,12 +88,14 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
           })
         })
         .catch((e) => toast.error(`Ошибка! ${e}`))
+        .finally(() => setIsSpinner(false))
     }
   }, [imagesList])
 
   useEffect(() => {
     if (text !== '') {
-      newList({ id, text })
+      newList({ id, text: text })
+      filter(' ')
     }
   }, [text])
 
@@ -116,15 +133,6 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
     }
   }
 
-  interface INewList {
-    id: number
-    text?: string
-    src?: string
-    width?: number
-    height?: number
-    size?: number
-  }
-
   const newList = ({ id, text, src, width, height, size }: INewList) => {
     const newList =
       imagesList &&
@@ -150,6 +158,13 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
     setFilteredImages(newList)
   }
 
+  const published = () => {
+    const newHtml = serializer.serializeToString(virtualDom)
+    const document = parseStrDom(newHtml)
+
+    toPublish({ newVirtualDom: document, currentPage })
+  }
+
   return (
     <>
       <div className='mb-3 relative w-full'>
@@ -163,8 +178,10 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
+      {isSpinner && <MiniSpinner active={isSpinner} />}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center w-full'>
-        {filteredImages &&
+        {!isSpinner &&
+          filteredImages &&
           [...filteredImages].map((img) => (
             <div
               className='flex justify-center hover:shadow-lg transition duration-300 ease-in-out rounded-lg'
@@ -200,7 +217,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
                     clName='btn-default mb-4'
                     onClick={() => editingText(img.name, img.id)}
                     dataBsToggle
-                    dataBsTarget='#modalEditTextImg'
+                    dataBsTarget='#modalEditText'
                   >
                     Тег alt
                   </Button>
@@ -209,8 +226,9 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom }) =
             </div>
           ))}
 
-        {filteredImages && !filteredImages.length && <div className='text-xl mb-2'>Имя не найдено</div>}
+        {!isSpinner && filteredImages && !filteredImages.length && <div className='text-xl mb-2'>Имя не найдено</div>}
       </div>
+      <PublishedButton onClick={published} />
     </>
   )
 }

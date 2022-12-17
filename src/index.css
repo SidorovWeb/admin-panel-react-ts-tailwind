@@ -8,6 +8,8 @@ body {
   text-rendering: optimizeSpeed;
 }
 
+/*  */
+
 html {
   @apply text-gray-700;
 }
