@@ -15,6 +15,8 @@ export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, currentP
   const [keywords, setKeywords] = useState('')
   const [description, setDescription] = useState('')
   const [url, setUrl] = useState('')
+  const styleInput =
+    'form-control block w-full px-3 py-1.5 text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded transition-opacity duration-300 ease-in-out hover:opacity-50 !mt-1 !mb-2 focus:border-blue-600 focus:outline-none'
 
   useEffect(() => {
     getMeta(virtualDom)
@@ -74,33 +76,32 @@ export const ModalEditorMeta: FC<ModalEditorMetaProps> = ({ virtualDom, currentP
       }
     >
       <form className='space-y-3'>
-        <label className='font-bold form-label inline-block text-gray-700'>Page title</label>
+        <label className='form-label inline-block font-medium'>Page title</label>
         <input
           type='text'
-          className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out
-                !mt-1 !mb-2 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+          className={styleInput}
           placeholder='Title'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <label className='font-bold form-label inline-block text-gray-700'>Page keywords</label>
+        <label className='form-label inline-block font-medium'>Page keywords</label>
         <textarea
-          className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-whitebg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out !mt-1 !mb-2 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+          className={styleInput}
           rows={3}
           placeholder='Keywords'
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
         ></textarea>
-        <label className='font-bold form-label inline-block text-gray-700'>Page description</label>
+        <label className='form-label inline-block font-medium'>Page description</label>
         <textarea
-          className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out !mt-1 !mb-2 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+          className={styleInput}
           rows={3}
           placeholder='Description'
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
         <div className='flex flex-wrap items-center space-x-4'>
-          <p className='text-sm text-blue-700 url-text-apsw'>{url}</p>
+          <p className='text-sm text-blue-700 url-text-apsw font-medium'>{url}</p>
           <Button
             clName='btn-primary !text-[10px]'
             onClick={() => {

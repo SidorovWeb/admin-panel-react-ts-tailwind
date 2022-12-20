@@ -19,7 +19,7 @@ export const Tabs: FC<ITabs> = ({ mode, setMode, tabs }) => {
           key={idx}
           onClick={() => changeMode(m)}
           clName={`${
-            mode.toLocaleLowerCase() === m.toLocaleLowerCase() ? '!bg-slate-800' : ''
+            mode.toLocaleLowerCase() === m.toLocaleLowerCase() ? '!bg-slate-800 dark:!bg-slate-700' : ''
           } btn-default min-w-[70px]`}
         >
           {m}

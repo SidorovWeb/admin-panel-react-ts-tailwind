@@ -8,10 +8,9 @@ body {
   text-rendering: optimizeSpeed;
 }
 
-/*  */
-
 html {
-  @apply text-gray-700;
+  /* @apply text-gray-700; */
+  @apply font-light;
 }
 
 .btn-default {
@@ -83,4 +82,9 @@ html {
   width: 100%;
   margin-top: 14px;
   height: 34px;
+}
+
+.cm-editor {
+  border-radius: 0.5rem;
+  overflow: hidden;
 }

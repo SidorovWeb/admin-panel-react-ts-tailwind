@@ -4,6 +4,7 @@ import { pathAPI } from '../../Constants'
 import { IAuth } from '../../interface/auth'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { Button } from '../UI/Button'
 
 interface IFormInput {
   password: string
@@ -30,7 +31,7 @@ export const Login: FC<ILogin> = ({ setIsAuth }) => {
   }
 
   return (
-    <div className='w-full h-screen bg-white'>
+    <div className='w-full h-screen'>
       <div className='container px-6 py-12 h-full'>
         <div className='flex justify-center items-center flex-wrap h-full g-6 text-gray-800'>
           <div className='md:w-8/12 lg:w-6/12 mb-12 md:mb-0'>
@@ -294,16 +295,9 @@ export const Login: FC<ILogin> = ({ setIsAuth }) => {
           </div>
           <div className='md:w-8/12 lg:w-5/12 lg:ml-20'>
             <form onSubmit={handleSubmit(onLogin)}>
-              {/* <div className='mb-6'>
-                <input
-                  type='text'
-                  className='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-                  placeholder='Email address'
-                />
-              </div> */}
               <div className='mb-6'>
                 <input
-                  className='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+                  className='block w-full px-3 py-1.5 text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded transition-opacity duration-300 ease-in-out hover:opacity-50 !mt-1 !mb-2 focus:border-blue-600 focus:outline-none'
                   type='password'
                   placeholder='Password'
                   {...register('password', {
@@ -320,9 +314,7 @@ export const Login: FC<ILogin> = ({ setIsAuth }) => {
 
               <button
                 type='submit'
-                className='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
-                data-mdb-ripple='true'
-                data-mdb-ripple-color='light'
+                className='btn-primary px-7 py-3 bg-blue-600 text-white leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'
               >
                 Войти
               </button>

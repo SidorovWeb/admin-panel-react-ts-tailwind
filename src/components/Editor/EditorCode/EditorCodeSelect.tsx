@@ -12,14 +12,14 @@ export const EditorCodeSelect: FC<IEditorCodeSelect> = ({ array, setSelect, them
     setSelect(value)
     setValue(value)
     if (theme) {
-      localStorage.setItem('apsw-theme', JSON.stringify(value))
+      localStorage.setItem('apsa-theme-editor', JSON.stringify(value))
     }
   }
 
   return (
     <div className='theme-selector flex space-x-2 items-center'>
       <select
-        className='pr-8 cursor-pointer form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example'
+        className=' bg-white dark:bg-slate-800 pr-8 cursor-pointer form-select appearance-none block w-full px-3 py-1.5 bg-clip-padding bg-no-repeat border border-slate-200 dark:border-slate-700 rounded m-0 focus:border-blue-600 focus:outline-none'
         value={theme ?? value}
         onChange={(e) => select(e.target.value)}
       >

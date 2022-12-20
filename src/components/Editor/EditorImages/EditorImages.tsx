@@ -171,33 +171,32 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
         <input
           type='search'
-          className='form-control block w-full px-10 py-1.5 mx-0 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-6 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-          id='exampleSearch'
+          className='form-control block w-full px-10 py-1.5 mx-0 text-base text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded  m-6 focus:border-blue-600 focus:outline-none'
           placeholder='Имя изображения'
           value={search}
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
-      {isSpinner && <MiniSpinner active={isSpinner} />}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center w-full'>
+      {isSpinner && <MiniSpinner />}
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center w-full'>
         {!isSpinner &&
           filteredImages &&
           [...filteredImages].map((img) => (
             <div
-              className='flex justify-center hover:shadow-lg transition duration-300 ease-in-out rounded-lg'
+              className='flex justify-center hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg border border-slate-200 dark:border-slate-700'
               key={img.id}
             >
-              <div className='rounded-lg shadow-lg bg-white w-full'>
+              <div className='w-full'>
                 <img
-                  className='rounded-t-lg w-full object-cover min-h-[210px] max-h-[210px] bg-slate-200'
+                  className='rounded-t-lg w-full object-cover min-h-[210px] max-h-[210px] bg-slate-200 dark:bg-slate-500'
                   src={img.src}
                   alt={img.name}
                 />
                 <div className='p-4'>
-                  <p className='text-gray-700 text-base'>Name: {img.name}</p>
-                  <p className='text-gray-700 text-base opacity-[0.8]'>Width: {img.width}px</p>
-                  <p className='text-gray-700 text-base opacity-[0.8]'>Height: {img.height}px</p>
-                  <p className='text-gray-700 text-base mb-2 opacity-[0.8]'>
+                  <p className='text-inherit text-base font-medium'>Name: {img.name}</p>
+                  <p className='text-inherit text-base opacity-[0.8]'>Width: {img.width}px</p>
+                  <p className='text-inherit text-base opacity-[0.8]'>Height: {img.height}px</p>
+                  <p className='text-inherit text-base mb-2 opacity-[0.8]'>
                     Size: {convertBytes(img.size)} -{' '}
                     {img.size < 500 ? (
                       <span className='text-green-600'>Good size</span>

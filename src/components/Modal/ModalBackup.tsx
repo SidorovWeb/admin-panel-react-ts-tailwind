@@ -47,7 +47,9 @@ export const ModalBackup: FC = () => {
         {backupList &&
           backupList.map((item: string, idx: number) => (
             <div className='flex justify-center' key={idx}>
-              <div className='bg-white w-full border-b border-gray-200 py-2'>{item}</div>
+              <div className='w-full border-b  border-slate-200 dark:border-slate-700 py-2'>
+                <span className='font-medium'>{idx + 1}</span>: <span>{item}</span>
+              </div>
             </div>
           ))}
 

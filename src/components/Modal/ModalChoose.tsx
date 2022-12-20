@@ -18,8 +18,8 @@ export const ModalChoose: FC<ModalChooseProps> = ({ setCurrentPage }) => {
   const redirect = (e: MouseEvent, page: string) => {
     e.preventDefault()
     setCurrentPage(page)
-    const LS = JSON.parse(localStorage.getItem('apsw')!)
-    localStorage.setItem('apsw', JSON.stringify({ ...LS, page }))
+    const LS = JSON.parse(localStorage.getItem('apsa')!)
+    localStorage.setItem('apsa', JSON.stringify({ ...LS, page }))
   }
 
   const getListHtmlFiles = async () => {
@@ -39,10 +39,10 @@ export const ModalChoose: FC<ModalChooseProps> = ({ setCurrentPage }) => {
         {pages &&
           pages.map((page: string, idx: number) => (
             <div className='flex justify-center' key={idx}>
-              <div className='bg-white w-full border-b border-gray-200'>
+              <div className='w-full border-b border-slate-200 dark:border-slate-700'>
                 <a
                   href='#!'
-                  className='block px-6 py-2 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer'
+                  className='block px-6 py-2 w-full rounded focus:outline-none focus:ring-0 transition-opacity duration-300 ease-in-out hover:opacity-50 cursor-pointer'
                   onClick={(e) => redirect(e, page)}
                 >
                   {page}

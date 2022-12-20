@@ -1,8 +1,9 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { MdBarChart, MdCode, MdOutlineImage, MdOutlineLogout, MdOutlineShortText } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
+import { ThemeToggle } from '../UI/ThemeToggle/ThemeToggle'
 import { Dashboard } from './Dashboard/Dashboard'
 import { EditorCode } from './EditorCode/EditorCode'
 import { EditorImages } from './EditorImages/EditorImages'
@@ -16,24 +17,28 @@ interface IEditor {
 
 export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
-  const [switcher, setSwitcher] = useState('Dashboard')
+  const [switcher, setSwitcher] = useState('')
   const { inactiveCodeEditor } = userActions()
+
+  useEffect(() => {
+    if (active) {
+      setSwitcher('Dashboard')
+    }
+  }, [active])
 
   const close = () => {
     inactiveCodeEditor()
-    // codeEditor.current?.classList.remove('show')
-    // setTimeout(() => {
-    //   if (codeEditor.current) codeEditor.current.style.display = 'none'
-    //   inactiveCodeEditor()
-    // }, 115)
+    setSwitcher('')
   }
 
   return (
-    <div className={`${active ? '' : 'fade hidden'} fixed inset-0 overflow-y-auto z-30 bg-white`}>
-      <div className='finder-header py-4 border-b '>
+    <div className={`${active ? '' : 'fade hidden'} fixed inset-0 overflow-y-auto z-30 bg-inherit`}>
+      <div className='finder-header py-4 border-b border-slate-200 dark:border-slate-700'>
         <div className='max-w-[1280px] m-auto px-[30px] w-full flex items-center justify-between'>
-          APSA
+          <span className='font-bold'>APSA</span>
           <div className='flex items-center space-x-2'>
+            <ThemeToggle />
+            <Button clName='btn-default flex items-center'>lang</Button>
             <Button clName='btn-default flex items-center' onClick={close}>
               <MdOutlineLogout className='w-full h-[15px] -mt-[2px] mr-1' />
               <p>Закрыть</p>
@@ -47,8 +52,8 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
             <a
               href='!#'
               className={`${
-                switcher === 'Dashboard' ? 'text-black' : 'hover:opacity-[0.7]'
-              } w-full transition-all flex items-center space-x-1`}
+                switcher === 'Dashboard' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
+              } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
               onClick={(e) => {
                 e.preventDefault()
                 setSwitcher('Dashboard')
@@ -60,8 +65,8 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
             <a
               href='!#'
               className={`${
-                switcher === 'Images' ? 'text-black' : 'hover:opacity-[0.7]'
-              } w-full transition-all flex items-center space-x-1`}
+                switcher === 'Images' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
+              } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
               onClick={(e) => {
                 e.preventDefault()
                 setSwitcher('Images')
@@ -73,8 +78,8 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
             <a
               href='!#'
               className={`${
-                switcher === 'Text' ? 'text-black' : 'hover:opacity-[0.7]'
-              } w-full transition-all flex items-center space-x-1`}
+                switcher === 'Text' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
+              } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
               onClick={(e) => {
                 e.preventDefault()
                 setSwitcher('Text')
@@ -86,8 +91,8 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
             <a
               href='!#'
               className={`${
-                switcher === 'Code' ? 'text-black' : 'hover:opacity-[0.7]'
-              } w-full transition-all flex items-center space-x-1`}
+                switcher === 'Code' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
+              } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
               onClick={(e) => {
                 e.preventDefault()
                 setSwitcher('Code')

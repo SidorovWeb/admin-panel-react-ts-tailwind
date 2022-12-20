@@ -25,13 +25,34 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
   const iframe = document.querySelector('iframe')
   const dragContainer = useRef() as MutableRefObject<HTMLDivElement>
   const dragHandle = useRef() as MutableRefObject<HTMLButtonElement>
+  const dragPanel = useRef<HTMLDivElement>(null)
   const [posDraggable, setPosDraggable] = useState<any>()
   const { activateCodeEditor } = userActions()
   const textId = useAppSelector((state) => state.textEditorPanel.id)
 
   useEffect(() => {
-    const position = JSON.parse(localStorage.getItem('apsw-draggable-position')!) as { x: number; y: number }
-    const direction = JSON.parse(localStorage.getItem('apsw-draggable-direction')!) as string
+    let position = JSON.parse(localStorage.getItem('apsa-draggable-position')!) as { x: number; y: number }
+    let direction = JSON.parse(localStorage.getItem('apsa-draggable-direction')!) as string
+    if (!direction) {
+      direction = 'row'
+    }
+
+    if (position && direction === 'row' && position.x + 350 >= window.innerWidth) {
+      setPosDraggable({ position: { x: 20, y: 20 }, direction: `row` })
+      dragContainer.current.classList.add(`DragContainer-row`)
+      localStorage.setItem('apsa-draggable-direction', JSON.stringify('row'))
+      localStorage.setItem('apsa-draggable-position', JSON.stringify({ x: 20, y: 20 }))
+      return
+    }
+    if (position && direction === 'column' && position.y + 350 >= window.innerHeight) {
+      console.log(position, window.innerHeight)
+
+      setPosDraggable({ position: { x: 20, y: 20 }, direction: `row` })
+      dragContainer.current.classList.add(`DragContainer-row`)
+      localStorage.setItem('apsa-draggable-direction', JSON.stringify('row'))
+      localStorage.setItem('apsa-draggable-position', JSON.stringify({ x: 20, y: 20 }))
+      return
+    }
 
     if (position) {
       setPosDraggable({ position: { x: position.x, y: position.y }, direction })
@@ -54,18 +75,20 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
     dragContainer.current.style.position = 'static'
 
     const position = { x: data.x, y: data.y }
-    localStorage.setItem('apsw-draggable-position', JSON.stringify(position))
+    localStorage.setItem('apsa-draggable-position', JSON.stringify(position))
+    // const co = document.querySelector('.DragContainer') as HTMLElement
+    // console.log('handleEnd', position.x + co.offsetWidth)
   }
 
   const flipElement = () => {
     if (dragContainer.current.classList.contains('DragContainer-row')) {
       dragContainer.current.classList.remove(`DragContainer-row`)
       dragContainer.current.classList.add(`DragContainer-column`)
-      localStorage.setItem('apsw-draggable-direction', JSON.stringify('column'))
+      localStorage.setItem('apsa-draggable-direction', JSON.stringify('column'))
     } else {
       dragContainer.current.classList.remove(`DragContainer-column`)
       dragContainer.current.classList.add(`DragContainer-row`)
-      localStorage.setItem('apsw-draggable-direction', JSON.stringify('row'))
+      localStorage.setItem('apsa-draggable-direction', JSON.stringify('row'))
     }
   }
 
@@ -99,7 +122,10 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
           onStart={handleStart}
           onStop={handleEnd}
         >
-          <div className='DragContainer fixed w-auto z-998 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-md p-2 flex'>
+          <div
+            className='DragContainer fixed w-auto z-998 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-md p-2 flex'
+            ref={dragPanel}
+          >
             <div className='DragInner'>
               <div className='DragBlockPanel flex'>
                 <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' onClick={onclick}>

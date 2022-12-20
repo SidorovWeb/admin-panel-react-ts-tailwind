@@ -107,7 +107,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   }, [mode, cssFileName, jsFileName])
 
   useEffect(() => {
-    const theme = JSON.parse(localStorage.getItem('apsw-theme')!)
+    const theme = JSON.parse(localStorage.getItem('apsa-theme-editor')!)
 
     if (theme) {
       setTheme(theme)
@@ -189,23 +189,23 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
 
       <div className='pb-4 flex justify-between items-center space-x-2'>
         <>
-          {propsByMode && propsByMode.mode === 'html' && <div className='font-bold mr-auto'>{currentPage}</div>}
+          {propsByMode && propsByMode.mode === 'html' && <div className='font-medium mr-auto'>{currentPage}</div>}
           {propsByMode && propsByMode.mode === 'css' && cssFiles?.files && (
-            <div className='font-bold mr-auto'>
+            <div className='font-medium mr-auto'>
               <EditorCodeSelect array={cssFiles.files} setSelect={setCssFileName} />
             </div>
           )}
           {propsByMode && propsByMode.mode === 'javascript' && jsFiles?.files && (
-            <div className='font-bold mr-auto'>
+            <div className='font-medium mr-auto'>
               <EditorCodeSelect array={jsFiles.files} setSelect={setJsFileName} />
             </div>
           )}
         </>
-        <div className='font-bold mr-auto'>
+        <div className='font-medium mr-auto'>
           <EditorCodeSelect array={themes} setSelect={setTheme} theme={theme} />
         </div>
       </div>
-      {isSpinner && <MiniSpinner active={isSpinner} />}
+      {isSpinner && <MiniSpinner />}
       {!isSpinner && (
         <>
           <div className='rounded relative w-full h-full' ref={codeMirrorWrapperRef}>

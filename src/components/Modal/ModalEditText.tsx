@@ -67,8 +67,7 @@ export const ModalEditText: FC<IModalEditText> = ({ virtualDom, setVirtualDom })
       <form className='space-y-3'>
         <input
           type='text'
-          className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out
-!mt-1 !mb-2 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+          className='block w-full px-3 py-1.5 text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded transition-opacity duration-300 ease-in-out hover:opacity-50 !mt-1 !mb-2 focus:border-blue-600 focus:outline-none'
           placeholder='Введите текст'
           onChange={(e) => onChange(e.target.value)}
           value={newText}

@@ -166,28 +166,27 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
         <input
           type='search'
-          className='form-control block w-full px-10 py-1.5 mx-0 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-6 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-          id='exampleSearch'
-          placeholder='Имя изображения'
+          className='form-control block w-full px-10 py-1.5 mx-0 text-base text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded  m-6 focus:border-blue-600 focus:outline-none'
+          placeholder='Введите текст'
           value={search}
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
-      {isSpinner && <MiniSpinner active={isSpinner} />}
+      {isSpinner && <MiniSpinner />}
       <div className='flex flex-col'>
         <div className='sm:-mx-6 lg:-mx-8'>
           <div className='py-2 sm:px-6 lg:px-8'>
             <div>
-              <table className='table1'>
-                <thead className='bg-white border-b'>
+              <table className='table1 w-full'>
+                <thead className='border-b border-slate-200 dark:border-slate-700'>
                   <tr className='flex text-left'>
-                    <th scope='col' className='text-gray-900 px-6 py-4'>
+                    <th scope='col' className='px-6 py-4'>
                       ID
                     </th>
-                    <th scope='col' className='text-gray-900 px-6 py-4 min-w-[110px]'>
+                    <th scope='col' className='px-6 py-4 min-w-[110px]'>
                       Type
                     </th>
-                    <th scope='col' className='text-gray-900 px-6 py-4'>
+                    <th scope='col' className='px-6 py-4'>
                       Field
                     </th>
                   </tr>
@@ -197,19 +196,22 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
                     filteredText &&
                     filteredText.map((text) => (
                       <tr
-                        className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100 flex items-start justify-start cursor-pointer p-4'
+                        className='border-b border-slate-200 dark:border-slate-700 transition-opacity duration-300 ease-in-out hover:opacity-50 flex items-start justify-start cursor-pointer p-4'
                         key={text.id}
                         onClick={() => editingText(text.text, text.id)}
                         data-bs-toggle='modal'
                         data-bs-target='#modalEditText'
                       >
-                        <td className='text-gray-900 font-light min-w-[40px]'>{text.id}</td>
-                        <td className='text-gray-900 font-light px-6 min-w-[110px]'>{text.tagName}</td>
-                        <td className='text-gray-900 font-light px-6 '>{text.text}</td>
+                        <td className='min-w-[40px]'>{text.id}</td>
+                        <td className='px-6 min-w-[110px]'>{text.tagName}</td>
+                        <td className='px-6 '>{text.text}</td>
                       </tr>
                     ))}
                 </tbody>
               </table>
+              {!isSpinner && filteredText && !filteredText.length && (
+                <div className='text-xl mt-2'>Текст не найден</div>
+              )}
             </div>
           </div>
         </div>

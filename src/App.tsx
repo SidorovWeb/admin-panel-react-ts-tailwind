@@ -50,7 +50,7 @@ export const App: FC = () => {
   useEffect(() => {
     if (currentPage) {
       setLoading(true)
-      const ls = JSON.parse(localStorage.getItem('apsw')!)
+      const ls = JSON.parse(localStorage.getItem('apsa')!)
       if (ls && ls.page) {
         setCurrentPage(ls.page)
       }
@@ -158,37 +158,41 @@ export const App: FC = () => {
     }
   }
 
-  return !isAuth ? (
-    <>
-      <Login setIsAuth={setIsAuth} />
-    </>
-  ) : (
-    <>
-      <OnFullScreen active={loading} />
-      <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
-      {!loading && virtualDom && (
+  return (
+    <div className='bg-white dark:bg-slate-800 text-gray-700 dark:text-white font-light'>
+      {!isAuth ? (
         <>
-          <ModalEditorMeta virtualDom={virtualDom} currentPage={currentPage} />
-          <ModalBackup />
-          <ModalEditText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
-          <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
-          <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
-          <ModalConfirm virtualDom={virtualDom} currentPage={currentPage} />
-          <ModalLogout />
-          <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
+          <Login setIsAuth={setIsAuth} />
+        </>
+      ) : (
+        <>
+          <OnFullScreen active={loading} />
+          <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
+          {!loading && virtualDom && (
+            <>
+              <ModalEditorMeta virtualDom={virtualDom} currentPage={currentPage} />
+              <ModalBackup />
+              <ModalEditText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+              <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+              <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+              <ModalConfirm virtualDom={virtualDom} currentPage={currentPage} />
+              <ModalLogout />
+              <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
+            </>
+          )}
+          <ModalChoose setCurrentPage={setCurrentPage} />
+          <ToastContainer
+            position='top-center'
+            autoClose={4000}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable={false}
+            pauseOnHover={true}
+            transition={Slide}
+          />
         </>
       )}
-      <ModalChoose setCurrentPage={setCurrentPage} />
-      <ToastContainer
-        position='top-center'
-        autoClose={4000}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable={false}
-        pauseOnHover={true}
-        transition={Slide}
-      />
-    </>
+    </div>
   )
 }
