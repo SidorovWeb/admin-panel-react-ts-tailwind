@@ -12,6 +12,8 @@ import { MdOutlineSearch } from 'react-icons/md'
 import { parseStrDom } from '../../../helpers/dom-helpers'
 import { PublishedButton } from '../../UI/PublishedButton'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
+import { useTranslation } from 'react-i18next'
+import { Search } from '../../UI/Search'
 
 interface IEditorImages {
   virtualDom: Document
@@ -47,6 +49,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
   const { id, text } = useAppSelector((state) => state.setText)
   const [isSpinner, setIsSpinner] = useState(true)
   const serializer = new XMLSerializer()
+  const { t } = useTranslation()
 
   useEffect(() => {
     const images = iframe?.contentDocument?.body.querySelectorAll(`.img-editor-app`)
@@ -72,6 +75,9 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
       })
 
     setImagesList(mapImages)
+    if (!mapImages?.length) {
+      setIsSpinner(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -87,7 +93,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
             newList({ id, size })
           })
         })
-        .catch((e) => toast.error(`Ошибка! ${e}`))
+        .catch((e) => toast.error(`Error! ${e}`))
         .finally(() => setIsSpinner(false))
     }
   }, [imagesList])
@@ -169,13 +175,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
     <>
       <div className='mb-3 relative w-full'>
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
-        <input
-          type='search'
-          className='form-control block w-full px-10 py-1.5 mx-0 text-base text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded  m-6 focus:border-blue-600 focus:outline-none'
-          placeholder='Имя изображения'
-          value={search}
-          onChange={(e) => onSearch(e.target.value)}
-        />
+        <Search value={search} onChange={onSearch} />
       </div>
       {isSpinner && <MiniSpinner />}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center w-full'>
@@ -193,21 +193,23 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
                   alt={img.name}
                 />
                 <div className='p-4'>
-                  <p className='text-inherit text-base font-medium'>Name: {img.name}</p>
+                  <p className='text-inherit text-base font-medium'>
+                    {t('nameImage')}: {img.name}
+                  </p>
                   <p className='text-inherit text-base opacity-[0.8]'>Width: {img.width}px</p>
                   <p className='text-inherit text-base opacity-[0.8]'>Height: {img.height}px</p>
                   <p className='text-inherit text-base mb-2 opacity-[0.8]'>
                     Size: {convertBytes(img.size)} -{' '}
                     {img.size < 500 ? (
-                      <span className='text-green-600'>Good size</span>
+                      <span className='text-green-600'>{t('goodSize')}</span>
                     ) : (
-                      <span className='text-red-600'>Bad size</span>
+                      <span className='text-red-600'>{t('bigSize')}</span>
                     )}
                   </p>
                 </div>
                 <div className='text-center'>
                   <Button clName='relative btn-default mb-4 mr-2 overflow-hidden cursor-pointer'>
-                    Выберите фаил
+                    {t('chooseFile')}
                     <label className='flex flex-col items-center cursor-pointer absolute inset-0'>
                       <input type='file' className='hidden' onChange={(e) => onUpload(img.img, img.id, e)} />
                     </label>
@@ -218,14 +220,17 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
                     dataBsToggle
                     dataBsTarget='#modalEditText'
                   >
-                    Тег alt
+                    {t('alt')}
                   </Button>
                 </div>
               </div>
             </div>
           ))}
 
-        {!isSpinner && filteredImages && !filteredImages.length && <div className='text-xl mb-2'>Имя не найдено</div>}
+        {!isSpinner && filteredImages && !filteredImages.length && (
+          <div className='text-xl mb-2'>{t('nameNotFound')}</div>
+        )}
+        {!isSpinner && !filteredImages && <div className='text-xl mb-2'>{t('imagesNotFound')}</div>}
       </div>
       <PublishedButton onClick={published} />
     </>

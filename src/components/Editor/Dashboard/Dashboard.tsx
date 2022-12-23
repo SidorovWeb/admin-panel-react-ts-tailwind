@@ -1,15 +1,16 @@
 import React, { FC, useEffect, useState } from 'react'
 import { DoughnutChart } from '../DoughnutChart/DoughnutChart'
-import html from '../../Icons/html.svg'
-import css from '../../Icons/css.svg'
-import js from '../../Icons/js.svg'
-import img from '../../Icons/img.svg'
-import backup from '../../Icons/backup.svg'
+import html from '../../../assets/icons/html.svg'
+import css from '../../../assets/icons/css.svg'
+import js from '../../../assets/icons/js.svg'
+import img from '../../../assets/icons/img.svg'
+import backup from '../../../assets/icons/backup.svg'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
 import { toast } from 'react-toastify'
 import { Button } from '../../UI/Button'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
+import { useTranslation } from 'react-i18next'
 
 interface IDashboard {}
 interface IFiles {
@@ -30,6 +31,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
   const [imgFiles, setImgFiles] = useState<NodeList>()
   const [backupFiles, setBackupFiles] = useState<NodeList>()
   const [chartData, setChartData] = useState<IChartData>()
+  const { t } = useTranslation()
 
   const getList = async (nameFile: string, setFun: (v: any) => void) => {
     return await axios
@@ -72,21 +74,22 @@ export const Dashboard: FC<IDashboard> = ({}) => {
   }
 
   useEffect(() => {
-    getList('cssList.php', setCssFiles)
-    getList('jsList.php', setJsFiles)
     const iframe = document.querySelector('iframe')
     const images = iframe?.contentDocument?.body.querySelectorAll(`.img-editor-app`)
     setImgFiles(images)
-    getBackupList()
     getListHtmlFiles()
+    getList('cssList.php', setCssFiles)
+    getList('jsList.php', setJsFiles)
+    getBackupList()
   }, [])
 
   useEffect(() => {
-    if (htmlFiles?.length && cssFiles?.files && jsFiles?.files.length && imgFiles?.length) {
+    if (htmlFiles?.length && cssFiles?.files && jsFiles?.files.length) {
       const chart = {
         labels: ['HTML', 'CSS', 'JS', 'IMG'],
         data: [htmlFiles?.length ?? 0, cssFiles?.files.length ?? 0, jsFiles?.files.length ?? 0, imgFiles?.length ?? 0],
       }
+
       setChartData(chart)
     }
   }, [htmlFiles, cssFiles, jsFiles, imgFiles])
@@ -145,7 +148,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
         </div>
         <div className={cardStyle}>
           <Button clName='btn-primary' dataBsToggle dataBsTarget='#modalBackup'>
-            Create Backups
+            {t('CreateBackups')}
           </Button>
         </div>
       </div>

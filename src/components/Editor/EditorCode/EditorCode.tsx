@@ -4,7 +4,7 @@ import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
 import { Tabs } from '../../Tabs/Tabs'
-import { EditorCodeSelect } from './EditorCodeSelect'
+import { Select } from '../../UI/Select'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
@@ -66,47 +66,6 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   }
 
   useEffect(() => {
-    calculatesHeightCodeEditor()
-  })
-
-  useEffect(() => {
-    getList('cssList.php', setCssFiles)
-    getList('jsList.php', setJsFiles)
-    setIsSpinner(false)
-  }, [])
-
-  const calculatesHeightCodeEditor = () => {
-    const width = codeMirrorWrapperRef && codeMirrorWrapperRef.current?.offsetWidth
-    if (width) setCodeMirrorWidth(width)
-  }
-
-  const resizeHandler = () => {
-    calculatesHeightCodeEditor()
-  }
-
-  useEffect(() => {
-    window.addEventListener('resize', resizeHandler)
-    return () => {
-      window.removeEventListener('resize', resizeHandler)
-    }
-  }, [])
-
-  const getContentFile = (file: IFiles | undefined, fileName: string, setFun: (v: any) => void) => {
-    if (file) {
-      const idx = file.files.indexOf(fileName) !== -1 ? file.files.indexOf(fileName) : 0
-
-      axios.post(`${pathAPI}getContentFile.php`, { filename: file?.path[idx] }).then((res) => {
-        setFun(res.data)
-      })
-    }
-  }
-
-  useEffect(() => {
-    if (mode === 'css') getContentFile(cssFiles, cssFileName, setCssData)
-    if (mode === 'js') getContentFile(jsFiles, jsFileName, setJsData)
-  }, [mode, cssFileName, jsFileName])
-
-  useEffect(() => {
     const theme = JSON.parse(localStorage.getItem('apsa-theme-editor')!)
 
     if (theme) {
@@ -115,6 +74,22 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
       setTheme('dark')
     }
 
+    calculatesHeightCodeEditor()
+    getList('cssList.php', setCssFiles)
+    getList('jsList.php', setJsFiles)
+    setIsSpinner(false)
+    window.addEventListener('resize', resizeHandler)
+    return () => {
+      window.removeEventListener('resize', resizeHandler)
+    }
+  })
+
+  useEffect(() => {
+    if (mode === 'css') getContentFile(cssFiles, cssFileName, setCssData)
+    if (mode === 'js') getContentFile(jsFiles, jsFileName, setJsData)
+  }, [mode, cssFileName, jsFileName])
+
+  useEffect(() => {
     switch (mode) {
       case 'html':
         setPropsByMode({
@@ -141,6 +116,25 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
         break
     }
   }, [mode, cssData, jsData])
+
+  const calculatesHeightCodeEditor = () => {
+    const width = codeMirrorWrapperRef && codeMirrorWrapperRef.current?.offsetWidth
+    if (width) setCodeMirrorWidth(width)
+  }
+
+  const resizeHandler = () => {
+    calculatesHeightCodeEditor()
+  }
+
+  const getContentFile = (file: IFiles | undefined, fileName: string, setFun: (v: any) => void) => {
+    if (file) {
+      const idx = file.files.indexOf(fileName) !== -1 ? file.files.indexOf(fileName) : 0
+
+      axios.post(`${pathAPI}getContentFile.php`, { filename: file?.path[idx] }).then((res) => {
+        setFun(res.data)
+      })
+    }
+  }
 
   const onChange = useCallback((value: string) => {
     setData(value)
@@ -183,6 +177,11 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
     }
   }
 
+  const setThemes = (theme: string) => {
+    localStorage.setItem('apsa-theme-editor', JSON.stringify(theme))
+    setTheme(theme)
+  }
+
   return (
     <>
       <Tabs mode={mode} setMode={setMode} tabs={['HTML', 'CSS', 'JS']} />
@@ -192,17 +191,17 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
           {propsByMode && propsByMode.mode === 'html' && <div className='font-medium mr-auto'>{currentPage}</div>}
           {propsByMode && propsByMode.mode === 'css' && cssFiles?.files && (
             <div className='font-medium mr-auto'>
-              <EditorCodeSelect array={cssFiles.files} setSelect={setCssFileName} />
+              <Select array={cssFiles.files} setSelect={setCssFileName} />
             </div>
           )}
           {propsByMode && propsByMode.mode === 'javascript' && jsFiles?.files && (
             <div className='font-medium mr-auto'>
-              <EditorCodeSelect array={jsFiles.files} setSelect={setJsFileName} />
+              <Select array={jsFiles.files} setSelect={setJsFileName} />
             </div>
           )}
         </>
         <div className='font-medium mr-auto'>
-          <EditorCodeSelect array={themes} setSelect={setTheme} theme={theme} />
+          <Select array={themes} setSelect={setThemes} defaultValue={theme} />
         </div>
       </div>
       {isSpinner && <MiniSpinner />}

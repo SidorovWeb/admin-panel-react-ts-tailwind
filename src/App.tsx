@@ -1,24 +1,19 @@
 import axios from 'axios'
 import 'tw-elements'
 import { FC, useEffect, useState } from 'react'
-import { parseStrDom, serializeDOMToString, unWrapTextNode, wrapImages, wrapTextNodes } from './helpers/dom-helpers'
+import { parseStrDom, serializeDOMToString, wrapImages, wrapTextNodes } from './helpers/dom-helpers'
 import { processingText } from './helpers/Text'
 import 'react-toastify/dist/ReactToastify.css'
 import { OnFullScreen } from './components/Spinners/OnFullScreen'
-import { ModalConfirm } from './components/Modal/ModalConfirm'
-import { ModalChoose } from './components/Modal/ModalChoose'
 import { Panel } from './components/Panel/Panel'
-import { ModalBackup } from './components/Modal/ModalBackup'
-import { ModalEditorMeta } from './components/Modal/ModalEditorMeta'
 import { pathAPI, pathHtml } from './Constants'
 import { processingImages } from './helpers/Images'
 import { Login } from './components/Login/Login'
 import { Slide, toast, ToastContainer } from 'react-toastify'
-import { ModalLogout } from './components/Modal/ModalLogout'
 import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
-import { ModalEditText } from './components/Modal/ModalEditText'
 import { Editor } from './components/Editor/Editor'
+import { Modals } from './components/Modals/Modals'
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
@@ -27,11 +22,17 @@ export const App: FC = () => {
   const [loading, setLoading] = useState(true)
   const [isAuth, setIsAuth] = useState(false)
 
-  window.ondrop = (e) => {
-    e.preventDefault()
-  }
-
   useEffect(() => {
+    window.ondrop = (e) => {
+      e.preventDefault()
+    }
+
+    if (JSON.parse(localStorage.getItem('apsa-themes')!) === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      localStorage.setItem('apsa-themes', JSON.stringify('light'))
+      document.documentElement.classList.remove('dark')
+    }
     checkAuth()
   }, [])
 
@@ -103,19 +104,6 @@ export const App: FC = () => {
       .catch((e) => toast.error(e))
   }
 
-  // const save = () => {
-  //   unWrapTextNode(virtualDom)
-  //   wrapImages(virtualDom)
-  //   const html = serializeDOMToString(virtualDom)
-
-  //   axios
-  //     .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
-  //     .then(() => {
-  //       toast.success('Успешно опубликовано!')
-  //     })
-  //     .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
-  // }
-
   const enableEditing = (iframe: HTMLIFrameElement) => {
     if (virtualDom) {
       iframe?.contentDocument?.body.querySelectorAll('.text-editor-app').forEach((el) => {
@@ -161,36 +149,35 @@ export const App: FC = () => {
   return (
     <div className='bg-white dark:bg-slate-800 text-gray-700 dark:text-white font-light'>
       {!isAuth ? (
-        <>
-          <Login setIsAuth={setIsAuth} />
-        </>
+        <Login setIsAuth={setIsAuth} />
       ) : (
         <>
-          <OnFullScreen active={loading} />
           <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
-          {!loading && virtualDom && (
+          {!loading && virtualDom ? (
             <>
-              <ModalEditorMeta virtualDom={virtualDom} currentPage={currentPage} />
-              <ModalBackup />
-              <ModalEditText virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
               <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
               <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
-              <ModalConfirm virtualDom={virtualDom} currentPage={currentPage} />
-              <ModalLogout />
               <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
+              <Modals
+                virtualDom={virtualDom}
+                setVirtualDom={setVirtualDom}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+              <ToastContainer
+                position='top-center'
+                autoClose={4000}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                draggable={false}
+                pauseOnHover={true}
+                transition={Slide}
+              />
             </>
+          ) : (
+            <OnFullScreen />
           )}
-          <ModalChoose setCurrentPage={setCurrentPage} />
-          <ToastContainer
-            position='top-center'
-            autoClose={4000}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            draggable={false}
-            pauseOnHover={true}
-            transition={Slide}
-          />
         </>
       )}
     </div>

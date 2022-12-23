@@ -3,11 +3,13 @@ import { MdBarChart, MdCode, MdOutlineImage, MdOutlineLogout, MdOutlineShortText
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
-import { ThemeToggle } from '../UI/ThemeToggle/ThemeToggle'
+import { ThemeToggle } from '../UI/ThemeToggle'
 import { Dashboard } from './Dashboard/Dashboard'
 import { EditorCode } from './EditorCode/EditorCode'
 import { EditorImages } from './EditorImages/EditorImages'
 import { EditorText } from './EditorText/EditorText'
+import { Select } from '../UI/Select'
+import { useTranslation } from 'react-i18next'
 
 interface IEditor {
   currentPage: string
@@ -19,6 +21,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
   const active = useAppSelector((state) => state.codeEditor.active)
   const [switcher, setSwitcher] = useState('')
   const { inactiveCodeEditor } = userActions()
+  const { t, i18n } = useTranslation()
 
   useEffect(() => {
     if (active) {
@@ -31,24 +34,28 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
     setSwitcher('')
   }
 
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang)
+  }
+
   return (
     <div className={`${active ? '' : 'fade hidden'} fixed inset-0 overflow-y-auto z-30 bg-inherit`}>
-      <div className='finder-header py-4 border-b border-slate-200 dark:border-slate-700'>
+      <div className=' py-4 border-b border-slate-200 dark:border-slate-700'>
         <div className='max-w-[1280px] m-auto px-[30px] w-full flex items-center justify-between'>
           <span className='font-bold'>APSA</span>
-          <div className='flex items-center space-x-2'>
+          <div className='flex items-stretch space-x-2'>
             <ThemeToggle />
-            <Button clName='btn-default flex items-center'>lang</Button>
+            <Select array={['ru', 'en']} setSelect={changeLanguage} defaultValue={i18n.language} />
             <Button clName='btn-default flex items-center' onClick={close}>
               <MdOutlineLogout className='w-full h-[15px] -mt-[2px] mr-1' />
-              <p>Закрыть</p>
+              <p>{t('close')}</p>
             </Button>
           </div>
         </div>
       </div>
-      <div className='finder-container max-w-[1280px] m-auto px-[30px]'>
-        <div className='finder-main flex mt-10 mb-20'>
-          <div className='finder-sidebar space-y-4 pr-[80px]'>
+      <div className='max-w-[1280px] m-auto px-[30px]'>
+        <div className='flex mt-10 mb-20'>
+          <div className='space-y-4 pr-[80px]'>
             <a
               href='!#'
               className={`${
@@ -60,7 +67,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
               }}
             >
               <MdBarChart className='w-5 h-5' />
-              <p>Dashboard</p>
+              <p>{t('Dashboard')}</p>
             </a>
             <a
               href='!#'
@@ -73,7 +80,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
               }}
             >
               <MdOutlineImage className='w-5 h-5' />
-              <p>Images</p>
+              <p>{t('Images')}</p>
             </a>
             <a
               href='!#'
@@ -86,7 +93,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
               }}
             >
               <MdOutlineShortText className='w-5 h-5' />
-              <p>Text</p>
+              <p>{t('Text')}</p>
             </a>
             <a
               href='!#'
@@ -99,11 +106,11 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
               }}
             >
               <MdCode className='w-5 h-5' />
-              <p>Code</p>
+              <p>{t('Code')}</p>
             </a>
           </div>
-          <div className='finder-content flex flex-col flex-1 min-h-screen relative'>
-            <div className='font-bold text-left text-4xl mb-10'>{switcher}</div>
+          <div className='editor-content flex flex-col flex-1 min-h-screen relative'>
+            <div className='font-bold text-left text-4xl mb-10'>{t(switcher)}</div>
             {switcher === 'Dashboard' && <Dashboard />}
             {switcher === 'Images' && (
               <EditorImages virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />

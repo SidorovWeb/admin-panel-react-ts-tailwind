@@ -7,6 +7,8 @@ import { useAppSelector } from '../../../hooks/redux'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
 import { Tabs } from '../../Tabs/Tabs'
 import { PublishedButton } from '../../UI/PublishedButton'
+import { useTranslation } from 'react-i18next'
+import { Search } from '../../UI/Search'
 
 interface IEditorText {
   virtualDom: Document
@@ -32,11 +34,12 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
   const [textList, setTextList] = useState<IMapText[]>()
   const [filteredText, setFilteredText] = useState<IMapText[]>()
   const [search, setSearch] = useState('')
-  const [mode, setMode] = useState('All')
+  const [mode, setMode] = useState('all')
   const { setText } = userActions()
   const { text } = useAppSelector((state) => state.setText)
   const [oldText, setOldText] = useState('All')
   const [isSpinner, setIsSpinner] = useState(true)
+  const { t } = useTranslation()
 
   useEffect(() => {
     getTextNode()
@@ -164,13 +167,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
       <Tabs mode={mode} setMode={setMode} tabs={['All', 'Headline', 'Links', 'Buttons', 'Text']} />
       <div className='mb-3 relative w-full'>
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
-        <input
-          type='search'
-          className='form-control block w-full px-10 py-1.5 mx-0 text-base text-gray-700 dark:text-white bg-white dark:bg-slate-700 bg-clip-padding border dark:border-slate-700 rounded  m-6 focus:border-blue-600 focus:outline-none'
-          placeholder='Введите текст'
-          value={search}
-          onChange={(e) => onSearch(e.target.value)}
-        />
+        <Search value={search} onChange={onSearch} />
       </div>
       {isSpinner && <MiniSpinner />}
       <div className='flex flex-col'>
@@ -210,7 +207,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
                 </tbody>
               </table>
               {!isSpinner && filteredText && !filteredText.length && (
-                <div className='text-xl mt-2'>Текст не найден</div>
+                <div className='text-xl mt-2'>{t('textNotFound')}</div>
               )}
             </div>
           </div>

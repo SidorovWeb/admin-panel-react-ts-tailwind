@@ -9,7 +9,7 @@ const initialState: ITextEditorPanel = {
 }
 
 export const textEditorPanelSlice = createSlice({
-  name: 'controlImg',
+  name: 'textEditorPanel',
   initialState,
   reducers: {
     setTextID: (state, action: PayloadAction<{ id: number }>) => {
