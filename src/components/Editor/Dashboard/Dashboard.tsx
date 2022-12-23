@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import { Button } from '../../UI/Button'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
 import { useTranslation } from 'react-i18next'
+import { useAppSelector } from '../../../hooks/redux'
 
 interface IDashboard {}
 interface IFiles {
@@ -28,9 +29,10 @@ export const Dashboard: FC<IDashboard> = ({}) => {
   const [htmlFiles, setHtmlFiles] = useState<string[]>()
   const [cssFiles, setCssFiles] = useState<IFiles>()
   const [jsFiles, setJsFiles] = useState<IFiles>()
-  const [imgFiles, setImgFiles] = useState<NodeList>()
+  const [imgFiles, setImgFiles] = useState<[]>()
   const [backupFiles, setBackupFiles] = useState<NodeList>()
   const [chartData, setChartData] = useState<IChartData>()
+  const { images } = useAppSelector((state) => state.getImage)
   const { t } = useTranslation()
 
   const getList = async (nameFile: string, setFun: (v: any) => void) => {
@@ -74,8 +76,6 @@ export const Dashboard: FC<IDashboard> = ({}) => {
   }
 
   useEffect(() => {
-    const iframe = document.querySelector('iframe')
-    const images = iframe?.contentDocument?.body.querySelectorAll(`.img-editor-app`)
     setImgFiles(images)
     getListHtmlFiles()
     getList('cssList.php', setCssFiles)

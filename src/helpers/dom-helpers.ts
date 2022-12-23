@@ -55,6 +55,7 @@ export const unWrapTextNode = (dom: Document | any) => {
       el.parentNode?.replaceChild(el.firstChild, el)
     }
   })
+  return dom
 }
 
 export const wrapImages = (dom: Document | any) => {
@@ -70,4 +71,5 @@ export const unWrapImages = (dom: Document | any) => {
     el.removeAttribute('img-editor-app')
     el.classList.remove('img-editor-app')
   })
+  return dom
 }

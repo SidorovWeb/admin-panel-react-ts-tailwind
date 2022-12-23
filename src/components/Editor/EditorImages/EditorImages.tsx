@@ -1,7 +1,6 @@
-import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { Button } from '../../UI/Button'
 import { uploadImage } from '../../../helpers/Images'
-import { FiSearch } from 'react-icons/fi'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
 import { toast } from 'react-toastify'
@@ -41,35 +40,37 @@ interface INewList {
 }
 
 export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, currentPage }) => {
-  const iframe = document.querySelector('iframe')
   const [imagesList, setImagesList] = useState<IMapImages[]>()
   const [filteredImages, setFilteredImages] = useState<IMapImages[]>()
   const [search, setSearch] = useState('')
   const { setText } = userActions()
   const { id, text } = useAppSelector((state) => state.setText)
+  const { images } = useAppSelector((state) => state.getImage)
   const [isSpinner, setIsSpinner] = useState(true)
   const serializer = new XMLSerializer()
   const { t } = useTranslation()
 
   useEffect(() => {
-    const images = iframe?.contentDocument?.body.querySelectorAll(`.img-editor-app`)
     const mapImages =
       images &&
       [...images].map((i) => {
         const img = i as HTMLImageElement
         const id = Number(img.getAttribute('img-editor-app'))
-        const src = img.currentSrc as string
-        const name = img.getAttribute('alt') as string
-        const width = img.naturalWidth as number
-        const height = img.naturalHeight as number
+        let src = ''
+        if (img.src.includes('api/')) {
+          src = img.src
+        } else {
+          src = (img.baseURI + 'api/' + img.getAttribute('src')) as string
+        }
 
+        const name = img.getAttribute('alt') as string
         return {
           img,
           id,
           src,
           name,
-          width,
-          height,
+          width: 0,
+          height: 0,
           size: 0,
         }
       })
@@ -87,10 +88,10 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
       })
 
       axios
-        .post<[]>(`${pathAPI}fileSize.php`, { imgList: urls })
+        .post<[]>(`${pathAPI}getImageData.php`, { imgList: urls })
         .then((res) => {
-          res.data.forEach((size, id) => {
-            newList({ id, size })
+          res.data.forEach((item: { size: number; width: number; height: number }, id) => {
+            newList({ id, size: item.size, width: item.width, height: item.height })
           })
         })
         .catch((e) => toast.error(`Error! ${e}`))
@@ -144,10 +145,12 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
       imagesList &&
       imagesList?.map((el) => {
         if (el.id === id) {
-          if (src && width && height) {
-            el.src = src
+          if (width && height) {
             el.width = width
             el.height = height
+          }
+          if (src) {
+            el.src = src
           }
           if (text) {
             el.name = text

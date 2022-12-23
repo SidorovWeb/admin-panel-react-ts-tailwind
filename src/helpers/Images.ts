@@ -35,6 +35,8 @@ export const processingImages = ({ el, iframe }: iProcessingImages) => {
   parent.addEventListener('mousemove', (e) => {
     if (btnsEditorImg) {
       btnsEditorImg.style.opacity = '1'
+      btnsEditorImg.style.pointerEvents = 'auto'
+
       setsStyleBtnUploadImg()
     }
   })
@@ -54,7 +56,6 @@ interface IUploadImage {
 
 export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploadImage) => {
   return new Promise((resolve) => {
-    const virtualElem = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
     if (file) {
       const formDate = new FormData()
       formDate.append('image', file)
@@ -67,12 +68,25 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
         })
         .then((res) => {
           const path = import.meta.env.MODE === 'development' ? '../api/' : '../api/'
+          const virtualImg = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
 
-          if (virtualElem) {
-            img.src = `${path}img/${res.data.src}`
-            virtualElem.src = img.src
+          if (virtualImg) {
+            const newSrc = `${path}upload_image/${res.data.src}`
+            const source = img.parentElement?.querySelector('source')
+
+            if (source) {
+              const virtualSource = virtualImg.parentElement && virtualImg.parentElement.querySelector('source')
+              source.srcset = newSrc
+              if (virtualSource) {
+                virtualSource.srcset = newSrc
+                console.log(virtualSource)
+              }
+            }
+
+            img.src = newSrc
+            virtualImg.src = img.src
             setVirtualDom(virtualDom)
-            toast.success('Успешно загружено на сервер в папку ./api/img')
+            toast.success('Успешно загружено на сервер в папку ./api/upload_image')
             resolve(img.src)
           }
         })

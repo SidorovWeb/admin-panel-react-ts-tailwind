@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { pathAPI } from '../Constants'
-import { serializeDOMToString, unWrapTextNode, wrapImages } from './dom-helpers'
+import { serializeDOMToString, unWrapImages, unWrapTextNode } from './dom-helpers'
 
 interface IToPublish {
   newVirtualDom: Document
@@ -10,7 +10,7 @@ interface IToPublish {
 
 export const toPublish = ({ newVirtualDom, currentPage }: IToPublish) => {
   unWrapTextNode(newVirtualDom)
-  wrapImages(newVirtualDom)
+  unWrapImages(newVirtualDom)
   const html = serializeDOMToString(newVirtualDom)
 
   axios

@@ -14,6 +14,7 @@ import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
 import { Editor } from './components/Editor/Editor'
 import { ModalWindows } from './components/Modal/ModalWindows'
+import { userActions } from './hooks/actions'
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
@@ -21,6 +22,7 @@ export const App: FC = () => {
   const [virtualDom, setVirtualDom] = useState<Document | null>()
   const [loading, setLoading] = useState(true)
   const [isAuth, setIsAuth] = useState(false)
+  const { getImages } = userActions()
 
   useEffect(() => {
     window.ondrop = (e) => {
@@ -68,6 +70,9 @@ export const App: FC = () => {
         .then(wrapTextNodes)
         .then(wrapImages)
         .then((dom) => {
+          const images = [...dom.body.querySelectorAll('img')] as []
+          getImages({ images })
+
           setVirtualDom(dom)
           return dom
         })
@@ -87,7 +92,6 @@ export const App: FC = () => {
   }, [virtualDom, loading])
 
   const saveTempPage = (htmlDom: string) => {
-    setVirtualDom(parseStrDom(htmlDom))
     const path = import.meta.env.MODE === 'development' ? '../api/' : './../'
     axios
       .post(`${pathAPI}saveTempPage.php`, { html: htmlDom })

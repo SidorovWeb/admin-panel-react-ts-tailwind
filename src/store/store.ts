@@ -1,15 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { codeEditorReducer } from './CodeEditor/CodeEditorSlice'
+import { getImageReducer } from './getImages/getImages'
 import { setTextReducer } from './SetText/SetTextSlice'
 import { textEditorPanelReducer } from './TextEditorPanel/TextEditorPanel'
-// ...
+import logger from 'redux-logger'
+import thunk from 'redux-thunk'
 
 export const store = configureStore({
   reducer: {
     setText: setTextReducer,
     codeEditor: codeEditorReducer,
     textEditorPanel: textEditorPanelReducer,
+    getImage: getImageReducer,
   },
+  middleware: [thunk],
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
