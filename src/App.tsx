@@ -13,7 +13,7 @@ import { Slide, toast, ToastContainer } from 'react-toastify'
 import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
 import { Editor } from './components/Editor/Editor'
-import { Modals } from './components/Modals/Modals'
+import { Modals } from './components/Panel/Modals'
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
