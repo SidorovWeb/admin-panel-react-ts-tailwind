@@ -66,7 +66,7 @@ export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom }) => {
         type='button'
       >
         <label className='flex flex-col items-center cursor-pointer absolute inset-0'>
-          <input type='file' className='hidden' onChange={(e) => uploadImg(e)} />
+          <input type='file' accept='image/*' className='hidden' onChange={(e) => uploadImg(e)} />
         </label>
         <BiImageAdd className='h-full w-full p-1 ml-[0.5px]' />
       </button>

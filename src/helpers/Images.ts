@@ -59,6 +59,7 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
     if (file) {
       const formDate = new FormData()
       formDate.append('image', file)
+      formDate.append('imageSrc', `${img.getAttribute('src')}`)
 
       axios
         .post(`${pathAPI}uploadImage.php`, formDate, {

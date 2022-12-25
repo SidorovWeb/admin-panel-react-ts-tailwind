@@ -24,6 +24,7 @@ interface IMapImages {
   img: HTMLImageElement
   id: number
   src: string
+  baseSrc: string
   name: string
   width: number
   height: number
@@ -34,6 +35,7 @@ interface INewList {
   id: number
   text?: string
   src?: string
+  baseSrc?: string
   width?: number
   height?: number
   size?: number
@@ -67,6 +69,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
           img,
           id: idx,
           src,
+          baseSrc: img.getAttribute('src') as string,
           name,
           width: 0,
           height: 0,
@@ -81,9 +84,11 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
 
   useEffect(() => {
     if (imagesList?.length) {
-      const urls = imagesList.map((img) => {
-        return img.src
-      })
+      const urls = imagesList
+        .filter((img) => img.baseSrc)
+        .map((img) => {
+          return img.src
+        })
 
       axios
         .post<[]>(`${pathAPI}getImageData.php`, { imgList: urls })
@@ -212,7 +217,12 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
                   <Button clName='relative btn-default mb-4 mr-2 overflow-hidden cursor-pointer'>
                     {t('chooseFile')}
                     <label className='flex flex-col items-center cursor-pointer absolute inset-0'>
-                      <input type='file' className='hidden' onChange={(e) => onUpload(img.img, img.id, e)} />
+                      <input
+                        type='file'
+                        accept='image/*'
+                        className='hidden'
+                        onChange={(e) => onUpload(img.img, img.id, e)}
+                      />
                     </label>
                   </Button>
                   <Button
