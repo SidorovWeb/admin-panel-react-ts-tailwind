@@ -169,7 +169,7 @@ export const App: FC = () => {
                 setCurrentPage={setCurrentPage}
               />
               <ToastContainer
-                position='top-center'
+                position='top-right'
                 autoClose={4000}
                 newestOnTop={false}
                 closeOnClick

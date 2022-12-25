@@ -53,9 +53,8 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
   useEffect(() => {
     const mapImages =
       images &&
-      [...images].map((i) => {
+      [...images].map((i, idx) => {
         const img = i as HTMLImageElement
-        const id = Number(img.getAttribute('img-editor-app'))
         let src = ''
         if (img.src.includes('api/')) {
           src = img.src
@@ -66,7 +65,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
         const name = img.getAttribute('alt') as string
         return {
           img,
-          id,
+          id: idx,
           src,
           name,
           width: 0,
@@ -74,7 +73,6 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
           size: 0,
         }
       })
-
     setImagesList(mapImages)
     if (!mapImages?.length) {
       setIsSpinner(false)

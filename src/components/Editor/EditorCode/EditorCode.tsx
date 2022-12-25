@@ -8,7 +8,7 @@ import { Select } from '../../UI/Select'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
-import { parseStrDom, unWrapTextNode, wrapImages } from '../../../helpers/dom-helpers'
+import { parseStrDom } from '../../../helpers/dom-helpers'
 import { toPublish } from '../../../helpers/utils'
 import { PublishedButton } from '../../UI/PublishedButton'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
@@ -50,21 +50,6 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   const [propsByMode, setPropsByMode] = useState<IPropsByMode>()
   const [isSpinner, setIsSpinner] = useState(true)
 
-  const getList = async (nameFile: string, setFun: (v: any) => void) => {
-    return await axios
-      .get<[]>(`${pathAPI}${nameFile}`)
-      .then((res) => {
-        let files = [] as string[]
-
-        res.data.forEach((f: string) => {
-          const fileName = f.split('/').pop()
-          if (fileName) files.push(fileName)
-        })
-        setFun({ files, path: res.data })
-      })
-      .catch((e) => toast.error(`Загрузить список страниц не удалось! ${e}`))
-  }
-
   useEffect(() => {
     const theme = JSON.parse(localStorage.getItem('apsa-theme-editor')!)
 
@@ -75,14 +60,14 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
     }
 
     calculatesHeightCodeEditor()
+    setIsSpinner(false)
     getList('cssList.php', setCssFiles)
     getList('jsList.php', setJsFiles)
-    setIsSpinner(false)
     window.addEventListener('resize', resizeHandler)
     return () => {
       window.removeEventListener('resize', resizeHandler)
     }
-  })
+  }, [])
 
   useEffect(() => {
     if (mode === 'css') getContentFile(cssFiles, cssFileName, setCssData)
@@ -117,6 +102,21 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
     }
   }, [mode, cssData, jsData])
 
+  const getList = async (nameFile: string, setFun: (v: any) => void) => {
+    return await axios
+      .get<[]>(`${pathAPI}${nameFile}`)
+      .then((res) => {
+        let files = [] as string[]
+
+        res.data.forEach((f: string) => {
+          const fileName = f.split('/').pop()
+          if (fileName) files.push(fileName)
+        })
+        setFun({ files, path: res.data })
+      })
+      .catch((e) => toast.error(`Загрузить список страниц не удалось! ${e}`))
+  }
+
   const calculatesHeightCodeEditor = () => {
     const width = codeMirrorWrapperRef && codeMirrorWrapperRef.current?.offsetWidth
     if (width) setCodeMirrorWidth(width)
@@ -150,18 +150,14 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
       .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
   }
 
-  const published = () => {
+  const published = async () => {
     switch (mode) {
       case 'html':
         const newHtml = data ? data : serializer.serializeToString(virtualDom)
-        axios.post(`${pathAPI}saveTempPage.php`, { html: newHtml })
+        await axios.post(`${pathAPI}saveTempPage.php`, { html: newHtml })
 
         const document = parseStrDom(newHtml)
         setVirtualDom(document)
-
-        unWrapTextNode(document)
-        wrapImages(document)
-
         toPublish({ newVirtualDom: document, currentPage })
         break
       case 'js':

@@ -79,7 +79,6 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
               source.srcset = newSrc
               if (virtualSource) {
                 virtualSource.srcset = newSrc
-                console.log(virtualSource)
               }
             }
 

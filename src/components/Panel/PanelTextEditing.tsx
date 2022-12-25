@@ -11,14 +11,16 @@ import {
 } from 'react-icons/md'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
-import { PanelColor } from './PanelColor'
+import { PanelEffects } from './PanelEffects'
 
-interface IPanelText {
+interface IPanelTextEditing {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
+  active: boolean
+  close: (isActive: boolean) => void
 }
 
-export const PanelText: FC<IPanelText> = ({ virtualDom, setVirtualDom }) => {
+export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtualDom, active, close }) => {
   const [currentEl, setCurrentEl] = useState<HTMLElement>()
   const [parent, setParent] = useState<HTMLElement>()
 
@@ -167,15 +169,11 @@ export const PanelText: FC<IPanelText> = ({ virtualDom, setVirtualDom }) => {
   }
 
   const closePanelEditorText = () => {
-    if (panelEditorText.current) panelEditorText.current.style.opacity = '0'
     if (currentEl) {
       currentEl.setAttribute('contentEditable', 'true')
       currentEl.focus()
     }
-
-    setTimeout(() => {
-      if (panelEditorText.current) panelEditorText.current.style.display = 'none'
-    }, 115)
+    close(false)
   }
 
   const setStyle = (properties: string, value: string) => {
@@ -191,7 +189,9 @@ export const PanelText: FC<IPanelText> = ({ virtualDom, setVirtualDom }) => {
 
   return (
     <div
-      className='DragTextPanel panel-editor-text transition-opacity font-medium text-xs opacity-0 hidden'
+      className={`${
+        active ? 'block opacity-1' : 'hidden opacity-0'
+      } DragTextPanel panel-editor-text transition-all font-medium text-xs`}
       ref={panelEditorText}
     >
       <div className='DragTextPanel-top flex items-start'>
@@ -280,7 +280,7 @@ export const PanelText: FC<IPanelText> = ({ virtualDom, setVirtualDom }) => {
           <MdClose className='h-[20px] w-full' />
         </Button>
       </div>
-      <PanelColor setStyle={setStyle} />
+      <PanelEffects setStyle={setStyle} />
     </div>
   )
 }
