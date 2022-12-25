@@ -1,10 +1,10 @@
 import { FC } from 'react'
-import { ModalBackup } from '../Modals/ModalBackup'
-import { ModalChoose } from '../Modals/ModalChoose'
-import { ModalConfirm } from '../Modals/ModalConfirm'
-import { ModalEditorMeta } from '../Modals/ModalEditorMeta'
-import { ModalEditText } from '../Modals/ModalEditText'
-import { ModalLogout } from '../Modals/ModalLogout'
+import { ModalBackup } from '../Modal/ModalBackup'
+import { ModalChoose } from '../Modal/ModalChoose'
+import { ModalConfirm } from '../Modal/ModalConfirm'
+import { ModalEditorMeta } from '../Modal/ModalEditorMeta'
+import { ModalEditText } from '../Modal/ModalEditText'
+import { ModalLogout } from '../Modal/ModalLogout'
 
 interface IModals {
   virtualDom: Document
