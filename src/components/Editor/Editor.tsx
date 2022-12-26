@@ -1,5 +1,5 @@
-import { FC, useEffect, useRef, useState } from 'react'
-import { MdBarChart, MdCode, MdOutlineImage, MdOutlineLogout, MdOutlineShortText } from 'react-icons/md'
+import { FC, useEffect, useState } from 'react'
+import { MdOutlineLogout } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
@@ -10,6 +10,8 @@ import { EditorImages } from './EditorImages/EditorImages'
 import { EditorText } from './EditorText/EditorText'
 import { Select } from '../UI/Select'
 import { useTranslation } from 'react-i18next'
+import { EditorSIdebar } from './EditorSIdebar'
+import { EditorUploads } from './EditorUploads/EditorUploads'
 
 interface IEditor {
   currentPage: string
@@ -55,62 +57,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
       </div>
       <div className='max-w-[1280px] m-auto px-[30px]'>
         <div className='flex mt-10 mb-20'>
-          <div className='relative'>
-            <div className='space-y-4 pr-[80px] sticky top-10'>
-              <a
-                href='!#'
-                className={`${
-                  switcher === 'Dashboard' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
-                } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  setSwitcher('Dashboard')
-                }}
-              >
-                <MdBarChart className='w-5 h-5' />
-                <p>{t('Dashboard')}</p>
-              </a>
-              <a
-                href='!#'
-                className={`${
-                  switcher === 'Images' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
-                } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  setSwitcher('Images')
-                }}
-              >
-                <MdOutlineImage className='w-5 h-5' />
-                <p>{t('Images')}</p>
-              </a>
-              <a
-                href='!#'
-                className={`${
-                  switcher === 'Text' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
-                } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  setSwitcher('Text')
-                }}
-              >
-                <MdOutlineShortText className='w-5 h-5' />
-                <p>{t('Text')}</p>
-              </a>
-              <a
-                href='!#'
-                className={`${
-                  switcher === 'Code' ? 'text-black font-medium dark:text-gray-500' : 'hover:opacity-[0.7]'
-                } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  setSwitcher('Code')
-                }}
-              >
-                <MdCode className='w-5 h-5' />
-                <p>{t('Code')}</p>
-              </a>
-            </div>
-          </div>
+          <EditorSIdebar switcher={switcher} setSwitcher={setSwitcher} />
           <div className='editor-content flex flex-col flex-1 min-h-screen relative'>
             <div className='font-bold text-left text-4xl mb-10'>{t(switcher)}</div>
             {switcher === 'Dashboard' && <Dashboard />}
@@ -123,6 +70,7 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
             {switcher === 'Code' && (
               <EditorCode virtualDom={virtualDom} currentPage={currentPage} setVirtualDom={setVirtualDom} />
             )}
+            {switcher === 'Upload Image' && <EditorUploads />}
             <div className='flex items-center justify-center p-8 space-x-4 mt-auto'>
               <p>APSA</p>
               <a href='tg://resolve?domain=SidorovAlexander'>© Aleksandr Sidorov</a>

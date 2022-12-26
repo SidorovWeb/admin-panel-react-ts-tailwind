@@ -68,23 +68,33 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
           },
         })
         .then((res) => {
-          const path = import.meta.env.MODE === 'development' ? '../api/' : './api/'
+          const iframe = document.querySelector('iframe')
+          const path = import.meta.env.MODE === 'development' ? '../api/' : './'
           const virtualImg = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
+          const iframeImage = iframe?.contentDocument?.body.querySelector(
+            `[img-editor-app="${id}"]`
+          ) as HTMLImageElement
 
           if (virtualImg) {
             const newSrc = `${path}upload_image/${res.data.src}`
             const source = img.parentElement?.querySelector('source')
+            const iframeSource = iframeImage.parentElement?.querySelector('source')
 
             if (source) {
               const virtualSource = virtualImg.parentElement && virtualImg.parentElement.querySelector('source')
               source.srcset = newSrc
+              if (iframeSource) {
+                iframeSource.srcset = newSrc
+              }
               if (virtualSource) {
                 virtualSource.srcset = newSrc
               }
             }
 
             img.src = newSrc
-            virtualImg.src = img.src
+            virtualImg.src = newSrc
+            iframeImage.src = newSrc
+
             setVirtualDom(virtualDom)
             toast.success('Успешно загружено на сервер в папку ./api/upload_image')
             resolve(img.src)

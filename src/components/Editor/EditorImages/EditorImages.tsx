@@ -58,20 +58,30 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
       [...images].map((i, idx) => {
         const img = i as HTMLImageElement
         let src = ''
-
-        if (import.meta.env.MODE === 'development') {
-          if (img.src.includes('/upload_image/')) {
-            src = img.src
-          } else {
-            src = (img.baseURI + 'api/' + img.getAttribute('src')) as string
-          }
+        src = img.src
+        if (img.src.includes('/upload_image/')) {
+          src = img.src
         } else {
-          if (img.src.includes('/apsa/') && !img.src.includes('/upload_image/')) {
-            src = img.src.replace('/apsa', '') as string
-          } else {
-            src = img.src
+          src = (img.baseURI + 'api/' + img.getAttribute('src')) as string
+        }
+        if (import.meta.env.MODE !== 'development') {
+          if (img.src.includes('/apsa/')) {
+            src = img.src.replace('apsa/', '') as string
           }
         }
+        // if (import.meta.env.MODE === 'development') {
+        //   if (img.src.includes('/upload_image/')) {
+        //     src = img.src
+        //   } else {
+        //     src = (img.baseURI + 'api/' + img.getAttribute('src')) as string
+        //   }
+        // } else {
+        //   if (img.src.includes('/apsa/') && !img.src.includes('/upload_image/')) {
+        //     src = img.src.replace('/apsa', '') as string
+        //   } else {
+        //     src = img.src
+        //   }
+        // }
 
         const name = img.getAttribute('alt') as string
         return {
@@ -162,7 +172,11 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
             el.height = height
           }
           if (src) {
-            el.src = src
+            if (import.meta.env.MODE !== 'development' && src.includes('/apsa/')) {
+              el.src = src.replace('apsa/', '') as string
+            } else {
+              el.src = src
+            }
           }
           if (text) {
             el.name = text

@@ -29,7 +29,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
   const [htmlFiles, setHtmlFiles] = useState<string[]>()
   const [cssFiles, setCssFiles] = useState<IFiles>()
   const [jsFiles, setJsFiles] = useState<IFiles>()
-  const [imgFiles, setImgFiles] = useState<[]>()
+  const [imgFiles, setImgFiles] = useState<HTMLImageElement[]>()
   const [backupFiles, setBackupFiles] = useState<NodeList>()
   const [chartData, setChartData] = useState<IChartData>()
   const { images } = useAppSelector((state) => state.getImage)

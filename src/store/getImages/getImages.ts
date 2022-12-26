@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface IGetImages {
-  images: []
+  images: HTMLImageElement[]
 }
 
 const initialState: IGetImages = {
