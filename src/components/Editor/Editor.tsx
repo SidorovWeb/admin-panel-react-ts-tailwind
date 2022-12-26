@@ -19,7 +19,7 @@ interface IEditor {
   setVirtualDom: (dom: Document) => void
 }
 
-export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
+const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const [switcher, setSwitcher] = useState('')
   const { inactiveCodeEditor } = userActions()
@@ -81,3 +81,5 @@ export const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) 
     </div>
   )
 }
+
+export default Editor

@@ -15,7 +15,7 @@ interface IUploadsImages {
 }
 
 export const EditorUploads: FC<IEditorUploads> = () => {
-  const path = import.meta.env.MODE === 'development' ? '../api/' : './api/'
+  const path = import.meta.env.MODE === 'development' ? '../api/' : `${window.location.href.replace('apsa/', '')}/`
   const { images } = useAppSelector((state) => state.getImage)
   const [uploadsImages, setUploadsImages] = useState<IUploadsImages[]>([])
   const { t } = useTranslation()
@@ -40,7 +40,7 @@ export const EditorUploads: FC<IEditorUploads> = () => {
         //   })
         // })
 
-        // console.log(newList2)
+        // console.log(uploadsList)
 
         setUploadsImages(uploadsList)
       })

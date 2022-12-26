@@ -69,19 +69,6 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
             src = img.src.replace('apsa/', '') as string
           }
         }
-        // if (import.meta.env.MODE === 'development') {
-        //   if (img.src.includes('/upload_image/')) {
-        //     src = img.src
-        //   } else {
-        //     src = (img.baseURI + 'api/' + img.getAttribute('src')) as string
-        //   }
-        // } else {
-        //   if (img.src.includes('/apsa/') && !img.src.includes('/upload_image/')) {
-        //     src = img.src.replace('/apsa', '') as string
-        //   } else {
-        //     src = img.src
-        //   }
-        // }
 
         const name = img.getAttribute('alt') as string
         return {

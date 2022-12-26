@@ -1,6 +1,6 @@
 import axios from 'axios'
 import 'tw-elements'
-import { FC, useEffect, useState } from 'react'
+import { FC, lazy, Suspense, useEffect, useState } from 'react'
 import { parseStrDom, serializeDOMToString, wrapImages, wrapTextNodes } from './helpers/dom-helpers'
 import { processingText } from './helpers/Text'
 import 'react-toastify/dist/ReactToastify.css'
@@ -12,9 +12,11 @@ import { Login } from './components/Login/Login'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
-import { Editor } from './components/Editor/Editor'
-import { ModalWindows } from './components/Modal/ModalWindows'
+// import { Editor } from './components/Editor/Editor'
+// import { ModalWindows } from './components/Modal/ModalWindows'
 import { userActions } from './hooks/actions'
+const Editor = lazy(() => import('./components/Editor/Editor'))
+const ModalWindows = lazy(() => import('./components/Modal/ModalWindows'))
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
@@ -161,13 +163,17 @@ export const App: FC = () => {
             <>
               <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
               <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
-              <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
-              <ModalWindows
-                virtualDom={virtualDom}
-                setVirtualDom={setVirtualDom}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
+
+              <Suspense fallback={<></>}>
+                <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
+                <ModalWindows
+                  virtualDom={virtualDom}
+                  setVirtualDom={setVirtualDom}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </Suspense>
+
               <ToastContainer
                 position='top-right'
                 autoClose={4000}
