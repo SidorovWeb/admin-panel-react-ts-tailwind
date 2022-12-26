@@ -22,4 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-**/api/*
+**/api/backups
+**/api/upload_image
+**/api/fonts
+**/api/img
+**/api/js
+**/api/mail
+**/api/styles
+**/api/index.html
+**/api/artpresent.html
+**/api/artpresent.html
