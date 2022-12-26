@@ -10,7 +10,9 @@ i18n
   .init({
     lng: localStorage.getItem('i18nextLng') || 'ru',
     fallbackLng: 'ru',
-    // debug: true,
+    backend: {
+      loadPath: './locales/{{lng}}/{{ns}}.json',
+    },
 
     detection: {
       order: ['queryString', 'cookie'],

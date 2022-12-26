@@ -68,7 +68,7 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
           },
         })
         .then((res) => {
-          const path = import.meta.env.MODE === 'development' ? '../api/' : '../api/'
+          const path = import.meta.env.MODE === 'development' ? '../api/' : './api/'
           const virtualImg = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
 
           if (virtualImg) {

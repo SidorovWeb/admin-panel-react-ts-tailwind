@@ -3,6 +3,10 @@ include('./includes/headerType.php');
 include('./includes/globTreeSearch.php');
 
 
-$path = __DIR__ . '/';
+if($_SERVER['HTTP_HOST'] == 'localhost:8000') {
+  $path = __DIR__ . '/';
+} else {
+  $path = '../../';
+}
 $files = glob_tree_search($path, '*.zip');
 echo json_encode($files);
