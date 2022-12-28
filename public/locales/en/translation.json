@@ -1,10 +1,16 @@
 {
+  "all": "All",
+  "used": "Used",
+  "notUsed": "Not used",
+  "delete": "Delete",
+  "quantity": "Quantity",
   "Dashboard": "Dashboard",
   "CreateBackups": "Create Backups",
   "Images": "Images",
   "Text": "Text",
   "Code": "Code",
   "Uploads": "Uploads",
+  "UploadsImages": "Uploaded images",
   "toComeIn": "To come in",
   "close": "Close",
   "publish": "Publish",
@@ -37,5 +43,6 @@
   "passwordNotSpaces": "Password must not contain spaces!",
   "nameNotFound": "Name not found",
   "imagesNotFound": "Images not found",
-  "textNotFound": "Text not found"
+  "textNotFound": "Text not found",
+  "imagesStored": "Images are stored in a folder"
 }

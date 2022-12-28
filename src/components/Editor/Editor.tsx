@@ -60,6 +60,7 @@ const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
           <EditorSIdebar switcher={switcher} setSwitcher={setSwitcher} />
           <div className='editor-content flex flex-col flex-1 min-h-screen relative'>
             <div className='font-bold text-left text-4xl mb-10'>{t(switcher)}</div>
+
             {switcher === 'Dashboard' && <Dashboard />}
             {switcher === 'Images' && (
               <EditorImages virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
@@ -70,7 +71,8 @@ const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
             {switcher === 'Code' && (
               <EditorCode virtualDom={virtualDom} currentPage={currentPage} setVirtualDom={setVirtualDom} />
             )}
-            {switcher === 'Upload Image' && <EditorUploads />}
+            {switcher === 'Uploads' && <EditorUploads />}
+
             <div className='flex items-center justify-center p-8 space-x-4 mt-auto'>
               <p>APSA</p>
               <a href='tg://resolve?domain=SidorovAlexander'>© Aleksandr Sidorov</a>

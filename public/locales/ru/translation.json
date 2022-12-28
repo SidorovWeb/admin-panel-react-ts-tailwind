@@ -1,10 +1,16 @@
 {
+  "all": "Все",
+  "used": "Используется",
+  "notUsed": "Не используется",
+  "delete": "Удалить",
+  "quantity": "Количество",
   "Dashboard": "Дашборд",
   "CreateBackups": "Создать бекап",
   "Images": "Изображения",
   "Text": "Текст",
   "Code": "Код",
   "Uploads": "Загрузки",
+  "UploadsImages": "Загруженные изображения",
   "close": "Закрыть",
   "toComeIn": "Войти",
   "publish": "Опубликовать",
@@ -37,5 +43,6 @@
   "passwordNotSpaces": "Пароль не должен содержать пробелов!",
   "nameNotFound": "Имя не найдено",
   "imagesNotFound": "Изображения не найдены",
-  "textNotFound": "Текст не найден"
+  "textNotFound": "Текст не найден",
+  "imagesStored": "Изображения хранятся в папке"
 }

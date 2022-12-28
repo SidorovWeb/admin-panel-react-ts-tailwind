@@ -93,8 +93,15 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
       const urls = imagesList
         .filter((img) => img.baseSrc)
         .map((img) => {
+          if (import.meta.env.MODE === 'development') {
+            if (img.src.includes('http://127.0.0.1:5173/api')) {
+              return img.src.replace('http://127.0.0.1:5173/api', '.') as string
+            }
+          }
           return img.src
         })
+
+      // console.log(urls)
 
       axios
         .post<[]>(`${pathAPI}getImageData.php`, { imgList: urls })
@@ -103,7 +110,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
             newList({ id, size: item.size, width: item.width, height: item.height })
           })
         })
-        .catch((e) => toast.error(`Error! ${e}`))
+        .catch((e) => console.error(e))
         .finally(() => setIsSpinner(false))
     }
   }, [imagesList])
@@ -207,6 +214,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
                   className='rounded-t-lg w-full object-cover min-h-[210px] max-h-[210px] bg-slate-200 dark:bg-slate-500'
                   src={img.src}
                   alt={img.name}
+                  loading='lazy'
                 />
                 <div className='p-4'>
                   <p className='text-inherit text-base font-medium'>
@@ -249,9 +257,9 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
           ))}
 
         {!isSpinner && filteredImages && !filteredImages.length && (
-          <div className='text-xl mb-2'>{t('nameNotFound')}</div>
+          <div className='text-xl mt-6'>{t('nameNotFound')}</div>
         )}
-        {!isSpinner && !filteredImages && <div className='text-xl mb-2'>{t('imagesNotFound')}</div>}
+        {!isSpinner && !filteredImages && <div className='text-xl mt-6'>{t('imagesNotFound')}</div>}
       </div>
       <PublishedButton onClick={published} />
     </>

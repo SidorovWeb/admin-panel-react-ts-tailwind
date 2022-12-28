@@ -207,7 +207,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
                 </tbody>
               </table>
               {!isSpinner && filteredText && !filteredText.length && (
-                <div className='text-xl mt-2'>{t('textNotFound')}</div>
+                <div className='text-xl mt-6'>{t('textNotFound')}</div>
               )}
             </div>
           </div>

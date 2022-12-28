@@ -72,7 +72,7 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => 
           } w-full transition-opacity duration-300 ease-in-out hover:opacity-[0.5] flex items-center space-x-1`}
           onClick={(e) => {
             e.preventDefault()
-            setSwitcher('Upload Image')
+            setSwitcher('Uploads')
           }}
         >
           <MdOutlineCloudUpload className='w-5 h-5' />

@@ -3,24 +3,20 @@ include('./includes/headerType.php');
 
 $_POST = json_decode( file_get_contents("php://input"), true );
 $stack = array();
+$files = $_POST["imgList"];
 
-if ($_POST["imgList"]) {
+if ($files) {
+foreach ($files as $file) {
 
-foreach ($_POST["imgList"] as $img) {
-  $image = get_headers($img, 1);
-  $bytes = $image["Content-Length"];
-  $width = getimagesize($img)[0];
-  $height = getimagesize($img)[1];
+  if (file_exists($file)) {
+    $bytes = filesize($file);
+    $width = getimagesize($file)[0];
+    $height = getimagesize($file)[1];
 
-  // if (isset($_FILES[$img])) {
-  //   $width = getimagesize($img)[0];
-  //   $height = getimagesize($img)[1];
-  // } else {
-  //   $width = 0;
-  //   $height = 0;
-  // }
-
-  array_push($stack, ["size" => round($bytes / 1024),"width"  =>  $width , "height" => $height]);
+    array_push($stack, ["size" => round($bytes / 1024),"width"  =>  $width , "height" => $height]);
+  } else {
+    array_push($stack, ["size" => 0,"width"  =>  0 , "height" => 0]);
+  }
 }
 
 echo json_encode($stack);

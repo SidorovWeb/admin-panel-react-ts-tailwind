@@ -116,32 +116,50 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
             <div className='DragInner'>
               <div className='DragBlockPanel flex'>
                 <Button
-                  clName={`${panelEditorText ? '!bg-slate-800' : ''} btn-default !p-1 w-[34px] h-[34px] m-[2px]`}
+                  clName={`${
+                    panelEditorText ? '!bg-slate-800' : ''
+                  } btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]`}
                   onClick={callingTextEditingPanel}
                 >
                   <AiOutlineEdit className='w-full h-full' />
                 </Button>
-                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' onClick={activatesCodeEditor}>
+                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]' onClick={activatesCodeEditor}>
                   <VscCode className='w-full h-full' />
                 </Button>
                 <Button
-                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]'
+                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
                   dataBsToggle
                   dataBsTarget='#modalEditorMeta'
                 >
                   <MdOutlineEditNote className='w-full  h-full' />
                 </Button>
-                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalChoose'>
+                <Button
+                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  dataBsToggle
+                  dataBsTarget='#modalChoose'
+                >
                   <VscGoToFile className='w-full h-full' />
                 </Button>
 
-                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalBackup'>
+                <Button
+                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  dataBsToggle
+                  dataBsTarget='#modalBackup'
+                >
                   <MdOutlineBackup className='w-full h-full text-white' />
                 </Button>
-                <Button clName='btn-success !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#confirmModal'>
+                <Button
+                  clName='btn-success !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  dataBsToggle
+                  dataBsTarget='#confirmModal'
+                >
                   <MdOutlinePublishedWithChanges className='w-full h-full' />
                 </Button>
-                <Button clName='btn-danger !p-1 w-[34px] h-[34px] m-[2px]' dataBsToggle dataBsTarget='#modalLogout'>
+                <Button
+                  clName='btn-danger !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  dataBsToggle
+                  dataBsTarget='#modalLogout'
+                >
                   <MdOutlineLogout className='w-full h-full' />
                 </Button>
               </div>
