@@ -96,12 +96,12 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
             iframeImage.src = newSrc
 
             setVirtualDom(virtualDom)
-            toast.success('Успешно загружено на сервер в папку ./api/upload_image')
+            toast.success('Uploaded to folder ./api/upload_image')
             resolve(img.src)
           }
         })
         .catch((e) => {
-          toast.error(`Загрузить не удалось! ${e}`)
+          toast.error(`Failed to upload! ${e}`)
         })
     }
   })

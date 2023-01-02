@@ -39,7 +39,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
   const [italic, setItalic] = useState(false)
 
   const cl =
-    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg w-[32px] h-[32px] m-[2px]'
+    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg !min-w-[31px] h-[32px] m-[2px] '
 
   useEffect(() => {
     if (textId) {

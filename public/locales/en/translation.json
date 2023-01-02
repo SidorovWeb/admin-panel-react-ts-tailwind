@@ -3,6 +3,12 @@
   "used": "Used",
   "notUsed": "Not used",
   "delete": "Delete",
+  "successfullyPublished": "Successfully published!",
+  "publishFailed ": "Publish failed!",
+  "filesDeleted ": "Files deleted successfully!",
+  "fileDeleted ": "File deleted successfully!",
+  "UnableRemove ": "Unable to remove: ",
+  "deleteAllImages": "Delete all unused images",
   "quantity": "Quantity",
   "Dashboard": "Dashboard",
   "CreateBackups": "Create Backups",
@@ -15,6 +21,8 @@
   "close": "Close",
   "publish": "Publish",
   "save": "Save",
+  "failedSave": "Failed to save!",
+  "failedUpload": "Failed to upload!",
   "exit": "Exit",
   "create": "Create",
   "editing": "Editing",
@@ -44,5 +52,7 @@
   "nameNotFound": "Name not found",
   "imagesNotFound": "Images not found",
   "textNotFound": "Text not found",
-  "imagesStored": "Images are stored in a folder"
+  "FailedLoadList": "Failed to load file list!",
+  "imagesStored": "Images are stored in a folder",
+  "uploadedToFolder": "Successfully uploaded to the server in a folder"
 }

@@ -112,7 +112,8 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
           onStart={handleStart}
           onStop={handleEnd}
         >
-          <div className='DragContainer fixed w-auto z-998 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-md p-2 flex'>
+          {/* hover:shadow-lg transition-shadow duration-300 ease-in-out */}
+          <div className='DragContainer fixed w-auto z-90 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-lg p-2 flex'>
             <div className='DragInner'>
               <div className='DragBlockPanel flex'>
                 <Button

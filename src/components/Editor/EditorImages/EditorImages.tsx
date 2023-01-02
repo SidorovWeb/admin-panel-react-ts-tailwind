@@ -3,7 +3,6 @@ import { Button } from '../../UI/Button'
 import { uploadImage } from '../../../helpers/Images'
 import axios from 'axios'
 import { pathAPI } from '../../../Constants'
-import { toast } from 'react-toastify'
 import { userActions } from '../../../hooks/actions'
 import { useAppSelector } from '../../../hooks/redux'
 import { convertBytes, imageSize, toPublish } from '../../../helpers/utils'
@@ -94,14 +93,13 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
         .filter((img) => img.baseSrc)
         .map((img) => {
           if (import.meta.env.MODE === 'development') {
-            if (img.src.includes('http://127.0.0.1:5173/api')) {
-              return img.src.replace('http://127.0.0.1:5173/api', '.') as string
+            if (img.src.includes(`${window.location.href}api`)) {
+              return img.src.replace(`${window.location.href}api`, '.')
             }
           }
-          return img.src
+          const newHref = window.location.href.replace('/apsa/', '')
+          return img.src.replace(`${newHref}`, '../../')
         })
-
-      // console.log(urls)
 
       axios
         .post<[]>(`${pathAPI}getImageData.php`, { imgList: urls })

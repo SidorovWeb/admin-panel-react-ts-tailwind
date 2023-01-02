@@ -15,7 +15,7 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
   const [roundedCorner, setRoundedCorner] = useState(false)
   const [rounded, setRounded] = useState('0')
   const cl =
-    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg w-[32px] h-[32px] m-[2px]'
+    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg !min-w-[31px] h-[32px] m-[2px]'
 
   const decimalToHex = (alpha: any) => (alpha === 0 ? '00' : Math.round(255 * alpha).toString(16))
 

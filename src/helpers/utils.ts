@@ -16,9 +16,9 @@ export const toPublish = ({ newVirtualDom, currentPage }: IToPublish) => {
   axios
     .post(`${pathAPI}savePage.php`, { pageName: currentPage, html })
     .then(() => {
-      toast.success('Успешно опубликовано!')
+      toast.success('Successfully published!')
     })
-    .catch((e) => toast.error(`Сохранить не удалось! ${e}`))
+    .catch((e) => toast.error(`Failed to save! ${e}`))
 }
 
 export const rect = (el: HTMLElement) => {

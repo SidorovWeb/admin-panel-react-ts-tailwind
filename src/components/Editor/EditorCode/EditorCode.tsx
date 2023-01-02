@@ -12,6 +12,7 @@ import { parseStrDom } from '../../../helpers/dom-helpers'
 import { toPublish } from '../../../helpers/utils'
 import { PublishedButton } from '../../UI/PublishedButton'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
+import { useTranslation } from 'react-i18next'
 
 interface IPropsByMode {
   mode: string
@@ -49,6 +50,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
 
   const [propsByMode, setPropsByMode] = useState<IPropsByMode>()
   const [isSpinner, setIsSpinner] = useState(true)
+  const { t, i18n } = useTranslation()
 
   useEffect(() => {
     const theme = JSON.parse(localStorage.getItem('apsa-theme-editor')!)
@@ -114,7 +116,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
         })
         setFun({ files, path: res.data })
       })
-      .catch((e) => toast.error(`Загрузить список страниц не удалось! ${e}`))
+      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
   }
 
   const calculatesHeightCodeEditor = () => {
@@ -136,18 +138,23 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
     }
   }
 
-  const onChange = useCallback((value: string) => {
+  const onChange = (value: string) => {
     setData(value)
-  }, [])
+  }
 
   const overwriteFile = (files: IFiles, fileName: string) => {
     const idxCss = files?.files.indexOf(fileName) !== -1 ? files?.files.indexOf(fileName) : 0
     axios
       .post(`${pathAPI}saveFile.php`, { pathToFile: files?.path[idxCss ?? 0], data: data })
       .then(() => {
-        toast.success('Успешно опубликовано!')
+        // toast.success(t('successfullyPublished'))
+        if (i18n.language === 'ru') {
+          toast.success('Успешно опубликовано!')
+        } else {
+          toast.success('Successfully published!')
+        }
       })
-      .catch((e) => toast.error(`Опубликовать не удалось! ${e}`))
+      .catch((e) => toast.error(`Publish failed! ${e}`))
   }
 
   const published = async () => {

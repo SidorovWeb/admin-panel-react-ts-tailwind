@@ -27,16 +27,14 @@ export const ThemeToggle: FC = () => {
 
   return (
     <div
-      className='w-[64px] rounded-full px-3 cursor-pointer flex items-center relative select-none bg-slate-500'
+      className='w-[64px] rounded-full px-3 cursor-pointer flex items-center relative select-none bg-slate-500 hover:bg-slate-600 transition-all'
       onClick={toggleTheme}
     >
-      <div
-        className={`${darkMode ? 'translate-x-6' : 'translate-x-0'} h-5 w-6 rounded-full transform transition-all`}
-      />
-
-      <button className={`text-center text-sm flex-shrink ml-auto absolute top-50 ${darkMode ? 'left-1' : 'right-1'}`}>
-        {darkMode ? '🌜' : '🌞'}
-      </button>
+      <div className={`${darkMode ? 'translate-x-5' : 'translate-x-0'} h-5 w-5 rounded-full transform transition-all`}>
+        <button className={`absolute top-[50%] -translate-y-[50%] text-lg ${darkMode ? 'left-1' : 'right-1'}`}>
+          {darkMode ? '🌜' : '🌞'}
+        </button>
+      </div>
     </div>
   )
 }

@@ -12,9 +12,10 @@ import { Login } from './components/Login/Login'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 import { PanelImage } from './components/Panel/PanelImage'
 import { IAuth } from './interface/auth'
-// import { Editor } from './components/Editor/Editor'
-// import { ModalWindows } from './components/Modal/ModalWindows'
 import { userActions } from './hooks/actions'
+import { Button } from './components/UI/Button'
+import rightClick from './assets/icons/right-click-of-the-mouse-svgrepo-com.svg'
+import { Prompt } from './components/UI/Prompt'
 const Editor = lazy(() => import('./components/Editor/Editor'))
 const ModalWindows = lazy(() => import('./components/Modal/ModalWindows'))
 
@@ -104,6 +105,7 @@ export const App: FC = () => {
           iframeDocument.onload = async function () {
             setLoading(false)
             setIframe(iframeDocument)
+            iframeDocument.contentDocument?.body.setAttribute('oncontextmenu', 'return false;')
           }
         }
       })
@@ -132,18 +134,12 @@ export const App: FC = () => {
         .text-editor-app:hover {
           outline: 3px solid #fc0 !important;
           outline-offset: 0.5px !important;
+          cursor: text !important;
         }
         .text-editor-app:focus {
           outline: 3px solid green !important;
           outline-offset: 0.5px !important;
-        }
-        :any-link .text-editor-app:hover {
-          outline: 3px solid red !important;
-          outline-offset: 0.5px !important;
-        }
-        :any-link .text-editor-app:focus {
-          outline: 3px solid green !important;
-          outline-offset: 0.5px !important;
+          cursor: text !important;
         }
         `
       }

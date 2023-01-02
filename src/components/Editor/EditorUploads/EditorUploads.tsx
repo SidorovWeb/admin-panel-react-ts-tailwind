@@ -17,12 +17,13 @@ interface IUploadsImages {
 }
 
 export const EditorUploads: FC<IEditorUploads> = () => {
-  const path = import.meta.env.MODE === 'development' ? '../api/' : `${window.location.href.replace('apsa/', '')}/`
+  // const path = import.meta.env.MODE === 'development' ? '../api/' : `${window.location.href.replace('/apsa/', '')}/`
+  const path = import.meta.env.MODE === 'development' ? '../api/' : '../'
   const { images } = useAppSelector((state) => state.getImage)
   const [uploadsImages, setUploadsImages] = useState<IUploadsImages[]>([])
   const [filteredImages, setFilteredImages] = useState<IUploadsImages[]>([])
 
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   useEffect(() => {
     axios
@@ -61,25 +62,33 @@ export const EditorUploads: FC<IEditorUploads> = () => {
   const notUsedList = () => {
     return uploadsImages.filter((item) => item.isUsed === false)
   }
-  const usedList = () => {
-    return uploadsImages.filter((item) => item.isUsed)
-  }
+  // const usedList = () => {
+  //   return uploadsImages.filter((item) => item.isUsed)
+  // }
 
   const deleteImage = (img: IUploadsImages) => {
+    const newSrc = import.meta.env.MODE === 'development' ? img.path : `../${img.path}`
+
     axios
-      .post(`${pathAPI}deletingImage.php`, { arraySrc: [img.path] })
+      .post(`${pathAPI}deletingImage.php`, { arraySrc: [newSrc] })
       .then(() => {
         const filtered = uploadsImages.filter((item) => item.id !== img.id)
 
         setUploadsImages(filtered)
         setFilteredImages(filtered)
-        toast.success('Фаил успешно удален!')
+        if (i18n.language === 'ru') {
+          toast.success('Файл успешно удален!')
+        } else {
+          toast.success('File deleted successfully!')
+        }
       })
-      .catch((e) => toast.error(`Удалить не удалось:  ${e}`))
+      .catch((e) => toast.error(`Unable to remove: ${e}`))
   }
 
   const deleteNotUsedImages = () => {
-    const list = notUsedList().map((img) => img.path)
+    const list = notUsedList().map((img) => {
+      return import.meta.env.MODE === 'development' ? img.path : `../${img.path}`
+    })
     axios
       .post(`${pathAPI}deletingImage.php`, { arraySrc: list })
       .then(() => {
@@ -87,16 +96,22 @@ export const EditorUploads: FC<IEditorUploads> = () => {
 
         setUploadsImages(filtered)
         setFilteredImages(filtered)
-        toast.success('Файлы успешно удалены!')
+        if (i18n.language === 'ru') {
+          toast.success('Файл успешно удален!')
+        } else {
+          toast.success('File deleted successfully!')
+        }
       })
-      .catch((e) => toast.error(`Удалить не удалось:  ${e}`))
+      .catch((e) => toast.error(`Unable to remove:  ${e}`))
   }
 
   return (
     <div className='space-y-4'>
       {filteredImages.length > 0 && notUsedList().length > 0 && (
         <div className='bg-red-200 dark:text-gray-700 p-4 rounded-lg flex item-center justify-between'>
-          <p>Удалить все неиспользуемые изображения ({notUsedList().length})</p>
+          <p className='flex items-center'>
+            {t('deleteAllImages')} ({notUsedList().length})
+          </p>
           <Button clName='btn-danger flex item-center space-x-1' onClick={deleteNotUsedImages}>
             <MdDeleteOutline className='w-full h-[16px] -mt-[2px]' />
             <p>{t('delete')}</p>
@@ -144,7 +159,7 @@ export const EditorUploads: FC<IEditorUploads> = () => {
             </div>
           ))
         ) : (
-          <div className='text-xl mt-6'>Изображений нет</div>
+          <div className='text-xl mt-6'>{t('imagesNotFound')}</div>
         )}
       </div>
     </div>

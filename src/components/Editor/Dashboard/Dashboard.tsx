@@ -47,7 +47,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
         })
         setFun({ files, path: res.data })
       })
-      .catch((e) => toast.error(`Загрузить список файлов не удалось! ${e}`))
+      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
   }
 
   const getBackupList = async () => {
@@ -62,7 +62,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
 
         setBackupFiles(editedData)
       })
-      .catch((e) => toast.error(`Загрузить список файлов не удалось! ${e}`))
+      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
   }
 
   const getListHtmlFiles = async () => {
@@ -72,7 +72,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
         const filteredData = res.data.filter((item) => item !== 'temporaryFileCanBeDeleted.html')
         setHtmlFiles(filteredData)
       })
-      .catch((e) => toast.error(`Загрузить список страниц не удалось! ${e}`))
+      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
   }
 
   useEffect(() => {

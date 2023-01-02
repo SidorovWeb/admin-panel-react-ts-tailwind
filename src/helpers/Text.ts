@@ -43,10 +43,8 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
   })
 
   el.addEventListener('contextmenu', (e) => {
-    if (el.parentNode?.nodeName === 'A' || el.parentNode?.nodeName === 'BUTTON') {
-      e.preventDefault()
-      onClick(el)
-      setsStyleBtnText()
-    }
+    e.preventDefault()
+    onClick(el)
+    setsStyleBtnText()
   })
 }

@@ -3,6 +3,12 @@
   "used": "Используется",
   "notUsed": "Не используется",
   "delete": "Удалить",
+  "successfullyPublished": "Успешно опубликовано!",
+  "publishFailed ": "Опубликовать не удалось!",
+  "filesDeleted ": "Файлы успешно удалены!",
+  "fileDeleted ": "Файл успешно удален!",
+  "UnableRemove ": "Удалить не удалось: ",
+  "deleteAllImages": "Удалить все неиспользуемые изображения",
   "quantity": "Количество",
   "Dashboard": "Дашборд",
   "CreateBackups": "Создать бекап",
@@ -15,6 +21,8 @@
   "toComeIn": "Войти",
   "publish": "Опубликовать",
   "save": "Сохранить",
+  "failedSave": "Сохранить не удалось!",
+  "failedUpload": "Загрузить не удалось!",
   "exit": "Выйти",
   "create": "Создать",
   "editing": "Редактирование",
@@ -44,5 +52,7 @@
   "nameNotFound": "Имя не найдено",
   "imagesNotFound": "Изображения не найдены",
   "textNotFound": "Текст не найден",
-  "imagesStored": "Изображения хранятся в папке"
+  "FailedLoadList": "Не удалось загрузить список файлов!",
+  "imagesStored": "Изображения хранятся в папке",
+  "uploadedToFolder": "Успешно загружено на сервер в папку"
 }
