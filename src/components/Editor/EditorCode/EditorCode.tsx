@@ -147,7 +147,6 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
     axios
       .post(`${pathAPI}saveFile.php`, { pathToFile: files?.path[idxCss ?? 0], data: data })
       .then(() => {
-        // toast.success(t('successfullyPublished'))
         if (i18n.language === 'ru') {
           toast.success('Успешно опубликовано!')
         } else {

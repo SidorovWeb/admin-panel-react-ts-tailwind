@@ -7,8 +7,10 @@ import {
   MdFormatBold,
   MdFormatItalic,
   MdFormatUnderlined,
+  MdOutlineFormatSize,
   MdStrikethroughS,
 } from 'react-icons/md'
+import { ImTextHeight } from 'react-icons/im'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
 import { PanelEffects } from './PanelEffects'
@@ -37,9 +39,8 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
   const [underline, setUnderline] = useState(false)
   const [lineThrough, setLineThrough] = useState(false)
   const [italic, setItalic] = useState(false)
-
   const cl =
-    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg !min-w-[31px] h-[32px] m-[2px] '
+    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg  w-[30px] md:w-[34px] h-[30px] md:h-[34px] m-[2px] '
 
   useEffect(() => {
     if (textId) {
@@ -168,13 +169,13 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
     }
   }
 
-  const closePanelEditorText = () => {
-    if (currentEl) {
-      currentEl.setAttribute('contentEditable', 'true')
-      currentEl.focus()
-    }
-    close(false)
-  }
+  // const closePanelEditorText = () => {
+  //   if (currentEl) {
+  //     currentEl.setAttribute('contentEditable', 'true')
+  //     currentEl.focus()
+  //   }
+  //   close(false)
+  // }
 
   const setStyle = (properties: string, value: string) => {
     if (currentEl?.parentElement) {
@@ -183,7 +184,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
       virtualElem.style.setProperty(properties, value)
       setVirtualDom(virtualDom)
       currentEl.setAttribute('contentEditable', 'true')
-      currentEl.focus()
+      // currentEl.focus()
     }
   }
 
@@ -202,7 +203,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleTextAlign()
           }}
         >
-          <MdFormatAlignLeft className='h-[24px] w-full' />
+          <MdFormatAlignLeft className='h-full w-full' />
         </Button>
         <Button
           clName={`${alignCenter ? 'btn-primary' : 'btn-default'} ${cl}`}
@@ -211,7 +212,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleTextAlign()
           }}
         >
-          <MdFormatAlignJustify className='h-[24px] w-full' />
+          <MdFormatAlignJustify className='h-full w-full' />
         </Button>
         <Button
           clName={`${alignRight ? 'btn-primary' : 'btn-default'} ${cl}`}
@@ -220,7 +221,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleTextAlign()
           }}
         >
-          <MdFormatAlignRight className='h-[24px] w-full' />
+          <MdFormatAlignRight className='h-full w-full' />
         </Button>
         <Button
           clName={`${bold ? 'btn-primary' : 'btn-default'} ${cl}`}
@@ -229,7 +230,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleFontWeight()
           }}
         >
-          <MdFormatBold className='h-[24px] w-full' />
+          <MdFormatBold className='h-full w-full' />
         </Button>
         <Button
           clName={`${italic ? 'btn-primary' : 'btn-default'} ${cl}`}
@@ -238,7 +239,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleFontStyle()
           }}
         >
-          <MdFormatItalic className='h-[24px] w-full' />
+          <MdFormatItalic className='h-full w-full' />
         </Button>
         <Button
           clName={`${underline ? 'btn-primary' : 'btn-default'} ${cl}`}
@@ -247,7 +248,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleDecoration()
           }}
         >
-          <MdFormatUnderlined className='h-[24px] w-full' />
+          <MdFormatUnderlined className='h-full w-full' />
         </Button>
         <Button
           clName={`${lineThrough ? 'btn-primary' : 'btn-default'} ${cl}`}
@@ -256,10 +257,10 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
             setStyleDecoration()
           }}
         >
-          <MdStrikethroughS className='h-[24px] w-full' />
+          <MdStrikethroughS className='h-full w-full' />
         </Button>
         <Button
-          clName={`${upper ? 'btn-primary' : 'btn-default'} ${cl} uppercase`}
+          clName={`${upper ? 'btn-primary' : 'btn-default'} ${cl} uppercase font-bold`}
           onClick={() => {
             setStyle('text-transform', 'uppercase')
             setStyleTransform()
@@ -268,16 +269,13 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
           AA
         </Button>
         <Button
-          clName={`${lower ? 'btn-primary' : 'btn-default'}  ${cl} lowercase`}
+          clName={`${lower ? 'btn-primary' : 'btn-default'}  ${cl} lowercase font-bold`}
           onClick={() => {
             setStyle('text-transform', 'lowercase')
             setStyleTransform()
           }}
         >
           aa
-        </Button>
-        <Button clName={`btn-danger ${cl}`} onClick={closePanelEditorText}>
-          <MdClose className='h-[20px] w-full' />
         </Button>
       </div>
       <PanelEffects setStyle={setStyle} />

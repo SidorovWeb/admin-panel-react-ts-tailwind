@@ -1,18 +1,26 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MdBarChart, MdCode, MdOutlineCloudUpload, MdOutlineImage, MdOutlineShortText } from 'react-icons/md'
 
 interface IEditorSIdebar {
   switcher: string
   setSwitcher: (str: string) => void
+  isActiveSidebar: boolean
+  setIsActiveSidebar: (val: boolean) => void
 }
 
-export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => {
+export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher, isActiveSidebar, setIsActiveSidebar }) => {
   const { t } = useTranslation()
 
   return (
-    <div className='relative'>
-      <div className='space-y-4 pr-[80px] sticky top-10'>
+    <div
+      className={`${
+        isActiveSidebar
+          ? '!block fixed top-[65px] bottom-0 pt-5 pl-8 bg-white dark:bg-slate-800 z-50 left-0 shadow-lg'
+          : '!hidden'
+      } md:relative hidden md:!block`}
+    >
+      <div className='space-y-4 pr-[80px] sticky top-10 '>
         <a
           href='!#'
           className={`${
@@ -21,6 +29,7 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => 
           onClick={(e) => {
             e.preventDefault()
             setSwitcher('Dashboard')
+            setIsActiveSidebar(false)
           }}
         >
           <MdBarChart className='w-5 h-5' />
@@ -34,6 +43,7 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => 
           onClick={(e) => {
             e.preventDefault()
             setSwitcher('Images')
+            setIsActiveSidebar(false)
           }}
         >
           <MdOutlineImage className='w-5 h-5' />
@@ -47,6 +57,7 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => 
           onClick={(e) => {
             e.preventDefault()
             setSwitcher('Text')
+            setIsActiveSidebar(false)
           }}
         >
           <MdOutlineShortText className='w-5 h-5' />
@@ -60,6 +71,7 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => 
           onClick={(e) => {
             e.preventDefault()
             setSwitcher('Code')
+            setIsActiveSidebar(false)
           }}
         >
           <MdCode className='w-5 h-5' />
@@ -73,6 +85,7 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({ switcher, setSwitcher }) => 
           onClick={(e) => {
             e.preventDefault()
             setSwitcher('Uploads')
+            setIsActiveSidebar(false)
           }}
         >
           <MdOutlineCloudUpload className='w-5 h-5' />

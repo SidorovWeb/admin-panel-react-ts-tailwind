@@ -12,6 +12,7 @@ import { Select } from '../UI/Select'
 import { useTranslation } from 'react-i18next'
 import { EditorSIdebar } from './EditorSIdebar'
 import { EditorUploads } from './EditorUploads/EditorUploads'
+import { IoMdMenu } from 'react-icons/io'
 
 interface IEditor {
   currentPage: string
@@ -22,6 +23,7 @@ interface IEditor {
 const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
   const active = useAppSelector((state) => state.codeEditor.active)
   const [switcher, setSwitcher] = useState('')
+  const [isActiveSidebar, setIsActiveSidebar] = useState(false)
   const { inactiveCodeEditor } = userActions()
   const { t, i18n } = useTranslation()
 
@@ -30,6 +32,19 @@ const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
       setSwitcher('Dashboard')
     }
   }, [active])
+
+  const setWindowDimensions = () => {
+    if (window.innerWidth >= 768) {
+      setIsActiveSidebar(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', setWindowDimensions)
+    return () => {
+      window.removeEventListener('resize', setWindowDimensions)
+    }
+  }, [])
 
   const close = () => {
     inactiveCodeEditor()
@@ -43,21 +58,34 @@ const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
   return (
     <div className={`${active ? '' : 'fade hidden'} fixed inset-0 overflow-y-auto z-30 bg-inherit pt-[64px]`}>
       <div className='fixed top-0 left-0 right-0 z-10 bg-white dark:bg-slate-800 py-4 h-[64px] border-b border-slate-200 dark:border-slate-700'>
-        <div className='max-w-[1280px] m-auto px-[30px] w-full flex items-center justify-between'>
-          <span className='font-bold'>APSA</span>
+        <div className='max-w-[1280px] m-auto px-[15px] md:px-[30px] w-full flex items-center justify-between'>
+          <div className='flex items-center justify-between'>
+            <Button
+              clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] block md:hidden mr-2'
+              onClick={() => setIsActiveSidebar(!isActiveSidebar)}
+            >
+              <IoMdMenu className='w-full  h-full' />
+            </Button>
+            <span className='font-bold'>APSA</span>
+          </div>
           <div className='flex items-stretch space-x-2'>
             <ThemeToggle />
             <Select array={['ru', 'en']} setSelect={changeLanguage} defaultValue={i18n.language} />
-            <Button clName='btn-default flex items-center' onClick={close}>
-              <MdOutlineLogout className='w-full h-[15px] -mt-[2px] mr-1' />
-              <p>{t('close')}</p>
+            <Button clName='btn-default flex items-center !p-1 md:!p-2 w-[34px] h-[34px] md:w-auto' onClick={close}>
+              <MdOutlineLogout className='w-full h-full md:h-[15px] md:-mt-[2px] md:mr-1' />
+              <p className='hidden md:block'>{t('close')}</p>
             </Button>
           </div>
         </div>
       </div>
-      <div className='max-w-[1280px] m-auto px-[30px]'>
+      <div className='max-w-[1280px] m-auto px-[15px] md:px-[30px]'>
         <div className='flex mt-10 mb-20'>
-          <EditorSIdebar switcher={switcher} setSwitcher={setSwitcher} />
+          <EditorSIdebar
+            switcher={switcher}
+            setSwitcher={setSwitcher}
+            isActiveSidebar={isActiveSidebar}
+            setIsActiveSidebar={setIsActiveSidebar}
+          />
           <div className='editor-content flex flex-col flex-1 min-h-screen relative'>
             <div className='font-bold text-left text-4xl mb-10'>{t(switcher)}</div>
 

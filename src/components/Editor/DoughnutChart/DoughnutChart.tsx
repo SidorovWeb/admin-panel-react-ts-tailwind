@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipCallbacks, ChartOptions, ChartData } from 'chart.js'
+import { FC } from 'react'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import { IChartData } from '../Dashboard/Dashboard'
 

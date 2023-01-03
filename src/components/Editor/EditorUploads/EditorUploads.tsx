@@ -108,9 +108,9 @@ export const EditorUploads: FC<IEditorUploads> = () => {
   return (
     <div className='space-y-4'>
       {filteredImages.length > 0 && notUsedList().length > 0 && (
-        <div className='bg-red-200 dark:text-gray-700 p-4 rounded-lg flex item-center justify-between'>
-          <p className='flex items-center'>
-            {t('deleteAllImages')} ({notUsedList().length})
+        <div className='bg-red-200 dark:text-gray-700 p-4 rounded-lg flex item-center justify-between flex-wrap'>
+          <p className='flex items-center mr-2'>
+            {t('deleteAllImages')} ({notUsedList().length}) ?
           </p>
           <Button clName='btn-danger flex item-center space-x-1' onClick={deleteNotUsedImages}>
             <MdDeleteOutline className='w-full h-[16px] -mt-[2px]' />

@@ -13,14 +13,14 @@ export const Tabs: FC<ITabs> = ({ mode, setMode, tabs }) => {
   }
 
   return (
-    <div className='tabs space-x-2 py-5 text-center'>
+    <div className='tabs py-5 text-center flex flex-wrap items-center'>
       {tabs.map((m, idx) => (
         <Button
           key={idx}
           onClick={() => changeMode(m)}
           clName={`${
             mode.toLocaleLowerCase() === m.toLocaleLowerCase() ? '!bg-slate-800 dark:!bg-slate-700' : ''
-          } btn-default min-w-[70px]`}
+          } btn-default min-w-[70px] mr-2 mb-2`}
         >
           {m}
         </Button>

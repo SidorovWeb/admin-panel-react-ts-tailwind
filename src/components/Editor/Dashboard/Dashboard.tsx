@@ -95,14 +95,14 @@ export const Dashboard: FC<IDashboard> = ({}) => {
   }, [htmlFiles, cssFiles, jsFiles, imgFiles])
 
   return (
-    <div className='charts grid grid-cols-2 gap-2 '>
-      <div className='charts-pie h-[300px] flex items-center justify-center'>
+    <div className='charts grid md:grid-cols-2 gap-16 justify-center'>
+      <div className='charts-pie md:h-[300px] w-[290px] flex items-center justify-center'>
         {!chartData && <MiniSpinner />}
         {chartData && <DoughnutChart chartData={chartData} />}
       </div>
       <div className='carts-file-list grid grid-cols-2 gap-4'>
         <div className={cardStyle}>
-          <img className='max-w-[22%]' src={html} alt='Your SVG' />
+          <img className='max-w-[22%] min-w-[32px]' src={html} alt='Your SVG' />
           {htmlFiles && <p>: {htmlFiles.length}</p>}
           {!htmlFiles && (
             <div className='flex items-center'>
@@ -111,7 +111,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
           )}
         </div>
         <div className={cardStyle}>
-          <img className='max-w-[22%]' src={css} alt='Your SVG' />
+          <img className='max-w-[22%] min-w-[32px]' src={css} alt='Your SVG' />
           {cssFiles && <p>: {cssFiles.files.length}</p>}
           {!cssFiles && (
             <div className='flex items-center'>
@@ -120,7 +120,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
           )}
         </div>
         <div className={cardStyle}>
-          <img className='max-w-[22%]' src={js} alt='Your SVG' />
+          <img className='max-w-[22%] min-w-[32px]' src={js} alt='Your SVG' />
           {jsFiles && <p>: {jsFiles.files.length}</p>}
           {!jsFiles && (
             <div className='flex items-center'>
@@ -129,7 +129,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
           )}
         </div>
         <div className={cardStyle}>
-          <img className='max-w-[22%]' src={img} alt='Your SVG' />
+          <img className='max-w-[22%] min-w-[32px]' src={img} alt='Your SVG' />
           {imgFiles && <p>: {imgFiles.length}</p>}
           {!imgFiles && (
             <div className='flex items-center'>
@@ -138,7 +138,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
           )}
         </div>
         <div className={cardStyle}>
-          <img className='max-w-[22%]' src={backup} alt='Your SVG' />
+          <img className='max-w-[22%] min-w-[32px]' src={backup} alt='Your SVG' />
           {backupFiles && <p>: {backupFiles.length}</p>}
           {!backupFiles && (
             <div className='flex items-center'>

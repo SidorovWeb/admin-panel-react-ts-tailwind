@@ -1,5 +1,12 @@
 import { FC, useMemo, useState } from 'react'
-import { MdBlurOn, MdClose, MdFormatColorText, MdOutlineFormatColorFill, MdRoundedCorner } from 'react-icons/md'
+import {
+  MdBlurOn,
+  MdClose,
+  MdFormatColorText,
+  MdOutlineFormatColorFill,
+  MdOutlineFormatSize,
+  MdRoundedCorner,
+} from 'react-icons/md'
 import { Button } from '../UI/Button'
 import { ChromePicker } from 'react-color'
 
@@ -14,8 +21,10 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
   const [blur, setBlur] = useState('0')
   const [roundedCorner, setRoundedCorner] = useState(false)
   const [rounded, setRounded] = useState('0')
+  const [fontSize, setFontSize] = useState('16')
+  const [isFontSize, setIsFontSize] = useState(false)
   const cl =
-    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg !min-w-[31px] h-[32px] m-[2px]'
+    '!p-1 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg  w-[30px] md:w-[34px] h-[30px] md:h-[34px] m-[2px]'
 
   const decimalToHex = (alpha: any) => (alpha === 0 ? '00' : Math.round(255 * alpha).toString(16))
 
@@ -38,16 +47,26 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
     setColorPicker(true)
     setBlurPicker(false)
     setRoundedCorner(false)
+    setIsFontSize(false)
   }
 
   const includesBlur = () => {
     setBlurPicker(true)
     setColorPicker(false)
     setRoundedCorner(false)
+    setIsFontSize(false)
   }
 
   const includesRoundedCorner = () => {
     setRoundedCorner(true)
+    setBlurPicker(false)
+    setColorPicker(false)
+    setIsFontSize(false)
+  }
+
+  const includesFontSize = () => {
+    setIsFontSize(true)
+    setRoundedCorner(false)
     setBlurPicker(false)
     setColorPicker(false)
   }
@@ -62,28 +81,58 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
     setStyle('border-radius', `${val}px`)
   }
 
+  const onChangeFontSize = (val: string) => {
+    setFontSize(val)
+    setStyle('font-size', `${val}px`)
+  }
+
   const closesPicker = () => {
     setColorPicker(false)
     setBlurPicker(false)
     setRoundedCorner(false)
+    setIsFontSize(false)
   }
 
   return (
-    <div className='DragTextPanel-bottom flex items-start mt-[6px]'>
+    <div className='DragTextPanel-bottom flex flex-wrap items-start mt-[6px]'>
+      {isFontSize ? (
+        <>
+          <div className='bg-white ml-[4px] rounded overflow-hidden'>
+            <input
+              className='text-gray-700 h-[31px] w-[50px] text-center '
+              type='number'
+              min='10'
+              max='100'
+              value={fontSize}
+              onChange={(e) => {
+                onChangeFontSize(e.target.value)
+              }}
+            ></input>
+          </div>
+          <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
+            <MdClose className='h-full w-full' />
+          </Button>
+        </>
+      ) : (
+        <Button clName={`btn-default ${cl}`}>
+          <MdOutlineFormatSize className='h-[24px] w-full' onClick={includesFontSize} />
+        </Button>
+      )}
+
       {colorPicker ? (
         <>
-          <ChromePicker color={hexColor} onChange={onChange} className='mr-[6px] mt-[2px]' />
+          <ChromePicker color={hexColor} onChange={onChange} className='mx-[6px] mt-[2px]' />
           <Button clName={`btn-danger ${cl}`} onClick={closesPicker}>
-            <MdClose className='h-[20px] w-full' />
+            <MdClose className='h-full w-full' />
           </Button>
         </>
       ) : (
         <>
           <Button clName={`btn-default ${cl}`} onClick={() => onClick('text')}>
-            <MdFormatColorText className='h-[20px] w-full' />
+            <MdFormatColorText className='h-full w-full' />
           </Button>
           <Button clName={`btn-default ${cl}`} onClick={() => onClick('background')}>
-            <MdOutlineFormatColorFill className='h-[20px] w-full' />
+            <MdOutlineFormatColorFill className='h-full w-full' />
           </Button>
         </>
       )}
@@ -101,12 +150,12 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
             ></input>
           </div>
           <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
-            <MdClose className='h-[20px] w-full' />
+            <MdClose className='h-full w-full' />
           </Button>
         </>
       ) : (
         <Button clName={`btn-default ${cl}`} onClick={includesBlur}>
-          <MdBlurOn className='h-[20px] w-full' />
+          <MdBlurOn className='h-full w-full' />
         </Button>
       )}
 
@@ -124,12 +173,12 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
             ></input>
           </div>
           <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
-            <MdClose className='h-[20px] w-full' />
+            <MdClose className='h-full w-full' />
           </Button>
         </>
       ) : (
         <Button clName={`btn-default ${cl}`} onClick={includesRoundedCorner}>
-          <MdRoundedCorner className='h-[20px] w-full' />
+          <MdRoundedCorner className='h-full w-full' />
         </Button>
       )}
     </div>

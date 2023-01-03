@@ -4,7 +4,6 @@ import { Button } from '../UI/Button'
 import {
   MdOutlineEditNote,
   MdOutlineSync,
-  MdImageSearch,
   MdOutlineLogout,
   MdOutlineBackup,
   MdOutlinePublishedWithChanges,
@@ -23,13 +22,14 @@ interface IPanel {
 
 export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
   const iframe = document.querySelector('iframe')
-  const dragContainer = useRef() as MutableRefObject<HTMLDivElement>
+  const dragContainerWrap = useRef() as MutableRefObject<HTMLDivElement>
   const dragHandle = useRef() as MutableRefObject<HTMLButtonElement>
   const [posDraggable, setPosDraggable] = useState<any>()
   const [panelEditorText, setPanelEditorText] = useState(false)
   const [direction, setDirection] = useState('row')
   const textId = useAppSelector((state) => state.textEditorPanel.id)
   const { activateCodeEditor } = userActions()
+  const clBtn = '!p-1 w-[30px] md:w-[34px] h-[30px] md:h-[34px] m-[2px]'
 
   useEffect(() => {
     let position = JSON.parse(localStorage.getItem('apsa-draggable-position')!) as { x: number; y: number }
@@ -39,17 +39,17 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
     }
 
     if (position && direction === 'row' && position.x + 350 >= window.innerWidth) {
-      setPosDraggable({ position: { x: 20, y: 20 }, direction: `row` })
+      setPosDraggable({ position: { x: 0, y: 0 }, direction: `row` })
       setDirection('row')
       localStorage.setItem('apsa-draggable-direction', JSON.stringify('row'))
-      localStorage.setItem('apsa-draggable-position', JSON.stringify({ x: 20, y: 20 }))
+      localStorage.setItem('apsa-draggable-position', JSON.stringify({ x: 0, y: 0 }))
       return
     }
     if (position && direction === 'column' && position.y + 350 >= window.innerHeight) {
-      setPosDraggable({ position: { x: 20, y: 20 }, direction: `row` })
+      setPosDraggable({ position: { x: 0, y: 0 }, direction: `row` })
       setDirection('row')
       localStorage.setItem('apsa-draggable-direction', JSON.stringify('row'))
-      localStorage.setItem('apsa-draggable-position', JSON.stringify({ x: 20, y: 20 }))
+      localStorage.setItem('apsa-draggable-position', JSON.stringify({ x: 0, y: 0 }))
       return
     }
 
@@ -57,21 +57,21 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
       setPosDraggable({ position: { x: position.x, y: position.y }, direction })
       setDirection(direction)
     } else {
-      setPosDraggable({ position: { x: 20, y: 20 }, direction: `row` })
+      setPosDraggable({ position: { x: 0, y: 0 }, direction: `row` })
       setDirection(direction)
     }
   }, [])
 
   const handleStart = () => {
     dragHandle.current.style.cursor = 'move'
-    dragContainer.current.style.inset = '0'
-    dragContainer.current.style.position = 'fixed'
+    dragContainerWrap.current.style.inset = '0'
+    dragContainerWrap.current.style.position = 'fixed'
   }
 
   const handleEnd = (_: any, data: DraggableData) => {
     dragHandle.current.style.cursor = 'pointer'
-    dragContainer.current.style.inset = 'auto'
-    dragContainer.current.style.position = 'static'
+    dragContainerWrap.current.style.inset = 'auto'
+    dragContainerWrap.current.style.position = 'static'
 
     const position = { x: data.x, y: data.y }
     localStorage.setItem('apsa-draggable-position', JSON.stringify(position))
@@ -102,8 +102,16 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
     setPanelEditorText(!panelEditorText)
   }
 
+  const onMouseEnter = () => {
+    let btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+    if (!btnsEditorImg) {
+      return
+    }
+    btnsEditorImg.style.opacity = '0'
+  }
+
   return (
-    <div ref={dragContainer} className={`${direction === 'row' ? 'DragContainer-row' : 'DragContainer-column'}`}>
+    <div ref={dragContainerWrap} className={`${direction === 'row' ? 'DragContainer-row' : 'DragContainer-column'}`}>
       {posDraggable && (
         <Draggable
           handle='.DragHandle'
@@ -112,54 +120,65 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
           onStart={handleStart}
           onStop={handleEnd}
         >
-          {/* hover:shadow-lg transition-shadow duration-300 ease-in-out */}
-          <div className='DragContainer fixed w-auto z-90 bg-slate-700/70 bg-opacity-90 rounded overflow-hidden shadow-lg p-2 flex'>
+          <div
+            className='DragContainer fixed w-auto z-999 bg-slate-300/90 dark:bg-slate-800/90 rounded overflow-hidden shadow-lg p-1.5 flex flex-wrap'
+            onMouseEnter={onMouseEnter}
+          >
             <div className='DragInner'>
               <div className='DragBlockPanel flex'>
                 <Button
-                  clName={`${
-                    panelEditorText ? '!bg-slate-800' : ''
-                  } btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]`}
+                  clName={`${panelEditorText ? '!bg-slate-800' : ''} ${clBtn} btn-default md:`}
                   onClick={callingTextEditingPanel}
                 >
                   <AiOutlineEdit className='w-full h-full' />
                 </Button>
-                <Button clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]' onClick={activatesCodeEditor}>
+                <Button
+                  clName={`${clBtn} btn-default`}
+                  onClick={() => {
+                    activatesCodeEditor()
+                    setPanelEditorText(false)
+                  }}
+                >
                   <VscCode className='w-full h-full' />
                 </Button>
                 <Button
-                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  clName={`${clBtn} btn-default`}
                   dataBsToggle
                   dataBsTarget='#modalEditorMeta'
+                  onClick={() => setPanelEditorText(false)}
                 >
                   <MdOutlineEditNote className='w-full  h-full' />
                 </Button>
                 <Button
-                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  clName={`${clBtn} btn-default`}
                   dataBsToggle
                   dataBsTarget='#modalChoose'
+                  onClick={() => setPanelEditorText(false)}
                 >
                   <VscGoToFile className='w-full h-full' />
                 </Button>
 
                 <Button
-                  clName='btn-default !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  clName={`${clBtn} btn-default`}
                   dataBsToggle
                   dataBsTarget='#modalBackup'
+                  onClick={() => setPanelEditorText(false)}
                 >
                   <MdOutlineBackup className='w-full h-full text-white' />
                 </Button>
                 <Button
-                  clName='btn-success !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  clName={`${clBtn} btn-success`}
                   dataBsToggle
                   dataBsTarget='#confirmModal'
+                  onClick={() => setPanelEditorText(false)}
                 >
                   <MdOutlinePublishedWithChanges className='w-full h-full' />
                 </Button>
                 <Button
-                  clName='btn-danger !p-1 w-[34px] h-[34px] m-[2px] !min-w-[31px]'
+                  clName={`${clBtn} btn-danger`}
                   dataBsToggle
                   dataBsTarget='#modalLogout'
+                  onClick={() => setPanelEditorText(false)}
                 >
                   <MdOutlineLogout className='w-full h-full' />
                 </Button>
@@ -171,11 +190,10 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
                 close={setPanelEditorText}
               />
             </div>
-
-            <button className='DragHandleFlip btn-default w-[34px] m-[2px] p-1 rounded' onClick={flipElement}>
+            <Button clName={`${clBtn} btn-default DragHandleFlip rounded md:ml-2`} onClick={flipElement}>
               <MdOutlineSync className='w-full h-full' />
-            </button>
-            <button className='DragHandle btn-default w-[34px] m-[2px] p-1 rounded' ref={dragHandle}>
+            </Button>
+            <button className={`${clBtn} btn-default DragHandle rounded`} ref={dragHandle}>
               <BiMove className='w-full h-full' />
             </button>
           </div>

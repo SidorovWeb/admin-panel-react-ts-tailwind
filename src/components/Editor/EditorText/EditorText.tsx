@@ -173,17 +173,17 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
       <div className='flex flex-col'>
         <div className='sm:-mx-6 lg:-mx-8'>
           <div className='py-2 sm:px-6 lg:px-8'>
-            <div>
+            <div className=''>
               <table className='table1 w-full'>
                 <thead className='border-b border-slate-200 dark:border-slate-700'>
                   <tr className='flex text-left'>
-                    <th scope='col' className='px-6 py-4'>
+                    <th scope='col' className='p-2 md:px-6 md:py-4'>
                       ID
                     </th>
-                    <th scope='col' className='px-6 py-4 min-w-[110px]'>
+                    <th scope='col' className='py-2 px-4 md:px-6 md:py-4 md:min-w-[110px]'>
                       Type
                     </th>
-                    <th scope='col' className='px-6 py-4'>
+                    <th scope='col' className='py-2 md:px-6 md:py-4'>
                       Field
                     </th>
                   </tr>
@@ -193,15 +193,15 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
                     filteredText &&
                     filteredText.map((text) => (
                       <tr
-                        className='border-b border-slate-200 dark:border-slate-700 transition-opacity duration-300 ease-in-out hover:opacity-50 flex items-start justify-start cursor-pointer p-4'
+                        className='border-b border-slate-200 dark:border-slate-700 transition-opacity duration-300 ease-in-out hover:opacity-50 flex items-start justify-start cursor-pointer md:p-4'
                         key={text.id}
                         onClick={() => editingText(text.text, text.id)}
                         data-bs-toggle='modal'
                         data-bs-target='#modalEditText'
                       >
-                        <td className='min-w-[40px]'>{text.id}</td>
-                        <td className='px-6 min-w-[110px]'>{text.tagName}</td>
-                        <td className='px-6 '>{text.text}</td>
+                        <td className='p-2 min-w-[40px]'>{text.id}</td>
+                        <td className='p-2 md:px-6 md:min-w-[110px]'>{text.tagName}</td>
+                        <td className='p-2 md:px-6 font-medium'>{text.text}</td>
                       </tr>
                     ))}
                 </tbody>

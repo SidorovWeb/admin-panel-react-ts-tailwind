@@ -24,15 +24,17 @@ export const processingImages = ({ el, iframe }: iProcessingImages) => {
     btnsEditorImg.style.opacity = '1'
   }
 
-  parent.addEventListener('mousemove', (e) => {
-    if (!btnsEditorImg) btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
-    return
-  })
+  // parent.addEventListener('mousemove', (e) => {
+  //   if (!btnsEditorImg) btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+  //   return
+  // })
 
-  parent.addEventListener('mouseover', (e) => {
-    if (btnsEditorImg) setsStyleBtnUploadImg()
-  })
   parent.addEventListener('mousemove', (e) => {
+    if (!btnsEditorImg) {
+      btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+      return
+    }
+
     if (btnsEditorImg) {
       btnsEditorImg.style.opacity = '1'
       btnsEditorImg.style.pointerEvents = 'auto'

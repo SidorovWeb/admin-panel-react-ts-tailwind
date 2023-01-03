@@ -56,7 +56,7 @@ export const PanelImage: FC<IPanelImage> = ({ virtualDom, setVirtualDom }) => {
 
   return images && images?.length > 0 ? (
     <div
-      className='btns-editor-img p-1 z-998 fixed opacity-0 transition-opacity font-medium text-xs leading-tight uppercase space-y-1 pointer-events-none'
+      className='btns-editor-img p-1 z-99 fixed opacity-0 transition-opacity font-medium text-xs leading-tight uppercase space-y-1 pointer-events-none'
       ref={btnsEditorImg}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}

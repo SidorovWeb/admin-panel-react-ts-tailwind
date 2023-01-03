@@ -13,16 +13,12 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
     el.focus()
   }
 
-  el.addEventListener('click', (e) => {
-    // if (el.parentNode?.nodeName === 'A') {
-    //   e.stopPropagation()
-    // }
-
+  el.addEventListener('click', () => {
     onClick(el)
     setsStyleBtnText()
   })
 
-  el.addEventListener('blur', (e) => {
+  el.addEventListener('blur', () => {
     el.removeAttribute('contentEditable')
     el.blur()
   })
