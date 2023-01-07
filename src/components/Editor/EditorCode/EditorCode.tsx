@@ -180,6 +180,10 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
         }
         break
     }
+
+    setTimeout(() => {
+      location.reload()
+    }, 3000)
   }
 
   const setThemes = (theme: string) => {
@@ -189,6 +193,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
 
   return (
     <div>
+      <div className='bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4'>{t('afterPublication')}</div>
       <Tabs mode={mode} setMode={setMode} tabs={['HTML', 'CSS', 'JS']} />
 
       <div className='pb-4 flex justify-between items-center space-x-2'>

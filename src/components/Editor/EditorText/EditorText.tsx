@@ -149,8 +149,6 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
   }
 
   const editingText = (str: string, id: number) => {
-    console.log(id)
-
     if (virtualDom) {
       setText({ id: id, text: str.trim(), element: 'text', selector: `[apsa-text="${id}"]` })
       setOldText(str.trim())

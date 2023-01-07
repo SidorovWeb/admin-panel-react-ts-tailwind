@@ -90,8 +90,6 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
             virtualImg.src = newSrc
             iframeImage.src = newSrc
 
-            console.log(newSrc, virtualImg)
-
             setVirtualDom(virtualDom)
             toast.success('Uploaded to folder ./api/upload_image')
             resolve(img.src)

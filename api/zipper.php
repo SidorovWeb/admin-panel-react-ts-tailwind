@@ -1,9 +1,17 @@
 <?php
 include('./includes/headerType.php');
 
-if (!is_dir('../../backups/')) {
-  mkdir('../../backups/');
-}
+if($_SERVER['HTTP_HOST'] == 'localhost:8000') {
+    if (!is_dir('./backups/')) {
+        mkdir('./backups/');
+      }
+  } else {
+    if (!is_dir('../../backups/')) {
+        mkdir('../../backups/');
+      }
+  }
+
+
 
 Class ZipArchiver {
     public static function zipDir($sourcePath, $outZipPath){
@@ -52,6 +60,7 @@ $zipper = new ZipArchiver;
 $dirPath = './';
 
 // Path of output zip file
+$zipPath = '';
 
 if($_SERVER['HTTP_HOST'] == 'localhost:8000') {
     $zipPath = "./backups/" . date("d.m.y h:i:s") . ".zip";

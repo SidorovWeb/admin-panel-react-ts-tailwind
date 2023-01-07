@@ -152,6 +152,12 @@ export const Dashboard: FC<IDashboard> = ({}) => {
           </Button>
         </div>
       </div>
+
+      {backupFiles && backupFiles.length ? (
+        <div className='bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4'>{t('backupFolder')} ./backups/</div>
+      ) : (
+        <div className='bg-red-200 dark:text-gray-700  p-4 rounded-lg mb-4'>{t('recommendedBackup')}</div>
+      )}
     </div>
   )
 }

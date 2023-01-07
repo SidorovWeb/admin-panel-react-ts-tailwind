@@ -59,8 +59,6 @@ export const unWrapTextNode = (dom: Document | any) => {
 }
 
 export const wrapImages = (dom: Document | any) => {
-  console.log(dom.body.querySelectorAll('img'))
-
   dom.body.querySelectorAll('img').forEach((el: HTMLElement, idx: number) => {
     el.setAttribute('apsa-img', `${idx}`)
     el.classList.add('apsa-img')

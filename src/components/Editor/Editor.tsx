@@ -73,7 +73,12 @@ const Editor: FC<IEditor> = ({ currentPage, virtualDom, setVirtualDom }) => {
             <div className='flex items-stretch space-x-2'>
               <ThemeToggle />
               <Select array={['ru', 'en']} setSelect={changeLanguage} defaultValue={i18n.language} />
-              <Button clName='btn-default flex items-center !p-1 md:!p-2 w-[34px] h-[34px] md:w-auto' onClick={close}>
+              <Button
+                clName={`btn-default flex items-center !p-1 md:!p-2 h-[34px] w-[34px] ${
+                  i18n.language === 'ru' ? 'md:w-[80px]' : 'md:w-[70px]'
+                }`}
+                onClick={close}
+              >
                 <MdOutlineLogout className='w-full h-full md:h-[15px] md:-mt-[2px] md:mr-1' />
                 <p className='hidden md:block'>{t('close')}</p>
               </Button>

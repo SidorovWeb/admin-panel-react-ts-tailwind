@@ -194,6 +194,15 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
 
   return (
     <div>
+      <div className='bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4'>
+        Example:
+        {
+          "<picture><source srcset='images/example.webp' type='image/webp' /><img src='images/example.jpg' alt='example' /></picture>"
+        }
+      </div>
+      <div className='bg-amber-100 dark:text-gray-700 p-4 rounded-lg'>
+        Example: {"<img src='images/example.jpg' alt='example' />"}
+      </div>
       <div className='mb-3 relative w-full'>
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
         <Search value={search} onChange={onSearch} />
