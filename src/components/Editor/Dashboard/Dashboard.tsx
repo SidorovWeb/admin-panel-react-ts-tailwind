@@ -96,7 +96,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
 
   return (
     <div className='charts grid md:grid-cols-2 gap-16 justify-center'>
-      <div className='charts-pie md:h-[300px] w-[290px] md:w-full flex items-center justify-center'>
+      <div className='charts-pie h-[250px] md:h-[300px] md:w-full flex items-center justify-center'>
         {!chartData && <MiniSpinner />}
         {chartData && <DoughnutChart chartData={chartData} />}
       </div>

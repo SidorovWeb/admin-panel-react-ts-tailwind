@@ -42,17 +42,17 @@ export const App: FC = () => {
     checkAuth()
   }, [])
 
-  const checkAuth = () => {
-    setIsAuth(true)
-  }
   // const checkAuth = () => {
-  //   axios
-  //     .get<IAuth>(`${pathAPI}checkAuth.php`)
-  //     .then((res) => {
-  //       setIsAuth(res.data.auth)
-  //     })
-  //     .catch((e) => toast.error(e))
+  //   setIsAuth(true)
   // }
+  const checkAuth = () => {
+    axios
+      .get<IAuth>(`${pathAPI}checkAuth.php`)
+      .then((res) => {
+        setIsAuth(res.data.auth)
+      })
+      .catch((e) => toast.error(e))
+  }
 
   useEffect(() => {
     if (currentPage) {
@@ -95,9 +95,9 @@ export const App: FC = () => {
     }
   }, [virtualDom, loading])
 
-  const saveTempPage = (htmlDom: string) => {
+  const saveTempPage = async (htmlDom: string) => {
     const path = import.meta.env.MODE === 'development' ? '../api/' : './../'
-    axios
+    await axios
       .post(`${pathAPI}saveTempPage.php`, { html: htmlDom })
       .then(() => {
         const iframeDocument = document.querySelector('iframe')
