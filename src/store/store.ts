@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { codeEditorReducer } from './CodeEditor/CodeEditorSlice'
-import { getImageReducer } from './getImages/getImages'
-import { setTextReducer } from './SetText/SetTextSlice'
-import { textEditorPanelReducer } from './TextEditorPanel/TextEditorPanel'
+import { codeEditorReducer } from './slices/codeEditorSlice'
+import { getImageReducer } from './slices/getImagesSlice'
+import { setTextReducer } from './slices/setTextSlice'
+import { textEditorPanelReducer } from './slices/textEditorPanel'
 import thunk from 'redux-thunk'
 
 export const store = configureStore({

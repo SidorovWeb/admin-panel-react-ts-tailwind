@@ -4,7 +4,7 @@ import { Button } from './Button'
 import { useTranslation } from 'react-i18next'
 
 interface IPublishedButton {
-  onClick: () => void
+  onClick?: () => void
 }
 
 export const PublishedButton: FC<IPublishedButton> = ({ onClick }) => {

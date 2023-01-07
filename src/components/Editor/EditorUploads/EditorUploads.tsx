@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MdDeleteOutline } from 'react-icons/md'
 import { toast } from 'react-toastify'
-import { pathAPI } from '../../../Constants'
+import { pathAPI } from '../../../constants'
 import { useAppSelector } from '../../../hooks/redux'
 import { Button } from '../../UI/Button'
 import { Select } from '../../UI/Select'
@@ -109,7 +109,7 @@ export const EditorUploads: FC<IEditorUploads> = () => {
     <div className='space-y-4'>
       {filteredImages.length > 0 && notUsedList().length > 0 && (
         <div className='bg-red-200 dark:text-gray-700 p-4 rounded-lg flex item-center justify-between flex-wrap'>
-          <p className='flex items-center mr-2'>
+          <p className='flex items-center mr-2 mb-2 md:mb-0'>
             {t('deleteAllImages')} ({notUsedList().length}) ?
           </p>
           <Button clName='btn-danger flex item-center space-x-1' onClick={deleteNotUsedImages}>

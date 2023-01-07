@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { FC } from 'react'
-import { pathAPI } from '../../Constants'
-import { IAuth } from '../../interface/auth'
+import { pathAPI } from '../../constants'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +12,10 @@ interface IFormInput {
 
 interface ILogin {
   setIsAuth: (state: boolean) => void
+}
+
+export interface IAuth {
+  auth: boolean
 }
 
 export const Login: FC<ILogin> = ({ setIsAuth }) => {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { pathAPI } from '../Constants'
+import { pathAPI } from '../constants'
 import { rect } from './utils'
 
 interface iProcessingImages {
@@ -9,29 +9,18 @@ interface iProcessingImages {
 }
 
 export const processingImages = ({ el, iframe }: iProcessingImages) => {
-  const parent = el.parentNode as HTMLElement
-  const id = el.getAttribute('img-editor-app')
-  let btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
-
-  const setsStyleBtnUploadImg = () => {
-    const widthBtnsEditorImg = btnsEditorImg.getBoundingClientRect().width
-    const right = 10
-
-    btnsEditorImg.setAttribute('img-editor-id', `${id}`)
-    btnsEditorImg.style.top = `${rect(parent).top + rect(parent).height / 2}px`
-    btnsEditorImg.style.left = `${rect(parent).left + rect(parent).width - widthBtnsEditorImg - right}px`
-    btnsEditorImg.style.transform = `translateY(-50%)`
-    btnsEditorImg.style.opacity = '1'
+  let parent: HTMLElement
+  if (el.closest('.my-apsa-img')) {
+    parent = el.closest('.my-apsa-img') as HTMLElement
+  } else {
+    parent = el.parentNode as HTMLElement
   }
-
-  // parent.addEventListener('mousemove', (e) => {
-  //   if (!btnsEditorImg) btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
-  //   return
-  // })
+  let btnsEditorImg = document.querySelector('.btns-apsa-img') as HTMLElement
+  const id = el.getAttribute('apsa-img')
 
   parent.addEventListener('mousemove', (e) => {
     if (!btnsEditorImg) {
-      btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+      btnsEditorImg = document.querySelector('.btns-apsa-img') as HTMLElement
       return
     }
 
@@ -39,7 +28,13 @@ export const processingImages = ({ el, iframe }: iProcessingImages) => {
       btnsEditorImg.style.opacity = '1'
       btnsEditorImg.style.pointerEvents = 'auto'
 
-      setsStyleBtnUploadImg()
+      const widthBtnsEditorImg = btnsEditorImg.getBoundingClientRect().width
+
+      btnsEditorImg.setAttribute('apsa-img-id', `${id}`)
+      btnsEditorImg.style.top = `${rect(parent).top + rect(parent).height / 6}px`
+      btnsEditorImg.style.left = `${rect(parent).left + rect(parent).width / 2 - widthBtnsEditorImg / 2}px`
+      btnsEditorImg.style.transform = `translateY(-50%)`
+      btnsEditorImg.style.opacity = '1'
     }
   })
 
@@ -72,10 +67,8 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
         .then((res) => {
           const iframe = document.querySelector('iframe')
           const path = import.meta.env.MODE === 'development' ? '../api/' : './'
-          const virtualImg = virtualDom?.body.querySelector(`[img-editor-app="${id}"]`) as HTMLImageElement
-          const iframeImage = iframe?.contentDocument?.body.querySelector(
-            `[img-editor-app="${id}"]`
-          ) as HTMLImageElement
+          const virtualImg = virtualDom?.body.querySelector(`[apsa-img="${id}"]`) as HTMLImageElement
+          const iframeImage = iframe?.contentDocument?.body.querySelector(`[apsa-img="${id}"]`) as HTMLImageElement
 
           if (virtualImg) {
             const newSrc = `${path}upload_image/${res.data.src}`
@@ -96,6 +89,8 @@ export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploa
             img.src = newSrc
             virtualImg.src = newSrc
             iframeImage.src = newSrc
+
+            console.log(newSrc, virtualImg)
 
             setVirtualDom(virtualDom)
             toast.success('Uploaded to folder ./api/upload_image')

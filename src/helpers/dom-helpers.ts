@@ -23,11 +23,11 @@ export const wrapTextNodes = (dom: any) => {
 
     textNodes.forEach((node, i) => {
       const wrapper = dom.createElement('text-editor')
-      wrapper.className = 'text-editor-app'
+      wrapper.className = 'apsa-text'
       if (wrapper) {
         node.parentNode?.replaceChild(wrapper, node)
         wrapper.appendChild(node)
-        wrapper.setAttribute('text-editor-app', i + 1)
+        wrapper.setAttribute('apsa-text', i + 1)
       }
     })
   }
@@ -49,7 +49,7 @@ export const serializeDOMToString = (dom: any) => {
 
 export const unWrapTextNode = (dom: Document | any) => {
   const body = dom.body
-  const textNodes: NodeList = body.querySelectorAll('.text-editor-app')
+  const textNodes: NodeList = body.querySelectorAll('.apsa-text')
   textNodes.forEach((el) => {
     if (el && el.firstChild) {
       el.parentNode?.replaceChild(el.firstChild, el)
@@ -59,17 +59,19 @@ export const unWrapTextNode = (dom: Document | any) => {
 }
 
 export const wrapImages = (dom: Document | any) => {
+  console.log(dom.body.querySelectorAll('img'))
+
   dom.body.querySelectorAll('img').forEach((el: HTMLElement, idx: number) => {
-    el.setAttribute('img-editor-app', `${idx}`)
-    el.classList.add('img-editor-app')
+    el.setAttribute('apsa-img', `${idx}`)
+    el.classList.add('apsa-img')
   })
   return dom
 }
 
 export const unWrapImages = (dom: Document | any) => {
-  dom.body.querySelectorAll('.img-editor-app').forEach((el: HTMLElement) => {
-    el.removeAttribute('img-editor-app')
-    el.classList.remove('img-editor-app')
+  dom.body.querySelectorAll('.apsa-img').forEach((el: HTMLElement) => {
+    el.removeAttribute('apsa-img')
+    el.classList.remove('apsa-img')
   })
   return dom
 }

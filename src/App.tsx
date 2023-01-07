@@ -2,22 +2,23 @@ import axios from 'axios'
 import 'tw-elements'
 import { FC, lazy, Suspense, useEffect, useState } from 'react'
 import { parseStrDom, serializeDOMToString, wrapImages, wrapTextNodes } from './helpers/dom-helpers'
-import { processingText } from './helpers/Text'
 import 'react-toastify/dist/ReactToastify.css'
 import { OnFullScreen } from './components/Spinners/OnFullScreen'
 import { Panel } from './components/Panel/Panel'
-import { pathAPI, pathHtml } from './Constants'
-import { processingImages } from './helpers/Images'
 import { Login } from './components/Login/Login'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 import { PanelImage } from './components/Panel/PanelImage'
-import { IAuth } from './interface/auth'
 import { userActions } from './hooks/actions'
-import { Button } from './components/UI/Button'
-import rightClick from './assets/icons/right-click-of-the-mouse-svgrepo-com.svg'
-import { Prompt } from './components/UI/Prompt'
+import { processingImages } from './helpers/images'
+import { pathAPI, pathHtml } from './constants'
+import { processingText } from './helpers/text'
+import { CSSTransition } from 'react-transition-group'
 const Editor = lazy(() => import('./components/Editor/Editor'))
 const ModalWindows = lazy(() => import('./components/Modal/ModalWindows'))
+
+export interface IAuth {
+  auth: boolean
+}
 
 export const App: FC = () => {
   const [iframe, setIframe] = useState<HTMLIFrameElement>()
@@ -74,8 +75,8 @@ export const App: FC = () => {
         .then(wrapImages)
         .then((dom) => {
           const images = [...dom.body.querySelectorAll('img')] as []
-          getImages({ images })
 
+          getImages({ images })
           setVirtualDom(dom)
           return dom
         })
@@ -114,12 +115,12 @@ export const App: FC = () => {
 
   const enableEditing = (iframe: HTMLIFrameElement) => {
     if (virtualDom) {
-      iframe?.contentDocument?.body.querySelectorAll('.text-editor-app').forEach((el) => {
+      iframe?.contentDocument?.body.querySelectorAll('.apsa-text').forEach((el) => {
         const htmlEl = el as HTMLElement
         processingText(htmlEl, virtualDom, setVirtualDom)
       })
 
-      iframe?.contentDocument?.body.querySelectorAll('.img-editor-app').forEach((el) => {
+      iframe?.contentDocument?.body.querySelectorAll('.apsa-img').forEach((el) => {
         const htmlEl = el as HTMLImageElement
         processingImages({ el: htmlEl, iframe })
       })
@@ -131,12 +132,12 @@ export const App: FC = () => {
       const style = iframe.contentDocument.createElement('style')
       if (style) {
         style.innerHTML = `
-        .text-editor-app:hover {
+        .apsa-text:hover {
           outline: 3px solid #fc0 !important;
           outline-offset: 0.5px !important;
           cursor: text !important;
         }
-        .text-editor-app:focus {
+        .apsa-text:focus {
           outline: 3px solid green !important;
           outline-offset: 0.5px !important;
           cursor: text !important;
@@ -156,31 +157,35 @@ export const App: FC = () => {
         <>
           <iframe className='absolute top-0 left-0 w-full h-full border-0' id='idFrame' src=''></iframe>
           {!loading && virtualDom ? (
-            <>
-              <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
-              <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+            <CSSTransition in={!loading} timeout={500} appear={true} classNames='fade-apsa'>
+              <div className='bg-white dark:bg-slate-800'>
+                <Panel virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
+                <PanelImage virtualDom={virtualDom} setVirtualDom={setVirtualDom} />
 
-              <Suspense fallback={<></>}>
-                <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
-                <ModalWindows
-                  virtualDom={virtualDom}
-                  setVirtualDom={setVirtualDom}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
+                <Suspense fallback={<></>}>
+                  <Editor virtualDom={virtualDom} setVirtualDom={setVirtualDom} currentPage={currentPage} />
+                  <ModalWindows
+                    virtualDom={virtualDom}
+                    setVirtualDom={setVirtualDom}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </Suspense>
+
+                <ToastContainer
+                  position='top-center'
+                  autoClose={4000}
+                  newestOnTop={false}
+                  hideProgressBar={false}
+                  closeOnClick
+                  rtl={false}
+                  draggable
+                  pauseOnHover={true}
+                  transition={Slide}
+                  className='toast-message'
                 />
-              </Suspense>
-
-              <ToastContainer
-                position='top-right'
-                autoClose={4000}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                draggable={false}
-                pauseOnHover={true}
-                transition={Slide}
-              />
-            </>
+              </div>
+            </CSSTransition>
           ) : (
             <OnFullScreen />
           )}

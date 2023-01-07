@@ -1,8 +1,8 @@
 import { store } from '../store/store'
-import { textEditorPanelActions } from '../store/TextEditorPanel/TextEditorPanel'
+import { textEditorPanelActions } from '../store/slices/textEditorPanel'
 
 export const processingText = (el: HTMLElement, virtualDom: Document, setVirtualDom: (dom: Document) => void) => {
-  const id = el.getAttribute('text-editor-app')
+  const id = el.getAttribute('apsa-text')
 
   const setsStyleBtnText = () => {
     store.dispatch(textEditorPanelActions.setTextID({ id: Number(id) }))
@@ -30,7 +30,7 @@ export const processingText = (el: HTMLElement, virtualDom: Document, setVirtual
   })
 
   el.addEventListener('input', () => {
-    const virtualElem = virtualDom?.body.querySelector(`[text-editor-app="${id}"]`)
+    const virtualElem = virtualDom?.body.querySelector(`[apsa-text="${id}"]`)
     if (virtualElem) {
       virtualElem.innerHTML = el.innerHTML
       setVirtualDom(virtualDom)

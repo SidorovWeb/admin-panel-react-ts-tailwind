@@ -3,16 +3,20 @@ import CodeMirror from '@uiw/react-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
-import { Tabs } from '../../Tabs/Tabs'
+import { Tabs } from '../../UI/Tabs'
 import { Select } from '../../UI/Select'
 import { toast } from 'react-toastify'
 import axios from 'axios'
-import { pathAPI } from '../../../Constants'
+import { pathAPI } from '../../../constants'
 import { parseStrDom } from '../../../helpers/dom-helpers'
 import { toPublish } from '../../../helpers/utils'
-import { PublishedButton } from '../../UI/PublishedButton'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
 import { useTranslation } from 'react-i18next'
+import { userActions } from '../../../hooks/actions'
+import { useAppSelector } from '../../../hooks/redux'
+import { Button } from '../../UI/Button'
+import { MdOutlinePublishedWithChanges } from 'react-icons/md'
+import { PublishedButton } from '../../UI/PublishedButton'
 
 interface IPropsByMode {
   mode: string
@@ -163,7 +167,6 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
         await axios.post(`${pathAPI}saveTempPage.php`, { html: newHtml })
 
         const document = parseStrDom(newHtml)
-        setVirtualDom(document)
         toPublish({ newVirtualDom: document, currentPage })
         break
       case 'js':
@@ -185,7 +188,7 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
   }
 
   return (
-    <>
+    <div>
       <Tabs mode={mode} setMode={setMode} tabs={['HTML', 'CSS', 'JS']} />
 
       <div className='pb-4 flex justify-between items-center space-x-2'>
@@ -193,23 +196,23 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
           {propsByMode && propsByMode.mode === 'html' && <div className='font-medium mr-auto'>{currentPage}</div>}
           {propsByMode && propsByMode.mode === 'css' && cssFiles?.files && (
             <div className='font-medium mr-auto'>
-              <Select array={cssFiles.files} setSelect={setCssFileName} />
+              <Select array={cssFiles.files} setSelect={setCssFileName} width='w-32' />
             </div>
           )}
           {propsByMode && propsByMode.mode === 'javascript' && jsFiles?.files && (
             <div className='font-medium mr-auto'>
-              <Select array={jsFiles.files} setSelect={setJsFileName} />
+              <Select array={jsFiles.files} setSelect={setJsFileName} width='w-32' />
             </div>
           )}
         </>
         <div className='font-medium mr-auto'>
-          <Select array={themes} setSelect={setThemes} defaultValue={theme} />
+          <Select array={themes} setSelect={setThemes} defaultValue={theme} width='w-24' />
         </div>
       </div>
       {isSpinner && <MiniSpinner />}
       {!isSpinner && (
         <>
-          <div className='rounded relative w-full h-full' ref={codeMirrorWrapperRef}>
+          <div className='rounded relative w-full h-[70vh]' ref={codeMirrorWrapperRef}>
             <CodeMirror
               height='100%'
               basicSetup={{
@@ -226,6 +229,6 @@ export const EditorCode: FC<IEditorCode> = ({ virtualDom, setVirtualDom, current
           <PublishedButton onClick={published} />
         </>
       )}
-    </>
+    </div>
   )
 }

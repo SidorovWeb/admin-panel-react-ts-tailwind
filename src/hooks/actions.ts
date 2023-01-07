@@ -1,9 +1,9 @@
 import { bindActionCreators } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import { codeEditorActions } from '../store/CodeEditor/CodeEditorSlice'
-import { getImageActions } from '../store/getImages/getImages'
-import { setTextActions } from '../store/SetText/SetTextSlice'
-import { textEditorPanelActions } from '../store/TextEditorPanel/TextEditorPanel'
+import { codeEditorActions } from '../store/slices/codeEditorSlice'
+import { getImageActions } from '../store/slices/getImagesSlice'
+import { setTextActions } from '../store/slices/setTextSlice'
+import { textEditorPanelActions } from '../store/slices/textEditorPanel'
 
 const actions = {
   ...setTextActions,

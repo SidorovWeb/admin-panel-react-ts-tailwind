@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { pathAPI } from '../Constants'
+import { pathAPI } from '../constants'
 import { serializeDOMToString, unWrapImages, unWrapTextNode } from './dom-helpers'
 
 interface IToPublish {
   newVirtualDom: Document
   currentPage: string
+  publicationConfirmation?: boolean
 }
 
 export const toPublish = ({ newVirtualDom, currentPage }: IToPublish) => {

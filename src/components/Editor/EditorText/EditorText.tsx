@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react'
-import { MdOutlineSearch } from 'react-icons/md'
+import { MdEdit, MdOutlineSearch } from 'react-icons/md'
 import { parseStrDom } from '../../../helpers/dom-helpers'
 import { toPublish } from '../../../helpers/utils'
 import { userActions } from '../../../hooks/actions'
 import { useAppSelector } from '../../../hooks/redux'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
-import { Tabs } from '../../Tabs/Tabs'
+import { Tabs } from '../../UI/Tabs'
 import { PublishedButton } from '../../UI/PublishedButton'
 import { useTranslation } from 'react-i18next'
 import { Search } from '../../UI/Search'
@@ -64,12 +64,12 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
   }, [text])
 
   const getTextNode = () => {
-    const textsNode = iframe?.contentDocument?.body.querySelectorAll(`.text-editor-app`)
+    const textsNode = iframe?.contentDocument?.body.querySelectorAll(`.apsa-text`)
     const mapText =
       textsNode &&
       [...textsNode].map((t) => {
         const el = t as HTMLElement
-        const id = Number(el.getAttribute('text-editor-app'))
+        const id = Number(el.getAttribute('apsa-text'))
         const text = el.textContent as string
         let tagName = ''
 
@@ -149,8 +149,10 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
   }
 
   const editingText = (str: string, id: number) => {
+    console.log(id)
+
     if (virtualDom) {
-      setText({ id: id, text: str.trim(), element: 'text', selector: `[text-editor-app="${id}"]` })
+      setText({ id: id, text: str.trim(), element: 'text', selector: `[apsa-text="${id}"]` })
       setOldText(str.trim())
     }
   }
@@ -163,7 +165,7 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
   }
 
   return (
-    <>
+    <div>
       <Tabs mode={mode} setMode={setMode} tabs={['All', 'Headline', 'Links', 'Buttons', 'Text']} />
       <div className='mb-3 relative w-full'>
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
@@ -201,7 +203,10 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
                       >
                         <td className='p-2 min-w-[40px]'>{text.id}</td>
                         <td className='p-2 md:px-6 md:min-w-[110px]'>{text.tagName}</td>
-                        <td className='p-2 md:px-6 font-medium'>{text.text}</td>
+                        <td className='p-2 md:px-6 font-medium flex'>
+                          <MdEdit className='mt-1 mr-2 opacity-70' />
+                          <p>{text.text}</p>
+                        </td>
                       </tr>
                     ))}
                 </tbody>
@@ -214,6 +219,6 @@ export const EditorText: FC<IEditorText> = ({ virtualDom, setVirtualDom, current
         </div>
       </div>
       <PublishedButton onClick={published} />
-    </>
+    </div>
   )
 }

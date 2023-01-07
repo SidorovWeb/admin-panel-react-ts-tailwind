@@ -10,21 +10,27 @@ import {
 } from 'react-icons/md'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BiMove } from 'react-icons/bi'
-import { VscCode, VscGoToFile, VscSave } from 'react-icons/vsc'
+import { VscCode, VscGoToFile } from 'react-icons/vsc'
 import { userActions } from '../../hooks/actions'
 import { PanelTextEditing } from './PanelTextEditing'
 import { useAppSelector } from '../../hooks/redux'
+import { CSSTransition } from 'react-transition-group'
 
 interface IPanel {
   virtualDom: Document
   setVirtualDom: (dom: Document) => void
 }
 
+interface IPosDraggable {
+  position: { x: number; y: number }
+  direction: string
+}
+
 export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
   const iframe = document.querySelector('iframe')
   const dragContainerWrap = useRef() as MutableRefObject<HTMLDivElement>
   const dragHandle = useRef() as MutableRefObject<HTMLButtonElement>
-  const [posDraggable, setPosDraggable] = useState<any>()
+  const [posDraggable, setPosDraggable] = useState<IPosDraggable>()
   const [panelEditorText, setPanelEditorText] = useState(false)
   const [direction, setDirection] = useState('row')
   const textId = useAppSelector((state) => state.textEditorPanel.id)
@@ -69,11 +75,12 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
   }
 
   const handleEnd = (_: any, data: DraggableData) => {
+    const position = { x: data.x, y: data.y }
     dragHandle.current.style.cursor = 'pointer'
     dragContainerWrap.current.style.inset = 'auto'
     dragContainerWrap.current.style.position = 'static'
 
-    const position = { x: data.x, y: data.y }
+    setPosDraggable({ position, direction: direction })
     localStorage.setItem('apsa-draggable-position', JSON.stringify(position))
   }
 
@@ -93,7 +100,7 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
 
   const callingTextEditingPanel = () => {
     if (textId) {
-      const textEl = iframe?.contentDocument?.body.querySelector(`[text-editor-app="${textId}"]`) as HTMLElement
+      const textEl = iframe?.contentDocument?.body.querySelector(`[apsa-text="${textId}"]`) as HTMLElement
       if (textEl) {
         textEl.setAttribute('contentEditable', 'true')
         textEl.focus()
@@ -103,7 +110,7 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
   }
 
   const onMouseEnter = () => {
-    let btnsEditorImg = document.querySelector('.btns-editor-img') as HTMLElement
+    let btnsEditorImg = document.querySelector('.btns-apsa-img') as HTMLElement
     if (!btnsEditorImg) {
       return
     }
@@ -121,7 +128,7 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
           onStop={handleEnd}
         >
           <div
-            className='DragContainer fixed w-auto z-999 bg-slate-300/90 dark:bg-slate-800/90 rounded overflow-hidden shadow-lg p-1.5 flex flex-wrap'
+            className='DragContainer fixed z-998 bg-slate-300/90 dark:bg-slate-800/90 rounded overflow-hidden shadow-lg p-1.5 flex flex-wrap w-[320px] md:w-auto'
             onMouseEnter={onMouseEnter}
           >
             <div className='DragInner'>
@@ -183,12 +190,14 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
                   <MdOutlineLogout className='w-full h-full' />
                 </Button>
               </div>
-              <PanelTextEditing
-                virtualDom={virtualDom}
-                setVirtualDom={setVirtualDom}
-                active={panelEditorText}
-                close={setPanelEditorText}
-              />
+              <CSSTransition in={panelEditorText} timeout={500} appear={true} classNames='fade-apsa'>
+                <PanelTextEditing
+                  virtualDom={virtualDom}
+                  setVirtualDom={setVirtualDom}
+                  active={panelEditorText}
+                  close={setPanelEditorText}
+                />
+              </CSSTransition>
             </div>
             <Button clName={`${clBtn} btn-default DragHandleFlip rounded md:ml-2`} onClick={flipElement}>
               <MdOutlineSync className='w-full h-full' />

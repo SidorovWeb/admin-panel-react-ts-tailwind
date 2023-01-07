@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react'
+import { BsFillBrightnessHighFill, BsFillMoonStarsFill } from 'react-icons/bs'
 
 export const ThemeToggle: FC = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -32,7 +33,11 @@ export const ThemeToggle: FC = () => {
     >
       <div className={`${darkMode ? 'translate-x-5' : 'translate-x-0'} h-5 w-5 rounded-full transform transition-all`}>
         <button className={`absolute top-[50%] -translate-y-[50%] text-lg ${darkMode ? 'left-1' : 'right-1'}`}>
-          {darkMode ? '🌜' : '🌞'}
+          {darkMode ? (
+            <BsFillMoonStarsFill className='text-white' />
+          ) : (
+            <BsFillBrightnessHighFill className='text-white' />
+          )}
         </button>
       </div>
     </div>

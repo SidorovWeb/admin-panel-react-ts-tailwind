@@ -9,6 +9,7 @@ import {
 } from 'react-icons/md'
 import { Button } from '../UI/Button'
 import { ChromePicker } from 'react-color'
+import { CSSTransition } from 'react-transition-group'
 
 interface IPanelEffects {
   setStyle: (properties: string, value: string) => void
@@ -94,12 +95,12 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
   }
 
   return (
-    <div className='DragTextPanel-bottom flex flex-wrap items-start mt-[6px]'>
+    <div className='DragTextPanel-bottom flex flex-wrap item-center mt-[6px]'>
       {isFontSize ? (
-        <>
-          <div className='bg-white ml-[4px] rounded overflow-hidden'>
+        <CSSTransition in={isFontSize} timeout={500} appear={true} classNames='fade-apsa'>
+          <div className='flex items-center'>
             <input
-              className='text-gray-700 h-[31px] w-[50px] text-center '
+              className='text-gray-700 h-[32px] w-[50px] text-center ml-[4px] rounded'
               type='number'
               min='10'
               max='100'
@@ -108,11 +109,12 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
                 onChangeFontSize(e.target.value)
               }}
             ></input>
+
+            <Button clName={`btn-danger ${cl}  ml-[6px]`} onClick={closesPicker}>
+              <MdClose className='h-full w-full' />
+            </Button>
           </div>
-          <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
-            <MdClose className='h-full w-full' />
-          </Button>
-        </>
+        </CSSTransition>
       ) : (
         <Button clName={`btn-default ${cl}`}>
           <MdOutlineFormatSize className='h-[24px] w-full' onClick={includesFontSize} />
@@ -120,12 +122,14 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
       )}
 
       {colorPicker ? (
-        <>
-          <ChromePicker color={hexColor} onChange={onChange} className='mx-[6px] mt-[2px]' />
-          <Button clName={`btn-danger ${cl}`} onClick={closesPicker}>
-            <MdClose className='h-full w-full' />
-          </Button>
-        </>
+        <CSSTransition in={colorPicker} timeout={500} appear={true} classNames='fade-apsa'>
+          <div className='flex items-start'>
+            <ChromePicker color={hexColor} onChange={onChange} className='mx-[6px] mt-[2px]' />
+            <Button clName={`btn-danger ${cl}`} onClick={closesPicker}>
+              <MdClose className='h-full w-full' />
+            </Button>
+          </div>
+        </CSSTransition>
       ) : (
         <>
           <Button clName={`btn-default ${cl}`} onClick={() => onClick('text')}>
@@ -137,22 +141,23 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
         </>
       )}
       {blurPicker ? (
-        <>
-          <div className='bg-white flex py-2 px-4 ml-[4px] rounded'>
-            <input
-              type='range'
-              min='0'
-              max='20'
-              id='blur-slider'
-              step='0.01'
-              value={blur}
-              onChange={(e) => onChangeBlur(e.target.value)}
-            ></input>
+        <CSSTransition in={blurPicker} timeout={500} appear={true} classNames='fade-apsa'>
+          <div className='flex item-center'>
+            <div className='bg-white flex items-center px-4 ml-[4px] rounded'>
+              <input
+                type='range'
+                min='0'
+                max='20'
+                step='0.01'
+                value={blur}
+                onChange={(e) => onChangeBlur(e.target.value)}
+              ></input>
+            </div>
+            <Button clName={`btn-danger ${cl} ml-[6px]`} onClick={closesPicker}>
+              <MdClose className='h-full w-full' />
+            </Button>
           </div>
-          <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
-            <MdClose className='h-full w-full' />
-          </Button>
-        </>
+        </CSSTransition>
       ) : (
         <Button clName={`btn-default ${cl}`} onClick={includesBlur}>
           <MdBlurOn className='h-full w-full' />
@@ -160,22 +165,23 @@ export const PanelEffects: FC<IPanelEffects> = ({ setStyle }) => {
       )}
 
       {roundedCorner ? (
-        <>
-          <div className='bg-white flex py-2 px-4 ml-[4px] rounded'>
-            <input
-              type='range'
-              min='0'
-              max='50'
-              id='blur-slider'
-              step='1'
-              value={rounded}
-              onChange={(e) => onChangeRounded(e.target.value)}
-            ></input>
+        <CSSTransition in={roundedCorner} timeout={500} appear={true} classNames='fade-apsa'>
+          <div className='flex item-center'>
+            <div className='bg-white flex items-center px-4 ml-[4px] rounded'>
+              <input
+                type='range'
+                min='0'
+                max='50'
+                step='1'
+                value={rounded}
+                onChange={(e) => onChangeRounded(e.target.value)}
+              ></input>
+            </div>
+            <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
+              <MdClose className='h-full w-full' />
+            </Button>
           </div>
-          <Button clName={`btn-danger ${cl} mt-0 ml-[6px]`} onClick={closesPicker}>
-            <MdClose className='h-full w-full' />
-          </Button>
-        </>
+        </CSSTransition>
       ) : (
         <Button clName={`btn-default ${cl}`} onClick={includesRoundedCorner}>
           <MdRoundedCorner className='h-full w-full' />

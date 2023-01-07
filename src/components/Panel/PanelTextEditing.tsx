@@ -1,16 +1,13 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import {
-  MdClose,
   MdFormatAlignJustify,
   MdFormatAlignLeft,
   MdFormatAlignRight,
   MdFormatBold,
   MdFormatItalic,
   MdFormatUnderlined,
-  MdOutlineFormatSize,
   MdStrikethroughS,
 } from 'react-icons/md'
-import { ImTextHeight } from 'react-icons/im'
 import { useAppSelector } from '../../hooks/redux'
 import { Button } from '../UI/Button'
 import { PanelEffects } from './PanelEffects'
@@ -44,7 +41,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
 
   useEffect(() => {
     if (textId) {
-      const textEl = iframe?.contentDocument?.body.querySelector(`[text-editor-app="${textId}"]`) as HTMLElement
+      const textEl = iframe?.contentDocument?.body.querySelector(`[apsa-text="${textId}"]`) as HTMLElement
       setCurrentEl(textEl)
       if (textEl?.parentElement) setParent(textEl.parentElement)
     }
@@ -70,7 +67,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
   }, [parent])
 
   const removeProperty = (prop: string) => {
-    const virtualElem = virtualDom?.body.querySelector(`[text-editor-app="${textId}"]`)?.parentElement as HTMLElement
+    const virtualElem = virtualDom?.body.querySelector(`[apsa-text="${textId}"]`)?.parentElement as HTMLElement
     if (parent) {
       parent?.style.removeProperty(prop)
       virtualElem.style.removeProperty(prop)
@@ -179,7 +176,7 @@ export const PanelTextEditing: FC<IPanelTextEditing> = ({ virtualDom, setVirtual
 
   const setStyle = (properties: string, value: string) => {
     if (currentEl?.parentElement) {
-      const virtualElem = virtualDom?.body.querySelector(`[text-editor-app="${textId}"]`)?.parentElement as HTMLElement
+      const virtualElem = virtualDom?.body.querySelector(`[apsa-text="${textId}"]`)?.parentElement as HTMLElement
       parent?.style.setProperty(properties, value)
       virtualElem.style.setProperty(properties, value)
       setVirtualDom(virtualDom)

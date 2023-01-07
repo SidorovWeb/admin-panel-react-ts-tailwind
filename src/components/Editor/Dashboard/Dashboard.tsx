@@ -6,7 +6,7 @@ import js from '../../../assets/icons/js.svg'
 import img from '../../../assets/icons/img.svg'
 import backup from '../../../assets/icons/backup.svg'
 import axios from 'axios'
-import { pathAPI } from '../../../Constants'
+import { pathAPI } from '../../../constants'
 import { toast } from 'react-toastify'
 import { Button } from '../../UI/Button'
 import { MiniSpinner } from '../../Spinners/MiniSpinner'
@@ -96,7 +96,7 @@ export const Dashboard: FC<IDashboard> = ({}) => {
 
   return (
     <div className='charts grid md:grid-cols-2 gap-16 justify-center'>
-      <div className='charts-pie md:h-[300px] w-[290px] flex items-center justify-center'>
+      <div className='charts-pie md:h-[300px] w-[290px] md:w-full flex items-center justify-center'>
         {!chartData && <MiniSpinner />}
         {chartData && <DoughnutChart chartData={chartData} />}
       </div>

@@ -1,8 +1,8 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { Button } from '../../UI/Button'
-import { uploadImage } from '../../../helpers/Images'
+import { uploadImage } from '../../../helpers/images'
 import axios from 'axios'
-import { pathAPI } from '../../../Constants'
+import { pathAPI } from '../../../constants'
 import { userActions } from '../../../hooks/actions'
 import { useAppSelector } from '../../../hooks/redux'
 import { convertBytes, imageSize, toPublish } from '../../../helpers/utils'
@@ -150,7 +150,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
 
   const editingText = (name: string, id: number) => {
     if (virtualDom) {
-      setText({ id: id, text: name, element: 'img', selector: `[img-editor-app="${id}"]` })
+      setText({ id: id, text: name, element: 'img', selector: `[apsa-img="${id}"]` })
     }
   }
 
@@ -193,7 +193,7 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
   }
 
   return (
-    <>
+    <div>
       <div className='mb-3 relative w-full'>
         <MdOutlineSearch className='absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6' />
         <Search value={search} onChange={onSearch} />
@@ -260,6 +260,6 @@ export const EditorImages: FC<IEditorImages> = ({ virtualDom, setVirtualDom, cur
         {!isSpinner && !filteredImages && <div className='text-xl mt-6'>{t('imagesNotFound')}</div>}
       </div>
       <PublishedButton onClick={published} />
-    </>
+    </div>
   )
 }
