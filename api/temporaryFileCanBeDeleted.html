@@ -1,11 +1,11 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head>
-  
+    
 
-  
+    
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title content="Главная">Главная!</title>
+    <title>Главная</title>
     <meta name="viewport" content="width=device-width, initial-scale=no, maximum-scale=1, minimum-scale=1" />
     <meta name="description" content="Сайт об HTML и создании сайтов" />
     <meta property="og:image" content="img/hero/mobile-img.jpg" />
@@ -20,6 +20,7 @@
     <link rel="preload" as="font" href="fonts/ProximaNova-Bold.woff2" type="font/woff2" crossorigin="" />
     <link rel="preload" as="font" href="fonts/ProximaNova-Light.woff2" type="font/woff2" crossorigin="" />
     <script>
+      //- switch theme
       function setTheme(themeName) {
         localStorage.setItem('theme', themeName)
         document.documentElement.className = themeName
@@ -41,36 +42,32 @@
         }
       })()
     </script>
-    <link rel="stylesheet" href="styles/main.css" />
-    <meta name="keywords" content="Test Starter" />
+    <link rel="stylesheet" href="styles/main.min.css" />
   </head>
   <body class="main-page">
     <header class="header">
       <div class="header__wrapper">
-        <button class="btn btn--icon hamburger" aria-label="Навигация" type="button">
-          <span class="hamburger__span"></span><span class="hamburger__span"></span><span class="hamburger__span"></span>
-        </button>
+        <a class="brand header__brand" href="#"><text-editor class="apsa-text" apsa-text="1">brand</text-editor></a>
         <nav class="nav header__nav">
           <ul class="nav__list">
-            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="1">11111Home</text-editor></a></li>
-            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="2">About</text-editor></a></li>
-            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="3">Сервис</text-editor></a></li>
-            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="4">Контактыsefsefawdaw</text-editor></a></li>
+            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="2">Home</text-editor></a></li>
+            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="3">About</text-editor></a></li>
+            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="4">Services</text-editor></a></li>
+            <li class="nav__item"><a class="nav__link" href="#"><text-editor class="apsa-text" apsa-text="5">Contact</text-editor></a></li>
           </ul>
         </nav>
-        <a class="brand header__brand" href="#"><text-editor class="apsa-text" apsa-text="5">brandawdawd</text-editor></a>
-        <div class="header__button-wrapper"><a class="button header__button" href="#"><text-editor class="apsa-text" apsa-text="6">buttonfsef</text-editor></a></div>
+        <div class="header__left-block">
+          <a class="button header__button" href="#"><text-editor class="apsa-text" apsa-text="6">button</text-editor></a>
+          <button class="btn btn--icon hamburger" aria-label="Навигация" type="button">
+            <span class="hamburger__span"></span><span class="hamburger__span"></span><span class="hamburger__span"></span>
+          </button>
+        </div>
       </div>
     </header>
     <main class="content">
       <div class="container">
-        <h1 class="h1-test" style="&#10;            color: rgb(140, 41, 41);&#10;            background-color: rgb(218, 192, 192);&#10;            filter: blur(0px);&#10;            border-radius: 5px;&#10;            text-align: right;&#10;            font-size: 43px;&#10;          "><text-editor class="apsa-text" apsa-text="7">
-          Новый Адаптивный текст!
-        </text-editor></h1>
-        <div class="card-2">
-          <img src="../api/upload_image/63b9b88dbcb1d.jpeg" width="270" height="168.5" alt="Горы" loading="lazy" class="apsa-img" apsa-img="0" />
-        </div>
-        <h2 style="font-size: 1px"><text-editor class="apsa-text" apsa-text="8">Switch mode</text-editor></h2>
+        <h1 class="h1-test"><text-editor class="apsa-text" apsa-text="7">Адаптивный текст</text-editor></h1>
+        <h2><text-editor class="apsa-text" apsa-text="8">Switch mode</text-editor></h2>
         <button class="btn btn--default btn--normal switch-mode" type="button"><text-editor class="apsa-text" apsa-text="9">Switch</text-editor></button>
         <h2><text-editor class="apsa-text" apsa-text="10">Quiz</text-editor></h2>
         <div class="quiz">
@@ -172,7 +169,7 @@
           </div>
         </div>
         <span class="quiz-output-values"> <h3><text-editor class="apsa-text" apsa-text="32">вывод</text-editor></h3></span>
-        <h2 style="font-size: 29px"><text-editor class="apsa-text" apsa-text="33">Button</text-editor></h2>
+        <h2><text-editor class="apsa-text" apsa-text="33">Button</text-editor></h2>
         <div class="btn-container">
           <button class="btn btn--default btn--normal btn--radius" type="button"><text-editor class="apsa-text" apsa-text="34">Normal</text-editor></button>
           <button class="btn btn--default btn--normal btn--radius btn--scale" type="button"><text-editor class="apsa-text" apsa-text="35">scale</text-editor></button>
@@ -180,11 +177,11 @@
           <button class="btn btn--default btn--large btn--radius" type="button"><text-editor class="apsa-text" apsa-text="37">Large</text-editor></button><a class="btn btn--default btn--radius" href="#"><text-editor class="apsa-text" apsa-text="38">Link</text-editor></a>
           <button class="btn btn--default btn--normal btn--with-icon btn--radius" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk btn--icon-svg social-icon">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#vk"/></svg><span><text-editor class="apsa-text" apsa-text="39">VKontakte</text-editor></span>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#vk"/></svg><span><text-editor class="apsa-text" apsa-text="39">VKontakte</text-editor></span>
           </button>
           <button class="btn btn--default btn--normal btn--icon btn--radius" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk btn--icon-svg social-icon">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#vk"/></svg><span class="sr-only"><text-editor class="apsa-text" apsa-text="40">VKontakte</text-editor></span>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#vk"/></svg><span class="sr-only"><text-editor class="apsa-text" apsa-text="40">VKontakte</text-editor></span>
           </button>
           <button class="btn btn--default btn--normal btn--two-lines btn--radius" type="button">
             <span><text-editor class="apsa-text" apsa-text="41">Subscribe to our newsletter</text-editor></span><span aria-hidden="true"><text-editor class="apsa-text" apsa-text="42">240K+ subscribers</text-editor></span>
@@ -195,14 +192,14 @@
           <button class="btn btn--normal btn--danger btn--radius" type="button"><text-editor class="apsa-text" apsa-text="46">Normal</text-editor></button>
           <button class="btn btn--normal btn--radius" type="button" disabled=""><text-editor class="apsa-text" apsa-text="47">Button</text-editor></button>
         </div>
-        <h2 style="font-size: 29px"><text-editor class="apsa-text" apsa-text="48">Modal</text-editor></h2>
-        <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="modal"><text-editor class="apsa-text" apsa-text="49">
+        <h2><text-editor class="apsa-text" apsa-text="48">Modal</text-editor></h2>
+        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="modal"><text-editor class="apsa-text" apsa-text="49">
           modal
         </text-editor></button>
-        <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="success"><text-editor class="apsa-text" apsa-text="50">
+        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="success"><text-editor class="apsa-text" apsa-text="50">
           modal success
         </text-editor></button>
-        <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="error"><text-editor class="apsa-text" apsa-text="51">
+        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="error"><text-editor class="apsa-text" apsa-text="51">
           modal error
         </text-editor></button>
         <h2><text-editor class="apsa-text" apsa-text="52">Form</text-editor></h2>
@@ -236,7 +233,7 @@
           <button class="btn select__trigger" type="button">
             <span class="select__trigger-text"><text-editor class="apsa-text" apsa-text="56">Android</text-editor></span>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
             </svg>
           </button>
           <ul class="select__options">
@@ -289,7 +286,7 @@
             <button class="block-2__title btn accordion__title open" type="button"><text-editor class="apsa-text" apsa-text="73">
               Heading 1
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -300,7 +297,7 @@
             <button class="block-2__title btn accordion__title" type="button"><text-editor class="apsa-text" apsa-text="75">
               Heading 2
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -311,7 +308,7 @@
             <button class="block-2__title btn accordion__title" type="button"><text-editor class="apsa-text" apsa-text="77">
               Heading 3
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -322,7 +319,7 @@
             <button class="block-2__title btn accordion__title" type="button"><text-editor class="apsa-text" apsa-text="79">
               Heading 4
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -333,7 +330,7 @@
             <button class="block-2__title btn accordion__title" type="button"><text-editor class="apsa-text" apsa-text="81">
               Heading 5
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -344,7 +341,7 @@
             <button class="block-2__title btn accordion__title" type="button"><text-editor class="apsa-text" apsa-text="83">
               Heading 6
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -352,13 +349,13 @@
             </div>
           </div>
         </div>
-        <h2><text-editor class="apsa-text" apsa-text="85">Из списка в спойлер 900px</text-editor></h2>
+        <h2><text-editor class="apsa-text" apsa-text="85">Из списка в спойлер = 900px</text-editor></h2>
         <div class="block-1 accordion">
           <div class="accordion__item">
             <div class="block-1__title accordion__title"><text-editor class="apsa-text" apsa-text="86">
               Heading 1
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </div>
             <ul class="block-1__list">
@@ -371,7 +368,7 @@
             <div class="block-1__title accordion__title"><text-editor class="apsa-text" apsa-text="90">
               Heading 2
               </text-editor><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
               </svg>
             </div>
             <ul class="block-1__list">
@@ -385,11 +382,10 @@
         <input class="checkbox" type="checkbox" id="username" />
         <label for="username"><text-editor class="apsa-text" apsa-text="95">Remember me</text-editor></label>
         <h2><text-editor class="apsa-text" apsa-text="96">Image</text-editor></h2>
-        <div class="card-2">
-          <picture>
-            <source srcset="../api/upload_image/63b9b8866b631.jpeg" type="image/webp" />
-            <img src="../api/upload_image/63b9b8866b631.jpeg" width="300" height="187" alt="Ресторан" loading="lazy" class="apsa-img" apsa-img="1" />
-          </picture>
+        <div class="grid3">
+          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" apsa-img="0" class="apsa-img" /></div>
+          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" apsa-img="1" class="apsa-img" /></div>
+          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" apsa-img="2" class="apsa-img" /></div>
         </div>
         <h2><text-editor class="apsa-text" apsa-text="97">Image background</text-editor></h2>
         <div class="qqq" style="width: 24rem">
@@ -416,27 +412,27 @@
           <div class="columns__item"><text-editor class="apsa-text" apsa-text="113">3</text-editor></div>
           <div class="columns__item"><text-editor class="apsa-text" apsa-text="114">4</text-editor></div>
         </div>
-        <h2><text-editor class="apsa-text" apsa-text="115">Card</text-editor></h2>
-        <div class="card my-apsa-img">
+        <h2><text-editor class="apsa-text" apsa-text="115">Card + image picture</text-editor></h2>
+        <div class="card">
           <div class="card__img">
             <picture>
-              <source srcset="../api/upload_image/63b9b8727b34c.jpeg" type="image/webp" />
-              <img src="../api/upload_image/63b9b8727b34c.jpeg" width="270" height="168.5" alt="Город" loading="lazy" class="apsa-img" apsa-img="2" />
+              <source srcset="img/3.webp" type="image/webp" />
+              <img src="img/3.jpg" width="270" height="168.5" alt="Горы" loading="lazy" apsa-img="3" class="apsa-img" />
             </picture>
           </div>
           <div class="card__content">
             <h3>
               <a class="card__link" href="#"><text-editor class="apsa-text" apsa-text="116">Title</text-editor></a>
-              <p><text-editor class="apsa-text" apsa-text="117">Шале</text-editor></p>
+              <p><text-editor class="apsa-text" apsa-text="117">Subtitle</text-editor></p>
             </h3>
           </div>
           <span class="card__tag"><text-editor class="apsa-text" apsa-text="118">My tag</text-editor></span>
         </div>
-        <h2><text-editor class="apsa-text" apsa-text="119">Card</text-editor></h2>
+        <h2><text-editor class="apsa-text" apsa-text="119">Card + image picture</text-editor></h2>
         <div class="card-2">
           <picture>
-            <source srcset="../api/upload_image/63b9b87793ffe.jpeg" type="image/webp" />
-            <img src="../api/upload_image/63b9b87793ffe.jpeg" width="270" height="168.5" alt="горы" loading="lazy" class="apsa-img" apsa-img="3" />
+            <source srcset="img/3.webp" type="image/webp" />
+            <img src="img/3.jpg" width="270" height="168.5" alt="горы" loading="lazy" apsa-img="4" class="apsa-img" />
           </picture>
           <div class="card-2__content">
             <h3><text-editor class="apsa-text" apsa-text="120">Title</text-editor></h3>
@@ -445,61 +441,46 @@
           </div>
         </div>
         <h2><text-editor class="apsa-text" apsa-text="123">Hero Section</text-editor></h2>
-        <div class="hero my-apsa-img">
+        <div class="hero">
           <div class="hero__content">
             <h3 class="hero__title"><text-editor class="apsa-text" apsa-text="124">Title</text-editor></h3>
             <p class="hero__description"><text-editor class="apsa-text" apsa-text="125">Description</text-editor></p>
             <a class="hero__link" href="#"><text-editor class="apsa-text" apsa-text="126">Link</text-editor></a>
           </div>
-          <picture>
-            <source srcset="../api/upload_image/63b9b87fbb92f.jpeg" type="image/webp" />
-            <img src="../api/upload_image/63b9b87fbb92f.jpeg" width="" height="" alt="Космос" loading="lazy" class="apsa-img" apsa-img="4" />
-          </picture>
+          <img src="img/2.jpg" width="" height="" alt="горы" loading="lazy" apsa-img="5" class="apsa-img" />
         </div>
         <h2><text-editor class="apsa-text" apsa-text="127">Slider</text-editor></h2>
-        <div class="swiper" style="max-height: 472px">
+        <div class="swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63af7194c3c85.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63af7194c3c85.jpeg" width="1180" height="472" alt="Шале" loading="lazy" class="apsa-img" apsa-img="5" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" apsa-img="6" class="apsa-img" />
               </div>
             </div>
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63af6819e4333.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63af6819e4333.jpeg" width="1180" height="472" alt="Горы" loading="lazy" class="apsa-img" apsa-img="6" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" apsa-img="7" class="apsa-img" />
               </div>
             </div>
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63aeb160eae71.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63aeb160eae71.jpeg" width="1180" height="472" alt="Горы" loading="lazy" class="apsa-img" apsa-img="7" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" apsa-img="8" class="apsa-img" />
               </div>
             </div>
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63b83b4ece835.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63b83b4ece835.jpeg" width="1180" height="472" alt="Горы" loading="lazy" class="apsa-img" apsa-img="8" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" apsa-img="9" class="apsa-img" />
               </div>
             </div>
           </div>
           <button class="btn swiper-button-prev" aria-label="Предыдущий слайд" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
             </svg>
           </button>
           <button class="btn swiper-button-next" aria-label="Следующий слайд" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
             </svg>
           </button>
         </div>
@@ -548,7 +529,7 @@
             <div class="video__link" data-bg="https://i.ytimg.com/vi/mCRC2jvNlbU/maxresdefault.jpg" data-bg-replace-webp="https://i.ytimg.com/vi_webp/mCRC2jvNlbU/maxresdefault.webp">
               <button class="btn btn--with-icon i-svg-youtube youtube-play" data-youtube-video="mCRC2jvNlbU" data-frame-title="Пример" aria-label="Смотреть" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-youtube youtube">
-                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-multi.svg#youtube"/>
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#youtube"/>
                 </svg>
               </button>
             </div>
@@ -556,16 +537,16 @@
         </div>
         <h2><text-editor class="apsa-text" apsa-text="146">SVG icon</text-editor></h2>
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-telegram">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#telegram"/>
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#telegram"/>
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#vk"/>
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#vk"/>
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-facebook">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#facebook"/>
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#facebook"/>
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-instagram">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#instagram"/>
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#instagram"/>
         </svg>
         <h2><text-editor class="apsa-text" apsa-text="147">Адаптивный блок</text-editor></h2>
         <div class="adaptiveDiv"></div>
@@ -583,12 +564,12 @@
       </div>
     </footer>
     <div class="modal" id="modal">
-      <div class="modal__wrapp">
+      <div class="modal__wrap">
         <div class="modal__window">
           <div class="modal__top">
             <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#close"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
               </svg>
             </button>
           </div>
@@ -624,38 +605,35 @@
       </div>
     </div>
     <div class="modal modal-success" id="success">
-      <div class="modal__wrapp">
+      <div class="modal__wrap">
         <div class="modal__window">
           <div class="modal__top">
             <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#close"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
               </svg>
             </button>
           </div>
-          <div class="modal-success__content">
-            <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="error"><text-editor class="apsa-text" apsa-text="158">
-              modal 3</text-editor></button><span class="modal-success__title"><text-editor class="apsa-text" apsa-text="159">Мы скоро перезвоним :)</text-editor></span>
-          </div>
+          <div class="modal-success__content"><span class="modal-success__title"><text-editor class="apsa-text" apsa-text="158">Мы скоро перезвоним :)</text-editor></span></div>
         </div>
       </div>
     </div>
     <div class="modal modal-error" id="error">
-      <div class="modal__wrapp">
+      <div class="modal__wrap">
         <div class="modal__window">
           <div class="modal__top">
             <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#close"/>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
               </svg>
             </button>
           </div>
-          <div class="modal-success__content"><span class="modal-error__title"><text-editor class="apsa-text" apsa-text="160">Что-то пошло не так :(</text-editor></span></div>
+          <div class="modal-success__content"><span class="modal-error__title"><text-editor class="apsa-text" apsa-text="159">Что-то пошло не так :(</text-editor></span></div>
         </div>
       </div>
     </div>
-    <script src="js/main.js"></script>
-    <script src="js/vendor.js"></script>
+    <script src="js/main.min.js"></script>
+    <script src="js/vendor.min.js"></script>
   
 
 </body></html>

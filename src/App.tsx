@@ -39,12 +39,14 @@ export const App: FC = () => {
       localStorage.setItem('apsa-themes', JSON.stringify('light'))
       document.documentElement.classList.remove('dark')
     }
-    checkAuth()
+
+    if (import.meta.env.MODE === 'development') {
+      setIsAuth(true)
+    } else {
+      checkAuth()
+    }
   }, [])
 
-  // const checkAuth = () => {
-  //   setIsAuth(true)
-  // }
   const checkAuth = () => {
     axios
       .get<IAuth>(`${pathAPI}checkAuth.php`)

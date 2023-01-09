@@ -29,6 +29,6 @@ dist-ssr
 **/api/js
 **/api/mail
 **/api/styles
-**/api/index.html
-**/api/artpresent.html
-**/api/artpresent.html
+**/api/*.html
+# **/api/index.html
+# **/api/artpresent.html

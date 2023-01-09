@@ -1,7 +1,9 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head>
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title content="Главная">Главная!</title>
+    <title>Главная</title>
     <meta name="viewport" content="width=device-width, initial-scale=no, maximum-scale=1, minimum-scale=1" />
     <meta name="description" content="Сайт об HTML и создании сайтов" />
     <meta property="og:image" content="img/hero/mobile-img.jpg" />
@@ -12,10 +14,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png" />
-    <link rel="preload" as="font" href="fonts/ProximaNova-Regular.woff2" type="font/woff2" crossorigin="" />
-    <link rel="preload" as="font" href="fonts/ProximaNova-Bold.woff2" type="font/woff2" crossorigin="" />
-    <link rel="preload" as="font" href="fonts/ProximaNova-Light.woff2" type="font/woff2" crossorigin="" />
+    <link rel="preload" as="font" href="fonts/ProximaNova-Regular.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="fonts/ProximaNova-Bold.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="fonts/ProximaNova-Light.woff2" type="font/woff2" crossorigin />
     <script>
+      //- switch theme
       function setTheme(themeName) {
         localStorage.setItem('theme', themeName)
         document.documentElement.className = themeName
@@ -37,36 +40,33 @@
         }
       })()
     </script>
-    <link rel="stylesheet" href="styles/main.css" />
-    <meta name="keywords" content="Test Starter" />
+    <link rel="stylesheet" href="styles/main.min.css" />
   </head>
   <body class="main-page">
     <header class="header">
       <div class="header__wrapper">
-        <button class="btn btn--icon hamburger" aria-label="Навигация" type="button">
-          <span class="hamburger__span"></span><span class="hamburger__span"></span><span class="hamburger__span"></span>
-        </button>
+        <a class="brand header__brand" href="#">brand</a>
         <nav class="nav header__nav">
           <ul class="nav__list">
-            <li class="nav__item"><a class="nav__link" href="#">11111Home</a></li>
+            <li class="nav__item"><a class="nav__link" href="#">Home</a></li>
             <li class="nav__item"><a class="nav__link" href="#">About</a></li>
-            <li class="nav__item"><a class="nav__link" href="#">Сервис</a></li>
-            <li class="nav__item"><a class="nav__link" href="#">Контактыsefsefawdaw</a></li>
+            <li class="nav__item"><a class="nav__link" href="#">Services</a></li>
+            <li class="nav__item"><a class="nav__link" href="#">Contact</a></li>
           </ul>
         </nav>
-        <a class="brand header__brand" href="#">brandawdawd</a>
-        <div class="header__button-wrapper"><a class="button header__button" href="#">buttonfsef</a></div>
+        <div class="header__left-block">
+          <a class="button header__button" href="#">button</a>
+          <button class="btn btn--icon hamburger" aria-label="Навигация" type="button">
+            <span class="hamburger__span"></span><span class="hamburger__span"></span
+            ><span class="hamburger__span"></span>
+          </button>
+        </div>
       </div>
     </header>
     <main class="content">
       <div class="container">
-        <h1 class="h1-test" style="&#10;            color: rgb(140, 41, 41);&#10;            background-color: rgb(218, 192, 192);&#10;            filter: blur(0px);&#10;            border-radius: 5px;&#10;            text-align: right;&#10;            font-size: 43px;&#10;          ">
-          Новый Адаптивный текст!
-        </h1>
-        <div class="card-2">
-          <img src="../api/upload_image/63b9b88dbcb1d.jpeg" width="270" height="168.5" alt="Горы" loading="lazy" class="" />
-        </div>
-        <h2 style="font-size: 1px">Switch mode</h2>
+        <h1 class="h1-test">Адаптивный текст</h1>
+        <h2>Switch mode</h2>
         <button class="btn btn--default btn--normal switch-mode" type="button">Switch</button>
         <h2>Quiz</h2>
         <div class="quiz">
@@ -144,15 +144,31 @@
                 <p class="quiz__title">Заполните форму</p>
               </div>
               <div class="quiz__finish-block">
-                <form class="quiz__form" novalidate="">
+                <form class="quiz__form" novalidate>
                   <input type="hidden" name="Форма" value="Quiz" />
                   <div class="quiz__block">
                     <label for="name">Name</label>
-                    <input class="quiz__input" id="name" type="text" name="Name" placeholder="Name" data-quiz-value="" data-required="" />
+                    <input
+                      class="quiz__input"
+                      id="name"
+                      type="text"
+                      name="Name"
+                      placeholder="Name"
+                      data-quiz-value=""
+                      data-required
+                    />
                   </div>
                   <div class="quiz__block">
                     <label for="email">email</label>
-                    <input class="quiz__input" id="email" type="email" name="Email" placeholder="Email" data-quiz-value="" data-required="" />
+                    <input
+                      class="quiz__input"
+                      id="email"
+                      type="email"
+                      name="Email"
+                      placeholder="Email"
+                      data-quiz-value=""
+                      data-required
+                    />
                   </div>
                   <button type="submit">submit</button>
                 </form>
@@ -168,19 +184,22 @@
           </div>
         </div>
         <span class="quiz-output-values"> <h3>вывод</h3></span>
-        <h2 style="font-size: 29px">Button</h2>
+        <h2>Button</h2>
         <div class="btn-container">
           <button class="btn btn--default btn--normal btn--radius" type="button">Normal</button>
           <button class="btn btn--default btn--normal btn--radius btn--scale" type="button">scale</button>
           <button class="btn btn--default btn--medium btn--radius" type="button">Medium</button>
-          <button class="btn btn--default btn--large btn--radius" type="button">Large</button><a class="btn btn--default btn--radius" href="#">Link</a>
+          <button class="btn btn--default btn--large btn--radius" type="button">Large</button
+          ><a class="btn btn--default btn--radius" href="#">Link</a>
           <button class="btn btn--default btn--normal btn--with-icon btn--radius" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk btn--icon-svg social-icon">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#vk"/></svg><span>VKontakte</span>
+            <svg class="icon icon-vk btn--icon-svg social-icon">
+              <use xlink:href="img/svg-sprite/svg-sprite.svg#vk"></use></svg
+            ><span>VKontakte</span>
           </button>
           <button class="btn btn--default btn--normal btn--icon btn--radius" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk btn--icon-svg social-icon">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#vk"/></svg><span class="sr-only">VKontakte</span>
+            <svg class="icon icon-vk btn--icon-svg social-icon">
+              <use xlink:href="img/svg-sprite/svg-sprite.svg#vk"></use></svg
+            ><span class="sr-only">VKontakte</span>
           </button>
           <button class="btn btn--default btn--normal btn--two-lines btn--radius" type="button">
             <span>Subscribe to our newsletter</span><span aria-hidden="true">240K+ subscribers</span>
@@ -189,21 +208,21 @@
           <button class="btn btn--normal btn--secondary btn--radius" type="button">Normal</button>
           <button class="btn btn--normal btn--warning btn--radius" type="button">Normal</button>
           <button class="btn btn--normal btn--danger btn--radius" type="button">Normal</button>
-          <button class="btn btn--normal btn--radius" type="button" disabled="">Button</button>
+          <button class="btn btn--normal btn--radius" type="button" disabled>Button</button>
         </div>
-        <h2 style="font-size: 29px">Modal</h2>
-        <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="modal">
+        <h2>Modal</h2>
+        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="modal">
           modal
         </button>
-        <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="success">
+        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="success">
           modal success
         </button>
-        <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="error">
+        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="error">
           modal error
         </button>
         <h2>Form</h2>
         <div class="form-wrapper">
-          <form class="form form-1" novalidate="">
+          <form class="form form-1" novalidate>
             <input type="hidden" name="Форма" value="C главной страницы" />
             <div class="form__line">
               <label class="form__label" for="name"></label>
@@ -211,14 +230,21 @@
             </div>
             <div class="form__line">
               <label class="form__label" for="mail"></label>
-              <input class="form__input" id="mail" type="email" placeholder="Ваш email" name="Email" data-required="" />
+              <input class="form__input" id="mail" type="email" placeholder="Ваш email" name="Email" data-required />
             </div>
             <div class="form__line">
               <label class="form__label" for="phone"></label>
-              <input class="form__input imask" id="phone" type="tel" placeholder="Номер телефона" name="Телефон" data-required="" />
+              <input
+                class="form__input imask"
+                id="phone"
+                type="tel"
+                placeholder="Номер телефона"
+                name="Телефон"
+                data-required
+              />
             </div>
             <div class="form__line">
-              <input class="checkbox" type="checkbox" id="check" data-required="" />
+              <input class="checkbox" type="checkbox" id="check" data-required />
               <label for="check">Remember me</label>
             </div>
             <div class="form__line form__block-btn">
@@ -231,8 +257,8 @@
           <div class="select__backdrop"></div>
           <button class="btn select__trigger" type="button">
             <span class="select__trigger-text">Android</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+            <svg class="icon icon-arrow arrow">
+              <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
             </svg>
           </button>
           <ul class="select__options">
@@ -284,8 +310,8 @@
           <div class="accordion__item">
             <button class="block-2__title btn accordion__title open" type="button">
               Heading 1
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -295,8 +321,8 @@
           <div class="accordion__item">
             <button class="block-2__title btn accordion__title" type="button">
               Heading 2
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -306,8 +332,8 @@
           <div class="accordion__item">
             <button class="block-2__title btn accordion__title" type="button">
               Heading 3
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -317,8 +343,8 @@
           <div class="accordion__item">
             <button class="block-2__title btn accordion__title" type="button">
               Heading 4
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -328,8 +354,8 @@
           <div class="accordion__item">
             <button class="block-2__title btn accordion__title" type="button">
               Heading 5
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -339,8 +365,8 @@
           <div class="accordion__item">
             <button class="block-2__title btn accordion__title" type="button">
               Heading 6
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </button>
             <div class="block-2__collapse accordion__content">
@@ -348,13 +374,13 @@
             </div>
           </div>
         </div>
-        <h2>Из списка в спойлер 900px</h2>
+        <h2>Из списка в спойлер = 900px</h2>
         <div class="block-1 accordion">
           <div class="accordion__item">
             <div class="block-1__title accordion__title">
               Heading 1
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </div>
             <ul class="block-1__list">
@@ -366,8 +392,8 @@
           <div class="accordion__item">
             <div class="block-1__title accordion__title">
               Heading 2
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+              <svg class="icon icon-arrow accordion__icon">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
               </svg>
             </div>
             <ul class="block-1__list">
@@ -381,11 +407,10 @@
         <input class="checkbox" type="checkbox" id="username" />
         <label for="username">Remember me</label>
         <h2>Image</h2>
-        <div class="card-2">
-          <picture>
-            <source srcset="../api/upload_image/63b9b8866b631.jpeg" type="image/webp" />
-            <img src="../api/upload_image/63b9b8866b631.jpeg" width="300" height="187" alt="Ресторан" loading="lazy" class="" />
-          </picture>
+        <div class="grid3">
+          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" /></div>
+          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" /></div>
+          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" /></div>
         </div>
         <h2>Image background</h2>
         <div class="qqq" style="width: 24rem">
@@ -412,27 +437,27 @@
           <div class="columns__item">3</div>
           <div class="columns__item">4</div>
         </div>
-        <h2>Card</h2>
-        <div class="card my-apsa-img">
+        <h2>Card + image picture</h2>
+        <div class="card">
           <div class="card__img">
             <picture>
-              <source srcset="../api/upload_image/63b9b8727b34c.jpeg" type="image/webp" />
-              <img src="../api/upload_image/63b9b8727b34c.jpeg" width="270" height="168.5" alt="Город" loading="lazy" class="" />
+              <source srcset="img/3.webp" type="image/webp" />
+              <img src="img/3.jpg" width="270" height="168.5" alt="Горы" loading="lazy" />
             </picture>
           </div>
           <div class="card__content">
             <h3>
               <a class="card__link" href="#">Title</a>
-              <p>Шале</p>
+              <p>Subtitle</p>
             </h3>
           </div>
           <span class="card__tag">My tag</span>
         </div>
-        <h2>Card</h2>
+        <h2>Card + image picture</h2>
         <div class="card-2">
           <picture>
-            <source srcset="../api/upload_image/63b9b87793ffe.jpeg" type="image/webp" />
-            <img src="../api/upload_image/63b9b87793ffe.jpeg" width="270" height="168.5" alt="горы" loading="lazy" class="" />
+            <source srcset="img/3.webp" type="image/webp" />
+            <img src="img/3.jpg" width="270" height="168.5" alt="горы" loading="lazy" />
           </picture>
           <div class="card-2__content">
             <h3>Title</h3>
@@ -441,61 +466,46 @@
           </div>
         </div>
         <h2>Hero Section</h2>
-        <div class="hero my-apsa-img">
+        <div class="hero">
           <div class="hero__content">
             <h3 class="hero__title">Title</h3>
             <p class="hero__description">Description</p>
             <a class="hero__link" href="#">Link</a>
           </div>
-          <picture>
-            <source srcset="../api/upload_image/63b9b87fbb92f.jpeg" type="image/webp" />
-            <img src="../api/upload_image/63b9b87fbb92f.jpeg" width="" height="" alt="Космос" loading="lazy" class="" />
-          </picture>
+          <img src="img/2.jpg" width="" height="" alt="горы" loading="lazy" />
         </div>
         <h2>Slider</h2>
-        <div class="swiper" style="max-height: 472px">
+        <div class="swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63af7194c3c85.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63af7194c3c85.jpeg" width="1180" height="472" alt="Шале" loading="lazy" class="" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" />
               </div>
             </div>
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63af6819e4333.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63af6819e4333.jpeg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" />
               </div>
             </div>
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63aeb160eae71.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63aeb160eae71.jpeg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" />
               </div>
             </div>
             <div class="swiper-slide">
               <div class="slide-content">
-                <picture>
-                  <source srcset="../api/upload_image/63b83b4ece835.jpeg" type="image/webp" />
-                  <img src="../api/upload_image/63b83b4ece835.jpeg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-                </picture>
+                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" />
               </div>
             </div>
           </div>
           <button class="btn swiper-button-prev" aria-label="Предыдущий слайд" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+            <svg class="icon icon-arrow slider-arrow">
+              <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
             </svg>
           </button>
           <button class="btn swiper-button-next" aria-label="Следующий слайд" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#arrow"/>
+            <svg class="icon icon-arrow slider-arrow">
+              <use xlink:href="img/svg-sprite/svg-sprite.svg#arrow"></use>
             </svg>
           </button>
         </div>
@@ -541,32 +551,48 @@
         <h2>Video youtube</h2>
         <div class="ddd" style="width: 50%">
           <div class="video">
-            <div class="video__link" data-bg="https://i.ytimg.com/vi/mCRC2jvNlbU/maxresdefault.jpg" data-bg-replace-webp="https://i.ytimg.com/vi_webp/mCRC2jvNlbU/maxresdefault.webp">
-              <button class="btn btn--with-icon i-svg-youtube youtube-play" data-youtube-video="mCRC2jvNlbU" data-frame-title="Пример" aria-label="Смотреть" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-youtube youtube">
-                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-multi.svg#youtube"/>
+            <div
+              class="video__link"
+              data-bg="https://i.ytimg.com/vi/mCRC2jvNlbU/maxresdefault.jpg"
+              data-bg-replace-webp="https://i.ytimg.com/vi_webp/mCRC2jvNlbU/maxresdefault.webp"
+            >
+              <button
+                class="btn btn--with-icon i-svg-youtube youtube-play"
+                data-youtube-video="mCRC2jvNlbU"
+                data-frame-title="Пример"
+                aria-label="Смотреть"
+                type="button"
+              >
+                <svg class="icon icon-youtube youtube">
+                  <use xlink:href="img/svg-sprite/svg-sprite.svg#youtube"></use>
                 </svg>
               </button>
             </div>
           </div>
         </div>
         <h2>SVG icon</h2>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-telegram">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#telegram"/>
+        <svg class="icon icon-telegram">
+          <use xlink:href="img/svg-sprite/svg-sprite.svg#telegram"></use>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#vk"/>
+        <svg class="icon icon-vk">
+          <use xlink:href="img/svg-sprite/svg-sprite.svg#vk"></use>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-facebook">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#facebook"/>
+        <svg class="icon icon-facebook">
+          <use xlink:href="img/svg-sprite/svg-sprite.svg#facebook"></use>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-instagram">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#instagram"/>
+        <svg class="icon icon-instagram">
+          <use xlink:href="img/svg-sprite/svg-sprite.svg#instagram"></use>
         </svg>
         <h2>Адаптивный блок</h2>
         <div class="adaptiveDiv"></div>
         <h2>Lazy load Maps</h2>
-        <div id="map" style="width: 400px; height: 400px" data-apikey="ваш API-ключ" data-address="г. Москва, Преображенская площадь, 8" data-coordinates="55.755241, 37.617779"></div>
+        <div
+          id="map"
+          style="width: 400px; height: 400px"
+          data-apikey="ваш API-ключ"
+          data-address="г. Москва, Преображенская площадь, 8"
+          data-coordinates="55.755241, 37.617779"
+        ></div>
         <h2>css isolation</h2>
         <div class="isolation">
           <div class="isolation-container">isolation text <span class="isolation-inner">isolation-inner</span></div>
@@ -579,12 +605,16 @@
       </div>
     </footer>
     <div class="modal" id="modal">
-      <div class="modal__wrapp">
+      <div class="modal__wrap">
         <div class="modal__window">
           <div class="modal__top">
-            <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#close"/>
+            <button
+              class="btn btn--icon modal__icon-close-wrapper modal__close"
+              aria-label="Закрыть модальное окно"
+              type="button"
+            >
+              <svg class="icon icon-close modal__icon-close">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#close"></use>
               </svg>
             </button>
           </div>
@@ -594,7 +624,7 @@
           </div>
           <div class="modal__content">
             <div class="form-modal modal__form-modal">
-              <form class="form" id="form" novalidate="">
+              <form class="form" id="form" novalidate>
                 <input type="hidden" name="test" />
                 <div class="form__line">
                   <label class="form__label" for="modal-name"></label>
@@ -602,7 +632,14 @@
                 </div>
                 <div class="form__line">
                   <label class="form__label" for="modal-phone"></label>
-                  <input class="form__input imask" id="modal-phone" type="tel" placeholder="Номер телефона" name="Телефон" data-required="" />
+                  <input
+                    class="form__input imask"
+                    id="modal-phone"
+                    type="tel"
+                    placeholder="Номер телефона"
+                    name="Телефон"
+                    data-required
+                  />
                 </div>
                 <div class="form__line-btn">
                   <button class="btn btn--primary btn--midle form-modal__btn" type="submit">Отправить</button>
@@ -620,29 +657,34 @@
       </div>
     </div>
     <div class="modal modal-success" id="success">
-      <div class="modal__wrapp">
+      <div class="modal__wrap">
         <div class="modal__window">
           <div class="modal__top">
-            <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#close"/>
+            <button
+              class="btn btn--icon modal__icon-close-wrapper modal__close"
+              aria-label="Закрыть модальное окно"
+              type="button"
+            >
+              <svg class="icon icon-close modal__icon-close">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#close"></use>
               </svg>
             </button>
           </div>
-          <div class="modal-success__content">
-            <button class="btn btn--default btn--normal btn--radius modal__trigger" type="button" data-trigger="error">
-              modal 3</button><span class="modal-success__title">Мы скоро перезвоним :)</span>
-          </div>
+          <div class="modal-success__content"><span class="modal-success__title">Мы скоро перезвоним :)</span></div>
         </div>
       </div>
     </div>
     <div class="modal modal-error" id="error">
-      <div class="modal__wrapp">
+      <div class="modal__wrap">
         <div class="modal__window">
           <div class="modal__top">
-            <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/sprites/sprite-mono.svg#close"/>
+            <button
+              class="btn btn--icon modal__icon-close-wrapper modal__close"
+              aria-label="Закрыть модальное окно"
+              type="button"
+            >
+              <svg class="icon icon-close modal__icon-close">
+                <use xlink:href="img/svg-sprite/svg-sprite.svg#close"></use>
               </svg>
             </button>
           </div>
@@ -650,8 +692,7 @@
         </div>
       </div>
     </div>
-    <script src="js/main.js"></script>
-    <script src="js/vendor.js"></script>
-  
-
-</body></html>
+    <script src="js/main.min.js"></script>
+    <script src="js/vendor.min.js"></script>
+  </body>
+</html>
