@@ -15,149 +15,184 @@ import { useAppSelector } from '../../../hooks/redux'
 
 interface IDashboard {}
 interface IFiles {
-  files: string[]
-  path: string[]
+    files: string[]
+    path: string[]
 }
 export interface IChartData {
-  labels: string[]
-  data: number[]
+    labels: string[]
+    data: number[]
 }
 
 export const Dashboard: FC<IDashboard> = ({}) => {
-  const cardStyle =
-    'border border-inherit rounded flex items-center justify-center px-4 py-6 shadow-md border-slate-200 dark:border-slate-700'
-  const [htmlFiles, setHtmlFiles] = useState<string[]>()
-  const [cssFiles, setCssFiles] = useState<IFiles>()
-  const [jsFiles, setJsFiles] = useState<IFiles>()
-  const [imgFiles, setImgFiles] = useState<HTMLImageElement[]>()
-  const [backupFiles, setBackupFiles] = useState<NodeList>()
-  const [chartData, setChartData] = useState<IChartData>()
-  const { images } = useAppSelector((state) => state.getImage)
-  const { t } = useTranslation()
+    const cardStyle =
+        'border border-inherit rounded flex items-center justify-center px-4 py-6 shadow-md border-slate-200 dark:border-slate-700'
+    const [htmlFiles, setHtmlFiles] = useState<string[]>()
+    const [cssFiles, setCssFiles] = useState<IFiles>()
+    const [jsFiles, setJsFiles] = useState<IFiles>()
+    const [imgFiles, setImgFiles] = useState<HTMLImageElement[]>()
+    const [backupFiles, setBackupFiles] = useState<NodeList>()
+    const [chartData, setChartData] = useState<IChartData>()
+    const { images } = useAppSelector((state) => state.getImage)
+    const { t } = useTranslation()
 
-  const getList = async (nameFile: string, setFun: (v: any) => void) => {
-    return await axios
-      .get<[]>(`${pathAPI}${nameFile}`)
-      .then((res) => {
-        let files = [] as string[]
+    const getList = async (nameFile: string, setFun: (v: any) => void) => {
+        return await axios
+            .get<[]>(`${pathAPI}${nameFile}`)
+            .then((res) => {
+                let files = [] as string[]
 
-        res.data.forEach((f: string) => {
-          const fileName = f.split('/').pop()
-          if (fileName) files.push(fileName)
-        })
-        setFun({ files, path: res.data })
-      })
-      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
-  }
-
-  const getBackupList = async () => {
-    return await axios
-      .get<[]>(`${pathAPI}backupList.php`)
-      .then((res) => {
-        const editedData = [] as any
-        res.data.forEach((str: string) => {
-          const idx = str.lastIndexOf('/')
-          editedData.push(str.slice(idx + 1))
-        })
-
-        setBackupFiles(editedData)
-      })
-      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
-  }
-
-  const getListHtmlFiles = async () => {
-    return await axios
-      .get<[]>(`${pathAPI}htmlList.php`)
-      .then((res) => {
-        const filteredData = res.data.filter((item) => item !== 'temporaryFileCanBeDeleted.html')
-        setHtmlFiles(filteredData)
-      })
-      .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
-  }
-
-  useEffect(() => {
-    setImgFiles(images)
-    getListHtmlFiles()
-    getList('cssList.php', setCssFiles)
-    getList('jsList.php', setJsFiles)
-    getBackupList()
-  }, [])
-
-  useEffect(() => {
-    if (htmlFiles?.length && cssFiles?.files && jsFiles?.files.length) {
-      const chart = {
-        labels: ['HTML', 'CSS', 'JS', 'IMG'],
-        data: [htmlFiles?.length ?? 0, cssFiles?.files.length ?? 0, jsFiles?.files.length ?? 0, imgFiles?.length ?? 0],
-      }
-
-      setChartData(chart)
+                res.data.forEach((f: string) => {
+                    const fileName = f.split('/').pop()
+                    if (fileName) files.push(fileName)
+                })
+                setFun({ files, path: res.data })
+            })
+            .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
     }
-  }, [htmlFiles, cssFiles, jsFiles, imgFiles])
 
-  return (
-    <div className='charts grid md:grid-cols-2 gap-16 justify-center'>
-      <div className='charts-pie h-[250px] md:h-[300px] md:w-full flex items-center justify-center'>
-        {!chartData && <MiniSpinner />}
-        {chartData && <DoughnutChart chartData={chartData} />}
-      </div>
-      <div className='carts-file-list grid grid-cols-2 gap-4'>
-        <div className={cardStyle}>
-          <img className='max-w-[22%] min-w-[32px]' src={html} alt='Your SVG' />
-          {htmlFiles && <p>: {htmlFiles.length}</p>}
-          {!htmlFiles && (
-            <div className='flex items-center'>
-              HTML: <MiniSpinner height={6} width={6} />
-            </div>
-          )}
-        </div>
-        <div className={cardStyle}>
-          <img className='max-w-[22%] min-w-[32px]' src={css} alt='Your SVG' />
-          {cssFiles && <p>: {cssFiles.files.length}</p>}
-          {!cssFiles && (
-            <div className='flex items-center'>
-              CSS: <MiniSpinner height={6} width={6} />
-            </div>
-          )}
-        </div>
-        <div className={cardStyle}>
-          <img className='max-w-[22%] min-w-[32px]' src={js} alt='Your SVG' />
-          {jsFiles && <p>: {jsFiles.files.length}</p>}
-          {!jsFiles && (
-            <div className='flex items-center'>
-              JS: <MiniSpinner height={6} width={6} />
-            </div>
-          )}
-        </div>
-        <div className={cardStyle}>
-          <img className='max-w-[22%] min-w-[32px]' src={img} alt='Your SVG' />
-          {imgFiles && <p>: {imgFiles.length}</p>}
-          {!imgFiles && (
-            <div className='flex items-center'>
-              Images: <MiniSpinner height={6} width={6} />
-            </div>
-          )}
-        </div>
-        <div className={cardStyle}>
-          <img className='max-w-[22%] min-w-[32px]' src={backup} alt='Your SVG' />
-          {backupFiles && <p>: {backupFiles.length}</p>}
-          {!backupFiles && (
-            <div className='flex items-center'>
-              Backup: <MiniSpinner height={6} width={6} />
-            </div>
-          )}
-        </div>
-        <div className={cardStyle}>
-          <Button clName='btn-primary' dataBsToggle dataBsTarget='#modalBackup'>
-            {t('CreateBackups')}
-          </Button>
-        </div>
-      </div>
+    const getBackupList = async () => {
+        return await axios
+            .get<[]>(`${pathAPI}backupList.php`)
+            .then((res) => {
+                const editedData = [] as any
+                res.data.forEach((str: string) => {
+                    const idx = str.lastIndexOf('/')
+                    editedData.push(str.slice(idx + 1))
+                })
 
-      {backupFiles && backupFiles.length ? (
-        <div className='bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4'>{t('backupFolder')} ./backups/</div>
-      ) : (
-        <div className='bg-red-200 dark:text-gray-700  p-4 rounded-lg mb-4'>{t('recommendedBackup')}</div>
-      )}
-    </div>
-  )
+                setBackupFiles(editedData)
+            })
+            .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
+    }
+
+    const getListHtmlFiles = async () => {
+        return await axios
+            .get<[]>(`${pathAPI}htmlList.php`)
+            .then((res) => {
+                const filteredData = res.data.filter(
+                    (item) => item !== 'temporaryFileCanBeDeleted.html'
+                )
+                setHtmlFiles(filteredData)
+            })
+            .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
+    }
+
+    useEffect(() => {
+        setImgFiles(images)
+        getListHtmlFiles()
+        getList('cssList.php', setCssFiles)
+        getList('jsList.php', setJsFiles)
+        getBackupList()
+    }, [])
+
+    useEffect(() => {
+        if (htmlFiles?.length && cssFiles?.files && jsFiles?.files.length) {
+            const chart = {
+                labels: ['HTML', 'CSS', 'JS', 'IMG'],
+                data: [
+                    htmlFiles?.length ?? 0,
+                    cssFiles?.files.length ?? 0,
+                    jsFiles?.files.length ?? 0,
+                    imgFiles?.length ?? 0,
+                ],
+            }
+
+            setChartData(chart)
+        }
+    }, [htmlFiles, cssFiles, jsFiles, imgFiles])
+
+    return (
+        <div className="charts grid md:grid-cols-2 gap-16 justify-center">
+            <div className="charts-pie h-[250px] md:h-[300px] md:w-full flex items-center justify-center">
+                {!chartData && <MiniSpinner />}
+                {chartData && <DoughnutChart chartData={chartData} />}
+            </div>
+            <div className="carts-file-list grid grid-cols-2 gap-4">
+                <div className={cardStyle}>
+                    <img
+                        className="max-w-[22%] min-w-[32px]"
+                        src={html}
+                        alt="Your SVG"
+                    />
+                    {htmlFiles && <p>: {htmlFiles.length}</p>}
+                    {!htmlFiles && (
+                        <div className="flex items-center">
+                            HTML: <MiniSpinner height={6} width={6} />
+                        </div>
+                    )}
+                </div>
+                <div className={cardStyle}>
+                    <img
+                        className="max-w-[22%] min-w-[32px]"
+                        src={css}
+                        alt="Your SVG"
+                    />
+                    {cssFiles && <p>: {cssFiles.files.length}</p>}
+                    {!cssFiles && (
+                        <div className="flex items-center">
+                            CSS: <MiniSpinner height={6} width={6} />
+                        </div>
+                    )}
+                </div>
+                <div className={cardStyle}>
+                    <img
+                        className="max-w-[22%] min-w-[32px]"
+                        src={js}
+                        alt="Your SVG"
+                    />
+                    {jsFiles && <p>: {jsFiles.files.length}</p>}
+                    {!jsFiles && (
+                        <div className="flex items-center">
+                            JS: <MiniSpinner height={6} width={6} />
+                        </div>
+                    )}
+                </div>
+                <div className={cardStyle}>
+                    <img
+                        className="max-w-[22%] min-w-[32px]"
+                        src={img}
+                        alt="Your SVG"
+                    />
+                    {imgFiles && <p>: {imgFiles.length}</p>}
+                    {!imgFiles && (
+                        <div className="flex items-center">
+                            Images: <MiniSpinner height={6} width={6} />
+                        </div>
+                    )}
+                </div>
+                <div className={cardStyle}>
+                    <img
+                        className="max-w-[22%] min-w-[32px]"
+                        src={backup}
+                        alt="Your SVG"
+                    />
+                    {backupFiles && <p>: {backupFiles.length}</p>}
+                    {!backupFiles && (
+                        <div className="flex items-center">
+                            Backup: <MiniSpinner height={6} width={6} />
+                        </div>
+                    )}
+                </div>
+                <div className={cardStyle}>
+                    <Button
+                        clName="btn-primary"
+                        dataBsToggle
+                        dataBsTarget="#modalBackup"
+                    >
+                        {t('CreateBackups')}
+                    </Button>
+                </div>
+            </div>
+
+            {backupFiles && backupFiles.length ? (
+                <div className="bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4">
+                    {t('backupFolder')} ./backups/
+                </div>
+            ) : (
+                <div className="bg-red-200 dark:text-gray-700  p-4 rounded-lg mb-4">
+                    {t('recommendedBackup')}
+                </div>
+            )}
+        </div>
+    )
 }

@@ -8,9 +8,9 @@ import { Suspense } from 'react'
 import { OnFullScreen } from './components/Spinners/OnFullScreen'
 
 ReactDOM.createRoot(document.getElementById('App') as HTMLElement).render(
-  <Suspense fallback={<OnFullScreen />}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </Suspense>
+    <Suspense fallback={<OnFullScreen />}>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </Suspense>
 )
