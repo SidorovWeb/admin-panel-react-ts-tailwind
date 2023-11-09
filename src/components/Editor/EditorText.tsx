@@ -1,19 +1,14 @@
 import { FC, useEffect, useState } from 'react'
 import { MdEdit, MdOutlineSearch } from 'react-icons/md'
-import { parseStrDom } from '../../../helpers/dom-helpers'
-import { toPublish } from '../../../helpers/utils'
-import { userActions } from '../../../hooks/actions'
-import { useAppSelector } from '../../../hooks/redux'
-import { MiniSpinner } from '../../Spinners/MiniSpinner'
-import { Tabs } from '../../UI/Tabs'
-import { PublishedButton } from '../../UI/PublishedButton'
+import { userActions } from '../../hooks/actions'
+import { useAppSelector } from '../../hooks/redux'
+import { MiniSpinner } from '../Spinners/MiniSpinner'
+import { Tabs } from '../UI/Tabs'
 import { useTranslation } from 'react-i18next'
-import { Search } from '../../UI/Search'
+import { Search } from '../UI/Search'
 
 interface IEditorText {
     virtualDom: Document
-    setVirtualDom: (dom: Document) => void
-    currentPage: string
 }
 
 interface IMapText {
@@ -28,13 +23,8 @@ interface IFilterText {
     search?: string
 }
 
-export const EditorText: FC<IEditorText> = ({
-    virtualDom,
-    setVirtualDom,
-    currentPage,
-}) => {
+export const EditorText: FC<IEditorText> = ({ virtualDom }) => {
     const iframe = document.querySelector('iframe')
-    const serializer = new XMLSerializer()
     const [textList, setTextList] = useState<IMapText[]>()
     const [filteredText, setFilteredText] = useState<IMapText[]>()
     const [search, setSearch] = useState('')
@@ -69,89 +59,86 @@ export const EditorText: FC<IEditorText> = ({
 
     const getTextNode = () => {
         const textsNode =
-            iframe?.contentDocument?.body.querySelectorAll(`.apsa-text`)
+            iframe?.contentDocument?.body.querySelectorAll('.apsa-text')
+
         const mapText =
             textsNode &&
             [...textsNode].map((t) => {
                 const el = t as HTMLElement
                 const id = Number(el.getAttribute('apsa-text'))
-                const text = el.textContent as string
-                let tagName = ''
+                const text = el.textContent || ''
+                let tagName = 'Text' // Значение по умолчанию
 
-                switch (el.parentElement?.tagName) {
-                    case 'TEXT-EDITOR':
-                        tagName = 'Text'
-                        break
-                    case 'BUTTON':
-                        tagName = 'Buttons'
-                        break
-                    case 'A':
-                        tagName = 'Links'
-                        break
-                    case 'H1':
-                        tagName = 'Headline'
-                    case 'H2':
-                        tagName = 'Headline'
-                    case 'H3':
-                        tagName = 'Headline'
-                    case 'H4':
-                        tagName = 'Headline'
-                    case 'H5':
-                        tagName = 'Headline'
-                    case 'H6':
-                        tagName = 'Headline'
-                        break
-                    default:
-                        tagName = 'Text'
-                        break
+                const parentTagName = el.parentElement?.tagName
+                if (parentTagName) {
+                    switch (parentTagName.toUpperCase()) {
+                        case 'TEXT-EDITOR':
+                            tagName = 'Text'
+                            break
+                        case 'BUTTON':
+                            tagName = 'Buttons'
+                            break
+                        case 'A':
+                            tagName = 'Links'
+                            break
+                        case 'H1':
+                        case 'H2':
+                        case 'H3':
+                        case 'H4':
+                        case 'H5':
+                        case 'H6':
+                            tagName = 'Headline'
+                            break
+                        default:
+                            tagName = 'Text'
+                            break
+                    }
                 }
 
                 return {
                     el,
-                    id: Number(id),
+                    id,
                     text,
                     tagName,
                 }
             })
 
-        setTextList(mapText)
+        setTextList(mapText || [])
     }
 
     const filter = ({ tagName, search }: IFilterText) => {
-        if (tagName === '' || search === '') {
+        if (!tagName && !search) {
             if (mode === 'all') {
                 setFilteredText(textList)
-                return
+            } else {
+                filter({ tagName: mode })
             }
-
-            filter({ tagName: mode })
             return
         }
 
-        if (textList && tagName) {
-            const filtered = textList.filter(
-                (text) => text.tagName.toLowerCase() === tagName.toLowerCase()
-            )
-            setFilteredText(filtered)
-        }
+        if (textList) {
+            let filtered = textList
 
-        if (textList && search) {
-            const filtered = textList.filter((text) => {
-                if (mode.toLowerCase() !== 'all') {
-                    return (
-                        text.text
-                            .toLowerCase()
-                            .trim()
-                            .includes(search.toLowerCase().trim()) &&
+            if (tagName) {
+                const lowerCaseTagName = tagName.toLowerCase()
+                filtered = filtered.filter(
+                    (text) => text.tagName.toLowerCase() === lowerCaseTagName
+                )
+            }
+
+            if (search) {
+                const lowerCaseSearch = search.toLowerCase().trim()
+                filtered = filtered.filter((text) => {
+                    const lowerCaseText = text.text.toLowerCase().trim()
+                    const matchesMode =
+                        mode.toLowerCase() === 'all' ||
                         text.tagName.toLowerCase() === mode.toLowerCase()
+                    return (
+                        matchesMode && lowerCaseText.includes(lowerCaseSearch)
                     )
-                }
+                })
+            }
 
-                return text.text
-                    .toLowerCase()
-                    .trim()
-                    .includes(search.toLowerCase().trim())
-            })
             setFilteredText(filtered)
         }
     }
@@ -171,13 +158,6 @@ export const EditorText: FC<IEditorText> = ({
             })
             setOldText(str.trim())
         }
-    }
-
-    const published = () => {
-        const newHtml = serializer.serializeToString(virtualDom)
-        const document = parseStrDom(newHtml)
-
-        toPublish({ newVirtualDom: document, currentPage })
     }
 
     return (
@@ -228,7 +208,7 @@ export const EditorText: FC<IEditorText> = ({
                                         filteredText &&
                                         filteredText.map((text) => (
                                             <tr
-                                                className="border-b border-slate-200 dark:border-slate-700 transition-opacity duration-300 ease-in-out hover:opacity-50 flex items-start justify-start cursor-pointer md:p-4"
+                                                className="rounded border-b border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-bg flex items-start justify-start cursor-pointer md:p-4"
                                                 key={text.id}
                                                 onClick={() =>
                                                     editingText(
@@ -264,7 +244,6 @@ export const EditorText: FC<IEditorText> = ({
                     </div>
                 </div>
             </div>
-            <PublishedButton onClick={published} />
         </div>
     )
 }

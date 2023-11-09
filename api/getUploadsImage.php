@@ -1,16 +1,19 @@
 <?php
 include('./includes/headerType.php');
 
-if($_SERVER['HTTP_HOST'] == 'localhost:8000') {
-  $arrFiles = glob('./upload_image/*');
+
+
+if ($_SERVER['HTTP_HOST'] == 'localhost:8000') {
+    $path = './upload_image/*';
 } else {
-  $arrFiles = glob('../../upload_image/*');
+    $path = '../../upload_image/*';
 }
 
+$arrFiles = glob($path);
 $response = [];
 
 foreach ($arrFiles as $file) {
-  array_push($response ,basename($file));
+    $response[] = basename($file);
 }
 
 echo json_encode($response);

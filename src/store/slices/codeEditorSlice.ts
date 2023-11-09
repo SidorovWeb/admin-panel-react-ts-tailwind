@@ -1,24 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 interface ICodeEditor {
-  active: boolean
+    active: boolean
 }
 
 const initialState: ICodeEditor = {
-  active: false,
+    active: false,
 }
 
 export const codeEditorSlice = createSlice({
-  name: 'codeEditor',
-  initialState,
-  reducers: {
-    activateCodeEditor: (state) => {
-      state.active = true
+    name: 'codeEditor',
+    initialState,
+    reducers: {
+        activateCodeEditor: (state) => {
+            state.active = true
+        },
+        inactiveCodeEditor: (state) => {
+            state.active = false
+        },
     },
-    inactiveCodeEditor: (state) => {
-      state.active = false
-    },
-  },
 })
 
 export const codeEditorActions = codeEditorSlice.actions

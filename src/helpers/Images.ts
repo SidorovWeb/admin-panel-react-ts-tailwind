@@ -1,103 +1,131 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { pathAPI } from '../constants'
-import { rect } from './utils'
+import { published } from './utils'
 
-interface iProcessingImages {
-  el: HTMLImageElement
-  iframe: HTMLIFrameElement
+interface IProcessingImages {
+    img: HTMLImageElement
+    virtualDom: Document
+    setVirtualDom: (dom: Document) => void
+    currentPage: string
 }
 
-export const processingImages = ({ el, iframe }: iProcessingImages) => {
-  let parent: HTMLElement
-  if (el.closest('.my-apsa-img')) {
-    parent = el.closest('.my-apsa-img') as HTMLElement
-  } else {
-    parent = el.parentNode as HTMLElement
-  }
-  let btnsEditorImg = document.querySelector('.btns-apsa-img') as HTMLElement
-  const id = el.getAttribute('apsa-img')
+export const processingImages = ({
+    img,
+    virtualDom,
+    setVirtualDom,
+    currentPage,
+}: IProcessingImages) => {
+    const parent: HTMLElement | null =
+        img.closest('.my-apsa-img') || (img.parentNode as HTMLElement)
 
-  parent.addEventListener('mousemove', (e) => {
-    if (!btnsEditorImg) {
-      btnsEditorImg = document.querySelector('.btns-apsa-img') as HTMLElement
-      return
-    }
+    const inputFile = document.createElement('input')
+    inputFile.type = 'file'
+    inputFile.accept = 'image/*'
+    inputFile.style.display = 'none'
 
-    if (btnsEditorImg) {
-      btnsEditorImg.style.opacity = '1'
-      btnsEditorImg.style.pointerEvents = 'auto'
+    const id = img.getAttribute('apsa-img')
+    if (id) inputFile.setAttribute('id-apsa-img', id)
 
-      const widthBtnsEditorImg = btnsEditorImg.getBoundingClientRect().width
+    parent.appendChild(inputFile)
 
-      btnsEditorImg.setAttribute('apsa-img-id', `${id}`)
-      btnsEditorImg.style.top = `${rect(parent).top + rect(parent).height / 6}px`
-      btnsEditorImg.style.left = `${rect(parent).left + rect(parent).width / 2 - widthBtnsEditorImg / 2}px`
-      btnsEditorImg.style.transform = `translateY(-50%)`
-      btnsEditorImg.style.opacity = '1'
-    }
-  })
+    inputFile.addEventListener('change', async function (event: Event) {
+        const inputEvent = event as InputEvent
+        const selectedFile: File | null =
+            (inputEvent.target as HTMLInputElement).files?.[0] || null
 
-  iframe.contentDocument?.addEventListener('scroll', () => {
-    if (btnsEditorImg) btnsEditorImg.style.opacity = '0'
-  })
+        if (selectedFile) {
+            await uploadImage({
+                img,
+                id: Number(id),
+                virtualDom,
+                setVirtualDom,
+                file: selectedFile,
+            }).then(() => published(virtualDom, currentPage))
+        } else {
+            toast.error('file not selected')
+        }
+    })
+
+    parent.addEventListener('click', () => {
+        inputFile.click()
+    })
+
+    parent.addEventListener('mouseover', () => {
+        img.style.filter = 'grayscale(100%) blur(3px)'
+        img.style.transition = '.25s ease-in-out'
+        parent.style.cursor = 'pointer'
+    })
+
+    parent.addEventListener('mouseleave', () => {
+        img.style.filter = 'inherit'
+        img.style.transition = '.25s ease-in-out'
+        parent.style.cursor = 'default'
+    })
 }
 
 interface IUploadImage {
-  img: HTMLImageElement
-  id: number
-  virtualDom: Document
-  setVirtualDom: (dom: Document) => void
-  file?: File
+    img: HTMLImageElement
+    id: number
+    virtualDom: Document
+    setVirtualDom: (dom: Document) => void
+    file?: File
+    // extension: string
 }
 
-export const uploadImage = ({ img, id, virtualDom, setVirtualDom, file }: IUploadImage) => {
-  return new Promise((resolve) => {
-    if (file) {
-      const formDate = new FormData()
-      formDate.append('image', file)
-      formDate.append('imageSrc', `${img.getAttribute('src')}`)
+export const uploadImage = async ({
+    img,
+    id,
+    virtualDom,
+    setVirtualDom,
+    file,
+}: IUploadImage) => {
+    if (!file) {
+        return Promise.reject(new Error('No file provided.'))
+    }
 
-      axios
-        .post(`${pathAPI}uploadImage.php`, formDate, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          const iframe = document.querySelector('iframe')
-          const path = import.meta.env.MODE === 'development' ? '../api/' : './'
-          const virtualImg = virtualDom?.body.querySelector(`[apsa-img="${id}"]`) as HTMLImageElement
-          const iframeImage = iframe?.contentDocument?.body.querySelector(`[apsa-img="${id}"]`) as HTMLImageElement
+    const formData = new FormData()
+    formData.append('image', file)
 
-          if (virtualImg) {
-            const newSrc = `${path}upload_image/${res.data.src}`
-            const source = img.parentElement?.querySelector('source')
-            const iframeSource = iframeImage.parentElement?.querySelector('source')
-
-            if (source) {
-              const virtualSource = virtualImg.parentElement && virtualImg.parentElement.querySelector('source')
-              source.srcset = newSrc
-              if (iframeSource) {
-                iframeSource.srcset = newSrc
-              }
-              if (virtualSource) {
-                virtualSource.srcset = newSrc
-              }
+    try {
+        const response = await axios.post(
+            `${pathAPI}uploadImage.php`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             }
+        )
 
-            img.src = newSrc
-            virtualImg.src = newSrc
-            iframeImage.src = newSrc
+        const pathPrefix =
+            import.meta.env.MODE === 'development' ? '../api/' : './'
+        const newSrc = `${pathPrefix}upload_image/${response.data.src}`
+        const selectors = `[apsa-img="${id}"]`
+        const virtualImg = virtualDom?.body.querySelector(
+            selectors
+        ) as HTMLImageElement
+
+        const iframeImage = document
+            .querySelector('iframe')
+            ?.contentDocument?.body.querySelectorAll(
+                selectors
+            ) as NodeListOf<HTMLImageElement> | null
+
+        if (virtualImg && iframeImage) {
+            iframeImage.forEach((element) => {
+                element.src = newSrc
+                virtualImg.src = newSrc
+            })
 
             setVirtualDom(virtualDom)
-            toast.success('Uploaded to folder ./api/upload_image')
-            resolve(img.src)
-          }
-        })
-        .catch((e) => {
-          toast.error(`Failed to upload! ${e}`)
-        })
+            toast.success('Uploaded to folder upload_image')
+            return img.src
+        } else {
+            throw new Error('Image element not found in virtual DOM.')
+        }
+    } catch (error) {
+        toast.error(`Failed to upload! ${error}`)
+        throw error
     }
-  })
 }

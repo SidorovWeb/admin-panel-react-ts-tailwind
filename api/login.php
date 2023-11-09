@@ -2,6 +2,7 @@
 include('./includes/headerType.php');
 
 
+
 $_POST = json_decode( file_get_contents("php://input"), true );
 
 $password = $_POST["password"];

@@ -1,639 +1,399 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head>
-    
-
-    
-
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Главная</title>
-    <meta name="viewport" content="width=device-width, initial-scale=no, maximum-scale=1, minimum-scale=1" />
-    <meta name="description" content="Сайт об HTML и создании сайтов" />
-    <meta property="og:image" content="img/hero/mobile-img.jpg" />
-    <meta name="theme-color" content="#061626" />
-    <meta name="msapplication-navbutton-color" content="#061626" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="#061626" />
-    <meta name="msapplication-TileColor" content="#da532c" />
-    <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png" />
-    <link rel="preload" as="font" href="fonts/ProximaNova-Regular.woff2" type="font/woff2" crossorigin="" />
-    <link rel="preload" as="font" href="fonts/ProximaNova-Bold.woff2" type="font/woff2" crossorigin="" />
-    <link rel="preload" as="font" href="fonts/ProximaNova-Light.woff2" type="font/woff2" crossorigin="" />
-    <script>
-      //- switch theme
-      function setTheme(themeName) {
-        localStorage.setItem('theme', themeName)
-        document.documentElement.className = themeName
-      }
-
-      function toggleTheme() {
-        if (localStorage.getItem('theme') === 'theme-dark') {
-          setTheme('theme-light')
-        } else {
-          setTheme('theme-dark')
-        }
-      }
-
-      ;(function () {
-        if (localStorage.getItem('theme') === 'theme-dark') {
-          setTheme('theme-dark')
-        } else {
-          setTheme('theme-light')
-        }
-      })()
-    </script>
-    <link rel="stylesheet" href="styles/main.min.css" />
-  <meta name="keywords" /></head>
-  <body class="main-page">
-    <header class="header">
-      <div class="header__wrapper">
-        <a class="brand header__brand" href="#">brand</a>
-        <nav class="nav header__nav">
-          <ul class="nav__list">
-            <li class="nav__item"><a class="nav__link" href="#">Home</a></li>
-            <li class="nav__item"><a class="nav__link" href="#">About</a></li>
-            <li class="nav__item"><a class="nav__link" href="#">Services</a></li>
-            <li class="nav__item"><a class="nav__link" href="#">Contact</a></li>
-          </ul>
-        </nav>
-        <div class="header__left-block">
-          <a class="button header__button" href="#">button</a>
-          <button class="btn btn--icon hamburger" aria-label="Навигация" type="button">
-            <span class="hamburger__span"></span><span class="hamburger__span"></span><span class="hamburger__span"></span>
-          </button>
-        </div>
-      </div>
-    </header>
-    <main class="content">
-      <div class="container">
-        <h1 class="h1-test">Адаптивный текст</h1>
-        <h2>Switch mode</h2>
-        <button class="btn btn--default btn--normal switch-mode" type="button">Switch</button>
-        <h2>Quiz</h2>
-        <div class="quiz">
-          <div class="quiz__list">
-            <div class="quiz__item active">
-              <div class="quiz__content">
-                <div class="quiz__block">
-                  <button class="quiz__btn-question" type="button" data-quiz-value="50">50</button>
-                </div>
-                <div class="quiz__block">
-                  <button class="quiz__btn-question" type="button" data-quiz-value="100">100</button>
-                </div>
-                <div class="quiz__block">
-                  <button class="quiz__btn-question" type="button" data-quiz-value="150">150</button>
-                </div>
-                <div class="quiz__block">
-                  <button class="quiz__btn-question" type="button" data-quiz-value="10">10</button>
-                </div>
-              </div>
-            </div>
-            <div class="quiz__item">
-              <div class="quiz__content">
-                <div class="quiz__block">
-                  <label for="question-1">checkbox 20</label>
-                  <input class="quiz__input" id="question-1" type="checkbox" data-quiz-value="20" />
-                </div>
-                <div class="quiz__block">
-                  <label for="question-2">checkbox 40</label>
-                  <input class="quiz__input" id="question-2" type="checkbox" data-quiz-value="40" />
-                </div>
-                <div class="quiz__block">
-                  <label for="question-3">radio 70</label>
-                  <input class="quiz__input" id="question-3" type="radio" name="radio" data-quiz-value="70" />
-                </div>
-                <div class="quiz__block">
-                  <label for="question-4">radio 120</label>
-                  <input class="quiz__input" id="question-4" type="radio" name="radio" data-quiz-value="120" />
-                </div>
-              </div>
-            </div>
-            <div class="quiz__item">
-              <div class="quiz__content">
-                <div class="quiz__block">
-                  <label for="question-9">Text</label>
-                  <input class="quiz__input" id="question-9" type="text" placeholder="Text" data-quiz-value="1000" />
-                </div>
-                <div class="quiz__block">
-                  <label for="question-10">Text</label>
-                  <input class="quiz__input" id="question-10" type="text" placeholder="Text" data-quiz-value="2000" />
-                </div>
-                <div class="quiz__block">
-                  <label for="question-11">Text</label>
-                  <input class="quiz__input" id="question-11" type="text" placeholder="Text" data-quiz-value="3000" />
-                </div>
-                <div class="quiz__block">
-                  <label for="question-12">Text</label>
-                  <input class="quiz__input" id="question-12" type="text" placeholder="Text" data-quiz-value="4000" />
-                </div>
-              </div>
-            </div>
-            <div class="quiz__item">
-              <div class="quiz__content">
-                <div class="quiz__block">
-                  <button class="quiz__btn-question" type="button" data-quiz-value="500">button 500</button>
-                </div>
-                <div class="quiz__block">
-                  <button class="quiz__btn-question" type="button" data-quiz-value="1500">button 1500</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="quiz__finish">
-            <div class="quiz__finish-content">
-              <div class="quiz__finish-block quiz__print-text">
-                <p class="quiz__title">Заполните форму</p>
-              </div>
-              <div class="quiz__finish-block">
-                <form class="quiz__form" novalidate="">
-                  <input type="hidden" name="Форма" value="Quiz" />
-                  <div class="quiz__block">
-                    <label for="name">Name</label>
-                    <input class="quiz__input" id="name" type="text" name="Name" placeholder="Name" data-quiz-value="" data-required="" />
-                  </div>
-                  <div class="quiz__block">
-                    <label for="email">email</label>
-                    <input class="quiz__input" id="email" type="email" name="Email" placeholder="Email" data-quiz-value="" data-required="" />
-                  </div>
-                  <button type="submit">submit</button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="quiz__success">
-            <p>Спасибо, мы с вами свяжемся!</p>
-          </div>
-          <div class="quiz__navigations">
-            <button class="quiz__prev" type="button">Previous</button>
-            <button class="quiz__next" type="button">Next</button>
-          </div>
-        </div>
-        <span class="quiz-output-values"> <h3>вывод</h3></span>
-        <h2>Button</h2>
-        <div class="btn-container">
-          <button class="btn btn--default btn--normal btn--radius" type="button">Normal</button>
-          <button class="btn btn--default btn--normal btn--radius btn--scale" type="button">scale</button>
-          <button class="btn btn--default btn--medium btn--radius" type="button">Medium</button>
-          <button class="btn btn--default btn--large btn--radius" type="button">Large</button><a class="btn btn--default btn--radius" href="#">Link</a>
-          <button class="btn btn--default btn--normal btn--with-icon btn--radius" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk btn--icon-svg social-icon">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#vk"/></svg><span>VKontakte</span>
-          </button>
-          <button class="btn btn--default btn--normal btn--icon btn--radius" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk btn--icon-svg social-icon">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#vk"/></svg><span class="sr-only">VKontakte</span>
-          </button>
-          <button class="btn btn--default btn--normal btn--two-lines btn--radius" type="button">
-            <span>Subscribe to our newsletter</span><span aria-hidden="true">240K+ subscribers</span>
-          </button>
-          <button class="btn btn--normal btn--primary btn--radius" type="button">Normal</button>
-          <button class="btn btn--normal btn--secondary btn--radius" type="button">Normal</button>
-          <button class="btn btn--normal btn--warning btn--radius" type="button">Normal</button>
-          <button class="btn btn--normal btn--danger btn--radius" type="button">Normal</button>
-          <button class="btn btn--normal btn--radius" type="button" disabled="">Button</button>
-        </div>
-        <h2>Modal</h2>
-        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="modal">
-          modal
-        </button>
-        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="success">
-          modal success
-        </button>
-        <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="error">
-          modal error
-        </button>
-        <h2>Form</h2>
-        <div class="form-wrapper">
-          <form class="form form-1" novalidate="">
-            <input type="hidden" name="Форма" value="C главной страницы" />
-            <div class="form__line">
-              <label class="form__label" for="name"></label>
-              <input class="form__input" id="name" type="text" placeholder="Имя" name="Имя" />
-            </div>
-            <div class="form__line">
-              <label class="form__label" for="mail"></label>
-              <input class="form__input" id="mail" type="email" placeholder="Ваш email" name="Email" data-required="" />
-            </div>
-            <div class="form__line">
-              <label class="form__label" for="phone"></label>
-              <input class="form__input imask" id="phone" type="tel" placeholder="Номер телефона" name="Телефон" data-required="" />
-            </div>
-            <div class="form__line">
-              <input class="checkbox" type="checkbox" id="check" data-required="" />
-              <label for="check">Remember me</label>
-            </div>
-            <div class="form__line form__block-btn">
-              <button class="btn btn--primary btn--midle" type="submit">Отправить</button>
-            </div>
-          </form>
-        </div>
-        <h2>Select</h2>
-        <div class="select">
-          <div class="select__backdrop"></div>
-          <button class="btn select__trigger" type="button">
-            <span class="select__trigger-text">Android</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-            </svg>
-          </button>
-          <ul class="select__options">
-            <li class="select__item">
-              <button class="btn select__option selected" type="button">Android</button>
-            </li>
-            <li class="select__item">
-              <button class="btn select__option" type="button">Windows</button>
-            </li>
-            <li class="select__item">
-              <button class="btn select__option" type="button">Linux</button>
-            </li>
-            <li class="select__item">
-              <button class="btn select__option" type="button">Mac</button>
-            </li>
-            <li class="select__item">
-              <button class="btn select__option" type="button">PC</button>
-            </li>
-            <li class="select__item">
-              <button class="btn select__option" type="button">Phone</button>
-            </li>
-          </ul>
-        </div>
-        <h2>Collapse</h2>
-        <div class="collapse">
-          <button class="btn collapse__header selected" data-header="collapse-0">One</button>
-          <button class="btn collapse__header" data-header="collapse-1">Two</button>
-          <button class="btn collapse__header" data-header="collapse-2">Three</button>
-          <button class="btn collapse__header" data-header="collapse-3">Four</button>
-          <div class="collapse__content selected" data-collapse-content="collapse-0">
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-          <div class="collapse__content" data-collapse-content="collapse-1">
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-          <div class="collapse__content" data-collapse-content="collapse-2">
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-          <div class="collapse__content" data-collapse-content="collapse-3">
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-        </div>
-        <h2>Accordion</h2>
-        <div class="block-2 accordion">
-          <div class="accordion__item">
-            <button class="block-2__title btn accordion__title open" type="button">
-              Heading 1
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </button>
-            <div class="block-2__collapse accordion__content">
-              <p class="accordion__text">Lorem Ipsum is simply dummy text of the printing and</p>
-            </div>
-          </div>
-          <div class="accordion__item">
-            <button class="block-2__title btn accordion__title" type="button">
-              Heading 2
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </button>
-            <div class="block-2__collapse accordion__content">
-              <p class="accordion__text">Lorem Ipsum is simply dummy text of the printing and</p>
-            </div>
-          </div>
-          <div class="accordion__item">
-            <button class="block-2__title btn accordion__title" type="button">
-              Heading 3
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </button>
-            <div class="block-2__collapse accordion__content">
-              <p class="accordion__text">Lorem Ipsum is simply dummy text of the printing and</p>
-            </div>
-          </div>
-          <div class="accordion__item">
-            <button class="block-2__title btn accordion__title" type="button">
-              Heading 4
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </button>
-            <div class="block-2__collapse accordion__content">
-              <p class="accordion__text">Lorem Ipsum is simply dummy text of the printing and</p>
-            </div>
-          </div>
-          <div class="accordion__item">
-            <button class="block-2__title btn accordion__title" type="button">
-              Heading 5
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </button>
-            <div class="block-2__collapse accordion__content">
-              <p class="accordion__text">Lorem Ipsum is simply dummy text of the printing and</p>
-            </div>
-          </div>
-          <div class="accordion__item">
-            <button class="block-2__title btn accordion__title" type="button">
-              Heading 6
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </button>
-            <div class="block-2__collapse accordion__content">
-              <p class="accordion__text">Lorem Ipsum is simply dummy text of the printing and</p>
-            </div>
-          </div>
-        </div>
-        <h2>Из списка в спойлер = 900px</h2>
-        <div class="block-1 accordion">
-          <div class="accordion__item">
-            <div class="block-1__title accordion__title">
-              Heading 1
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </div>
-            <ul class="block-1__list">
-              <li class="block-1__item">text</li>
-              <li class="block-1__item">text</li>
-              <li class="block-1__item">text</li>
-            </ul>
-          </div>
-          <div class="accordion__item">
-            <div class="block-1__title accordion__title">
-              Heading 2
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-              </svg>
-            </div>
-            <ul class="block-1__list">
-              <li class="block-1__item">text</li>
-              <li class="block-1__item">text</li>
-              <li class="block-1__item">text</li>
-            </ul>
-          </div>
-        </div>
-        <h2>Checkbox</h2>
-        <input class="checkbox" type="checkbox" id="username" />
-        <label for="username">Remember me</label>
-        <h2>Image</h2>
-        <div class="grid3">
-          <div><img src="../api/upload_image/64117d663c9b8.png" width="300" height="187" alt="Горы" loading="lazy" class="" /></div>
-          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" class="" /></div>
-          <div><img src="img/3.jpg" width="300" height="187" alt="Горы" loading="lazy" class="" /></div>
-        </div>
-        <h2>Image background</h2>
-        <div class="qqq" style="width: 24rem">
-          <div class="bg-img" data-bg="img/5.jpg" data-bg-replace-webp="img/5.webp"></div>
-        </div>
-        <h2>Css grig</h2>
-        <div class="grid">
-          <div class="grid__item grid__item_1">1</div>
-          <div class="grid__item grid__item_2">2</div>
-          <div class="grid__item grid__item_3">3</div>
-          <div class="grid__item grid__item_4">4</div>
-          <div class="grid__item grid__item_5">5</div>
-          <div class="grid__item grid__item_6">6</div>
-          <div class="grid__item grid__item_7">7</div>
-          <div class="grid__item grid__item_8">8</div>
-          <div class="grid__item grid__item_9">9</div>
-          <div class="grid__item grid__item_10">10</div>
-          <div class="grid__item grid__item_11">11</div>
-        </div>
-        <h2>Css grid columns</h2>
-        <div class="columns">
-          <div class="columns__item">1</div>
-          <div class="columns__item">2</div>
-          <div class="columns__item">3</div>
-          <div class="columns__item">4</div>
-        </div>
-        <h2>Card + image picture</h2>
-        <div class="card">
-          <div class="card__img">
-            <picture>
-              <source srcset="img/3.webp" type="image/webp" />
-              <img src="img/3.jpg" width="270" height="168.5" alt="Горы" loading="lazy" class="" />
-            </picture>
-          </div>
-          <div class="card__content">
-            <h3>
-              <a class="card__link" href="#">Title</a>
-              <p>Subtitle</p>
-            </h3>
-          </div>
-          <span class="card__tag">My tag</span>
-        </div>
-        <h2>Card + image picture</h2>
-        <div class="card-2">
-          <picture>
-            <source srcset="img/3.webp" type="image/webp" />
-            <img src="img/3.jpg" width="270" height="168.5" alt="горы" loading="lazy" class="" />
-          </picture>
-          <div class="card-2__content">
-            <h3>Title</h3>
-            <p>Description</p>
-            <p>Action</p>
-          </div>
-        </div>
-        <h2>Hero Section</h2>
-        <div class="hero">
-          <div class="hero__content">
-            <h3 class="hero__title">Title</h3>
-            <p class="hero__description">Description</p>
-            <a class="hero__link" href="#">Link</a>
-          </div>
-          <img src="img/2.jpg" width="" height="" alt="горы" loading="lazy" class="" />
-        </div>
-        <h2>Slider</h2>
-        <div class="swiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="slide-content">
-                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="slide-content">
-                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="slide-content">
-                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="slide-content">
-                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
-              </div>
-            </div>
-          </div>
-          <button class="btn swiper-button-prev" aria-label="Предыдущий слайд" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-            </svg>
-          </button>
-          <button class="btn swiper-button-next" aria-label="Следующий слайд" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
-            </svg>
-          </button>
-        </div>
-        <h2>Table</h2>
-        <div class="table">
-          <div class="row-table header-table">
-            <div class="cell-table header-table__cell">Название</div>
-            <div class="cell-table header-table__cell">Описание услуги</div>
-            <div class="cell-table header-table__cell">Стоимость</div>
-          </div>
-          <div class="row-table">
-            <div class="cell-table cell-table--first" data-title="Название">Разработка ПО</div>
-            <div class="cell-table" data-title="Описание услуги">Профессиональная разработка программ</div>
-            <div class="cell-table" data-title="Стоимость">от 460 000 ₽</div>
-          </div>
-          <div class="row-table">
-            <div class="cell-table cell-table--first" data-title="Название">3d моделирование</div>
-            <div class="cell-table" data-title="Описание услуги">
-              Скульптинг / Топология / Текстурирование / Low Poly / PBR графика
-            </div>
-            <div class="cell-table" data-title="Стоимость">750 ₽ / час</div>
-          </div>
-          <div class="row-table">
-            <div class="cell-table cell-table--first" data-title="Название">Услуги программиста</div>
-            <div class="cell-table" data-title="Описание услуги">
-              Услуги программиста уровня Senior и Middle. UE4 / CryEngine 3 / Unity
-            </div>
-            <div class="cell-table" data-title="Стоимость">1200 ₽ / час</div>
-          </div>
-        </div>
-        <h2>Breadcrumbs</h2>
-        <div class="breadcrumbs">
-          <ul>
-            <li class="breadcrumb__item">
-              <!-- if breadcrumb is single--><a class="breadcrumb__link" href="#" title="Main page">Main page</a>
-            </li>
-            <li class="breadcrumb__item">
-              <!-- if breadcrumb is single--><a class="breadcrumb__link" href="#" title="News">News</a>
-            </li>
-            <li class="breadcrumb__item"><span class="breadcrumb__link-current">News detail</span></li>
-          </ul>
-        </div>
-        <h2>Video youtube</h2>
-        <div class="ddd" style="width: 50%">
-          <div class="video">
-            <div class="video__link" data-bg="https://i.ytimg.com/vi/mCRC2jvNlbU/maxresdefault.jpg" data-bg-replace-webp="https://i.ytimg.com/vi_webp/mCRC2jvNlbU/maxresdefault.webp">
-              <button class="btn btn--with-icon i-svg-youtube youtube-play" data-youtube-video="mCRC2jvNlbU" data-frame-title="Пример" aria-label="Смотреть" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-youtube youtube">
-                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#youtube"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        <h2>SVG icon</h2>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-telegram">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#telegram"/>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-vk">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#vk"/>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-facebook">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#facebook"/>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-instagram">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#instagram"/>
-        </svg>
-        <h2>Адаптивный блок</h2>
-        <div class="adaptiveDiv"></div>
-        <h2>Lazy load Maps</h2>
-        <div id="map" style="width: 400px; height: 400px" data-apikey="ваш API-ключ" data-address="г. Москва, Преображенская площадь, 8" data-coordinates="55.755241, 37.617779"></div>
-        <h2>css isolation</h2>
-        <div class="isolation">
-          <div class="isolation-container">isolation text <span class="isolation-inner">isolation-inner</span></div>
-        </div>
-      </div>
-    </main>
-    <footer class="footer">
-      <div class="footer__wrapper">
-        <h2>This is my footer</h2>
-      </div>
-    </footer>
-    <div class="modal" id="modal">
-      <div class="modal__wrap">
-        <div class="modal__window">
-          <div class="modal__top">
-            <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
-              </svg>
-            </button>
-          </div>
-          <div class="modal__header">
-            <span class="modal__title">Заказать звонок</span>
-            <p class="modal__subtitle">Оставьте свои контактные данные, с вами свяжутся в течении 40 минут</p>
-          </div>
-          <div class="modal__content">
-            <div class="form-modal modal__form-modal">
-              <form class="form" id="form" novalidate="">
-                <input type="hidden" name="test" />
-                <div class="form__line">
-                  <label class="form__label" for="modal-name"></label>
-                  <input class="form__input" id="modal-name" type="text" placeholder="Имя" name="Имя" />
-                </div>
-                <div class="form__line">
-                  <label class="form__label" for="modal-phone"></label>
-                  <input class="form__input imask" id="modal-phone" type="tel" placeholder="Номер телефона" name="Телефон" data-required="" />
-                </div>
-                <div class="form__line-btn">
-                  <button class="btn btn--primary btn--midle form-modal__btn" type="submit">Отправить</button>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div class="modal__success-content success-content">
-            <h2>Мы с вами свяжемся!</h2>
-          </div>
-          <div class="modal__error-content error-content">
-            <h2>Произошла ошибка</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal modal-success" id="success">
-      <div class="modal__wrap">
-        <div class="modal__window">
-          <div class="modal__top">
-            <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
-              </svg>
-            </button>
-          </div>
-          <div class="modal-success__content"><span class="modal-success__title">Мы скоро перезвоним :)</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal modal-error" id="error">
-      <div class="modal__wrap">
-        <div class="modal__window">
-          <div class="modal__top">
-            <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
-              </svg>
-            </button>
-          </div>
-          <div class="modal-success__content"><span class="modal-error__title">Что-то пошло не так :(</span></div>
-        </div>
-      </div>
-    </div>
-    <script src="js/main.min.js"></script>
-    <script src="js/vendor.min.js"></script>
   
+
+  
+
+  
+
+  
+
+  
+
+  
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Главная</title>
+        <meta name="viewport" content="width=device-width, initial-scale=no, maximum-scale=1, minimum-scale=1" />
+        <meta name="description" content="Сайт об HTML и создании сайтов" />
+        <meta property="og:image" content="img/hero/mobile-img.jpg" />
+        <meta name="theme-color" content="#061626" />
+        <meta name="msapplication-navbutton-color" content="#061626" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#061626" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png" />
+        <link rel="preload" as="font" href="fonts/ProximaNova-Regular.woff2" type="font/woff2" crossorigin="" />
+        <link rel="preload" as="font" href="fonts/ProximaNova-Bold.woff2" type="font/woff2" crossorigin="" />
+        <link rel="preload" as="font" href="fonts/ProximaNova-Light.woff2" type="font/woff2" crossorigin="" />
+        <link rel="stylesheet" href="styles/main.min.css" />
+        <meta name="keywords" />
+    </head>
+    <body class="main-page">
+        <header class="header"></header>
+        <main class="content">
+            <div class="container">
+                <h2>Hero Section</h2>
+                <div class="hero">
+                    <div class="hero__content">
+                        <h3 class="hero__title">Title</h3>
+                        <p class="hero__description">Description</p>
+                        <a class="hero__link" href="#">Link</a>
+                    </div>
+                    <img src="../api/upload_image/654b8dfd966f1.webp" width="" height="" alt="Фотограф" loading="lazy" class="" />
+                </div>
+                <h1 class="h1-test" style="&#10;                        font-size: 21px;&#10;                        font-style: italic;&#10;                        color: rgb(255, 0, 0);&#10;                    ">
+                    Далеко-далеко за словесными горами в стране гласных, и
+                    согласных живут рыбные тексты.
+                </h1>
+                <h2>Image</h2>
+                <div class="grid3">
+                    <div>
+                        <img src="../api/upload_image/654b62c1908c7.webp" width="300" height="187" alt="Горы" loading="lazy" class="" />
+                    </div>
+                    <div>
+                        <img src="../api/upload_image/654b62d379154.webp" width="300" height="187" alt="Горы" loading="lazy" class="" />
+                    </div>
+                    <div>
+                        <img src="../api/upload_image/654b97dee11ab.webp" width="300" height="187" alt="Горы" loading="lazy" class="" />
+                    </div>
+                </div>
+                <h2>Button</h2>
+                <div class="btn-container">
+                    <button class="btn btn--default btn--normal btn--radius" type="button">
+                        Normal
+                    </button>
+                </div>
+                <h2>Modal</h2>
+                <button class="btn btn--default btn--normal btn--radius modal-trigger" type="button" data-trigger="modal">
+                    modal
+                </button>
+                <h2>Collapse</h2>
+                <div class="collapse">
+                    <button class="btn collapse__header selected" data-header="collapse-0">
+                        One
+                    </button>
+                    <button class="btn collapse__header" data-header="collapse-1">
+                        Two
+                    </button>
+                    <button class="btn collapse__header" data-header="collapse-2">
+                        Three
+                    </button>
+                    <button class="btn collapse__header" data-header="collapse-3">
+                        Four
+                    </button>
+                    <div class="collapse__content selected" data-collapse-content="collapse-0">
+                        Sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                    </div>
+                    <div class="collapse__content" data-collapse-content="collapse-1">
+                        Sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                    </div>
+                    <div class="collapse__content" data-collapse-content="collapse-2">
+                        Sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                    </div>
+                    <div class="collapse__content" data-collapse-content="collapse-3">
+                        Sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                    </div>
+                </div>
+                <h2>Accordion</h2>
+                <div class="block-2 accordion">
+                    <div class="accordion__item">
+                        <button class="block-2__title btn accordion__title open" type="button">
+                            Heading 1
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                            </svg>
+                        </button>
+                        <div class="block-2__collapse accordion__content">
+                            <p class="accordion__text">
+                                Lorem Ipsum is simply dummy text of the printing
+                                and
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion__item">
+                        <button class="block-2__title btn accordion__title" type="button">
+                            Heading 2
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                            </svg>
+                        </button>
+                        <div class="block-2__collapse accordion__content">
+                            <p class="accordion__text">
+                                Lorem Ipsum is simply dummy text of the printing
+                                and
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion__item">
+                        <button class="block-2__title btn accordion__title" type="button">
+                            Heading 3
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                            </svg>
+                        </button>
+                        <div class="block-2__collapse accordion__content">
+                            <p class="accordion__text">
+                                Lorem Ipsum is simply dummy text of the printing
+                                and
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion__item">
+                        <button class="block-2__title btn accordion__title" type="button">
+                            Heading 4
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                            </svg>
+                        </button>
+                        <div class="block-2__collapse accordion__content">
+                            <p class="accordion__text">
+                                Lorem Ipsum is simply dummy text of the printing
+                                and
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion__item">
+                        <button class="block-2__title btn accordion__title" type="button">
+                            Heading 5
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                            </svg>
+                        </button>
+                        <div class="block-2__collapse accordion__content">
+                            <p class="accordion__text">
+                                Lorem Ipsum is simply dummy text of the printing
+                                and
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion__item">
+                        <button class="block-2__title btn accordion__title" type="button">
+                            Heading 6
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow accordion__icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                            </svg>
+                        </button>
+                        <div class="block-2__collapse accordion__content">
+                            <p class="accordion__text">
+                                Lorem Ipsum is simply dummy text of the printing
+                                and
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <h2>Slider</h2>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <img src="img/1.jpg" width="1180" height="472" alt="Горы" loading="lazy" class="" />
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn swiper-button-prev" aria-label="Предыдущий слайд" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                        </svg>
+                    </button>
+                    <button class="btn swiper-button-next" aria-label="Следующий слайд" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-arrow slider-arrow">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#arrow"/>
+                        </svg>
+                    </button>
+                </div>
+                <h2>Table</h2>
+                <div class="table">
+                    <div class="row-table header-table">
+                        <div class="cell-table header-table__cell">
+                            Название
+                        </div>
+                        <div class="cell-table header-table__cell">
+                            Описание услуги
+                        </div>
+                        <div class="cell-table header-table__cell">
+                            Стоимость
+                        </div>
+                    </div>
+                    <div class="row-table">
+                        <div class="cell-table cell-table--first" data-title="Название">
+                            Разработка ПО
+                        </div>
+                        <div class="cell-table" data-title="Описание услуги">
+                            Профессиональная разработка программ
+                        </div>
+                        <div class="cell-table" data-title="Стоимость">
+                            от 460 000 ₽
+                        </div>
+                    </div>
+                    <div class="row-table">
+                        <div class="cell-table cell-table--first" data-title="Название">
+                            3d моделирование
+                        </div>
+                        <div class="cell-table" data-title="Описание услуги">
+                            Скульптинг / Топология / Текстурирование / Low Poly
+                            / PBR графика
+                        </div>
+                        <div class="cell-table" data-title="Стоимость">
+                            750 ₽ / час
+                        </div>
+                    </div>
+                    <div class="row-table">
+                        <div class="cell-table cell-table--first" data-title="Название">
+                            Услуги программиста
+                        </div>
+                        <div class="cell-table" data-title="Описание услуги">
+                            Услуги программиста уровня Senior и Middle. UE4 /
+                            CryEngine 3 / Unity
+                        </div>
+                        <div class="cell-table" data-title="Стоимость">
+                            1200 ₽ / час
+                        </div>
+                    </div>
+                </div>
+                <h2>Breadcrumbs</h2>
+                <div class="breadcrumbs">
+                    <ul>
+                        <li class="breadcrumb__item">
+                            <!-- if breadcrumb is single--><a class="breadcrumb__link" href="#" title="Main page">Main page</a>
+                        </li>
+                        <li class="breadcrumb__item">
+                            <!-- if breadcrumb is single--><a class="breadcrumb__link" href="#" title="News">News</a>
+                        </li>
+                        <li class="breadcrumb__item">
+                            <span class="breadcrumb__link-current">News detail</span>
+                        </li>
+                    </ul>
+                </div>
+                <h2>Video youtube</h2>
+                <div style="width: 60%">
+                    <div class="video" data-youtube-video="QXkSYSPTpj4" data-frame-title="Пример">
+                        <div class="video__link" style="background-image:url(https://i.ytimg.com/vi/QXkSYSPTpj4/maxresdefault.jpg)">
+                            <button class="btn btn--with-icon i-svg-youtube youtube-play" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-youtube youtube">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#youtube"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <h2>Lazy load Maps</h2>
+                <div id="map" style="width: 400px; height: 400px" data-yamaps="" data-apikey="ваш API-ключ" data-address="г. Москва, Преображенская площадь, 832132312" data-coordinates="55.755241, 37.617779"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer__wrapper">
+                <h2>This is my footer</h2>
+            </div>
+        </footer>
+        <div class="modal" id="modal">
+            <div class="modal__wrap">
+                <div class="modal__window">
+                    <div class="modal__top">
+                        <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal__header">
+                        <span class="modal__title">Заказать звонок</span>
+                        <p class="modal__subtitle">
+                            Оставьте свои контактные данные, с вами свяжутся в
+                            течении 40 минут
+                        </p>
+                    </div>
+                    <div class="modal__content">
+                        <div class="form-modal modal__form-modal">
+                            <form class="form" id="form" novalidate="">
+                                <input type="hidden" name="test" />
+                                <div class="form__line">
+                                    <label class="form__label" for="modal-name"></label>
+                                    <input class="form__input" id="modal-name" type="text" placeholder="Имя" name="Имя" />
+                                </div>
+                                <div class="form__line">
+                                    <label class="form__label" for="modal-phone"></label>
+                                    <input class="form__input imask" id="modal-phone" type="tel" placeholder="Номер телефона" name="Телефон" data-required="" />
+                                </div>
+                                <div class="form__line-btn">
+                                    <button class="btn btn--primary btn--midle form-modal__btn" type="submit">
+                                        Отправить
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal__success-content success-content">
+                        <h2>Мы с вами свяжемся!</h2>
+                    </div>
+                    <div class="modal__error-content error-content">
+                        <h2>Произошла ошибка</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal modal-success" id="success">
+            <div class="modal__wrap">
+                <div class="modal__window">
+                    <div class="modal__top">
+                        <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal-success__content">
+                        <span class="modal-success__title">Мы скоро перезвоним :)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal modal-error" id="error">
+            <div class="modal__wrap">
+                <div class="modal__window">
+                    <div class="modal__top">
+                        <button class="btn btn--icon modal__icon-close-wrapper modal__close" aria-label="Закрыть модальное окно" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close modal__icon-close">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img/svg-sprite/svg-sprite.svg#close"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal-success__content">
+                        <span class="modal-error__title">Что-то пошло не так :(</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/main.min.js"></script>
+        <script src="js/vendor.min.js"></script>
+    
 
 </body></html>

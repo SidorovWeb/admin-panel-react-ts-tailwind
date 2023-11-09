@@ -1,17 +1,11 @@
 <?php
 include('./includes/headerType.php');
 
-if($_SERVER['HTTP_HOST'] == 'localhost:8000') {
-    if (!is_dir('./backups/')) {
-        mkdir('./backups/');
-      }
-  } else {
-    if (!is_dir('../../backups/')) {
-        mkdir('../../backups/');
-      }
-  }
+$backupDir = ($_SERVER['HTTP_HOST'] == 'localhost:8000') ? './backups/' : '../../backups/';
 
-
+if (!is_dir($backupDir)) {
+    mkdir($backupDir, 0777, true);
+}
 
 Class ZipArchiver {
     public static function zipDir($sourcePath, $outZipPath){

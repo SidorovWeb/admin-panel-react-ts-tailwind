@@ -1,24 +1,18 @@
 <?php
 include('./includes/headerType.php');
 
-if(file_exists($_FILES["image"]["tmp_name"]) && is_uploaded_file($_FILES["image"]["tmp_name"])) {
-  $fileExt = explode("/", $_FILES["image"]["type"])[1];
-  $fileName = uniqid() . "." . $fileExt;
+if (file_exists($_FILES["image"]["tmp_name"]) && is_uploaded_file($_FILES["image"]["tmp_name"])) {
+    $fileExt = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+    $fileName = uniqid() . "." . $fileExt;
+    $uploadPath = ($_SERVER['HTTP_HOST'] == 'localhost:8000') ? "./upload_image/" : "../../upload_image/";
 
-  if($_SERVER['HTTP_HOST'] == 'localhost:8000') {
-    if(!is_dir("./upload_image/")) {
-      mkdir("./upload_image/");
+    if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0777, true);
     }
-    move_uploaded_file($_FILES["image"]["tmp_name"], "./upload_image/" . $fileName);
-  } else {
-    if(!is_dir("../upload_image/")) {
-      mkdir("../../upload_image/");
-    }
-    move_uploaded_file($_FILES["image"]["tmp_name"], "../../upload_image/" . $fileName);
-  }
 
+    move_uploaded_file($_FILES["image"]["tmp_name"], $uploadPath . $fileName);
 
-  echo json_encode( array("src" => $fileName));
+    echo json_encode(["src" => $fileName]);
 }
 
 

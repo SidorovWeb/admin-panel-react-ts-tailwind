@@ -1,25 +1,31 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
-import { Button } from '../../UI/Button'
-import { uploadImage } from '../../../helpers/images'
+import { Button } from '../UI/Button'
+import { uploadImage } from '../../helpers/images'
 import axios from 'axios'
-import { pathAPI } from '../../../constants'
-import { userActions } from '../../../hooks/actions'
-import { useAppSelector } from '../../../hooks/redux'
-import { convertBytes, imageSize, toPublish } from '../../../helpers/utils'
+import { pathAPI } from '../../constants'
+import { userActions } from '../../hooks/actions'
+import { useAppSelector } from '../../hooks/redux'
+import { convertBytes, imageSize, published } from '../../helpers/utils'
 import { MdOutlineSearch } from 'react-icons/md'
-import { parseStrDom } from '../../../helpers/dom-helpers'
-import { PublishedButton } from '../../UI/PublishedButton'
-import { MiniSpinner } from '../../Spinners/MiniSpinner'
+import { MiniSpinner } from '../Spinners/MiniSpinner'
 import { useTranslation } from 'react-i18next'
-import { Search } from '../../UI/Search'
+import { Search } from '../UI/Search'
+import { toast } from 'react-toastify'
 
-interface IEditorImages {
+interface ImageData {
+    size: number
+    width: number
+    height: number
+    extension?: string
+}
+
+export interface IEditorImages {
     virtualDom: Document
     setVirtualDom: (dom: Document) => void
     currentPage: string
 }
 
-interface IMapImages {
+export interface IMapImages {
     img: HTMLImageElement
     id: number
     src: string
@@ -28,12 +34,14 @@ interface IMapImages {
     width: number
     height: number
     size: number
+    extension: string
 }
 
-interface INewList {
+export interface INewList {
     id: number
     text?: string
     src?: string
+    extension?: string
     baseSrc?: string
     width?: number
     height?: number
@@ -52,7 +60,7 @@ export const EditorImages: FC<IEditorImages> = ({
     const { id, text } = useAppSelector((state) => state.setText)
     const { images } = useAppSelector((state) => state.getImage)
     const [isSpinner, setIsSpinner] = useState(true)
-    const serializer = new XMLSerializer()
+    const [isCollapse, setIsCollapse] = useState(false)
     const { t } = useTranslation()
 
     useEffect(() => {
@@ -65,9 +73,11 @@ export const EditorImages: FC<IEditorImages> = ({
                 if (img.src.includes('/upload_image/')) {
                     src = img.src
                 } else {
-                    src = (img.baseURI +
-                        'api/' +
-                        img.getAttribute('src')) as string
+                    if (import.meta.env.MODE == 'development') {
+                        src = (img.baseURI +
+                            'api/' +
+                            img.getAttribute('src')) as string
+                    }
                 }
                 if (import.meta.env.MODE !== 'development') {
                     if (img.src.includes('/apsa/')) {
@@ -77,16 +87,18 @@ export const EditorImages: FC<IEditorImages> = ({
 
                 const name = img.getAttribute('alt') as string
                 return {
-                    img,
+                    img: img,
                     id: idx,
-                    src,
-                    baseSrc: img.getAttribute('src') as string,
-                    name,
+                    src: src,
+                    baseSrc: img.getAttribute('src') || '',
+                    name: name,
                     width: 0,
                     height: 0,
                     size: 0,
+                    extension: '',
                 }
             })
+
         setImagesList(mapImages)
         if (!mapImages?.length) {
             setIsSpinner(false)
@@ -113,32 +125,24 @@ export const EditorImages: FC<IEditorImages> = ({
             axios
                 .post<[]>(`${pathAPI}getImageData.php`, { imgList: urls })
                 .then((res) => {
-                    res.data.forEach(
-                        (
-                            item: {
-                                size: number
-                                width: number
-                                height: number
-                            },
-                            id
-                        ) => {
-                            newList({
-                                id,
-                                size: item.size,
-                                width: item.width,
-                                height: item.height,
-                            })
-                        }
-                    )
+                    res.data.forEach((item: ImageData, id) => {
+                        updateImageList({
+                            id,
+                            size: item.size,
+                            width: item.width,
+                            height: item.height,
+                            extension: item.extension,
+                        })
+                    })
                 })
-                .catch((e) => console.error(e))
+                .catch((error) => toast.error(error))
                 .finally(() => setIsSpinner(false))
         }
     }, [imagesList])
 
     useEffect(() => {
         if (text !== '') {
-            newList({ id, text: text })
+            updateImageList({ id, text: text })
             filter(' ')
         }
     }, [text])
@@ -155,37 +159,41 @@ export const EditorImages: FC<IEditorImages> = ({
             setFilteredImages(filtered)
         }
     }
-
     const onSearch = (str: string) => {
         filter(str)
         setSearch(str)
     }
 
-    const onUpload = (
+    const onUpload = async (
         img: HTMLImageElement,
         id: number,
         e: ChangeEvent<HTMLInputElement>
     ) => {
-        if (e.target.files && e.target.files[0]) {
-            imageSize(e.target.files[0]).then((res) => {
-                if (e.target.files && e.target.files[0]) {
-                    uploadImage({
-                        img,
-                        id,
-                        virtualDom,
-                        setVirtualDom,
-                        file: e.target.files[0],
-                    }).then((src: any) => {
-                        newList({
-                            id,
-                            src,
-                            width: res.width,
-                            height: res.height,
-                            size: res.size,
-                        })
-                    })
-                }
-            })
+        const file = e.target.files && e.target.files[0]
+
+        if (file) {
+            try {
+                const { width, height, size, extension } = await imageSize(file)
+                const src = (await uploadImage({
+                    img,
+                    id,
+                    virtualDom,
+                    setVirtualDom,
+                    file,
+                })) as string
+
+                await updateImageList({
+                    id,
+                    src,
+                    width,
+                    height,
+                    size,
+                    extension,
+                })
+                published(virtualDom, currentPage)
+            } catch (error) {
+                toast.error('error')
+            }
         }
     }
 
@@ -200,73 +208,52 @@ export const EditorImages: FC<IEditorImages> = ({
         }
     }
 
-    const newList = ({ id, text, src, width, height, size }: INewList) => {
-        const newList =
-            imagesList &&
-            imagesList?.map((el) => {
-                if (el.id === id) {
-                    if (width && height) {
-                        el.width = width
-                        el.height = height
-                    }
-                    if (src) {
-                        if (
-                            import.meta.env.MODE !== 'development' &&
-                            src.includes('/apsa/')
-                        ) {
-                            el.src = src.replace('apsa/', '') as string
-                        } else {
-                            el.src = src
-                        }
-                    }
-                    if (text) {
-                        el.name = text
-                    }
-                    if (size) {
-                        el.size = size
-                    }
+    const updateImageList = ({
+        id,
+        text,
+        src,
+        width,
+        height,
+        size,
+        extension,
+    }: INewList) => {
+        if (!imagesList) {
+            return
+        }
 
-                    return el
+        const updatedList = imagesList.map((el) => {
+            if (el.id !== id) return el
+
+            if (width && height) {
+                el.width = width
+                el.height = height
+            }
+
+            if (src) {
+                if (
+                    import.meta.env.MODE !== 'development' &&
+                    src.includes('/apsa/')
+                ) {
+                    el.src = src.replace('apsa/', '') as string
+                } else {
+                    el.src = src
                 }
-                return el
-            })
+            }
 
-        setFilteredImages(newList)
-    }
+            if (text) el.name = text
 
-    const published = () => {
-        const newHtml = serializer.serializeToString(virtualDom)
-        const document = parseStrDom(newHtml)
+            if (size) el.size = size
 
-        toPublish({ newVirtualDom: document, currentPage })
+            if (extension) el.extension = extension
+
+            return el
+        })
+
+        setFilteredImages(updatedList)
     }
 
     return (
-        <div>
-            <button
-                className="btn-default focus:outline-none relative inline-block py-2 px-3 mb-4 text-xs leading-tight rounded shadow-md hover:shadow-lg focus:shadow-lg focus:border-blue-600 focus:ring-0 active:shadow-lg transition duration-150 ease-in-out"
-                type="button"
-                data-te-collapse-init
-                data-te-ripple-init
-                data-te-target="#collapse"
-            >
-                {t('usageExample')}
-            </button>
-            <div
-                className="!visible hidden"
-                id="collapse"
-                data-te-collapse-item
-            >
-                <p className="bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4">
-                    {
-                        "<picture><source srcset='images/example.webp' type='image/webp' /><img src='images/example.jpg' alt='example' /></picture>"
-                    }
-                </p>
-                <p className="bg-amber-100 dark:text-gray-700 p-4 rounded-lg">
-                    {"<img src='images/example.jpg' alt='example' />"}
-                </p>
-            </div>
-
+        <>
             <div className="mb-3 relative w-full">
                 <MdOutlineSearch className="absolute top-[50%] left-2 translate-y-[-50%] opacity-[0.4] w-6 h-6" />
                 <Search
@@ -285,12 +272,14 @@ export const EditorImages: FC<IEditorImages> = ({
                             key={img.id}
                         >
                             <div className="w-full">
-                                <img
-                                    className="rounded-t-lg w-full object-cover min-h-[210px] max-h-[210px] bg-slate-200 dark:bg-slate-500"
-                                    src={img.src}
-                                    alt={img.name}
-                                    loading="lazy"
-                                />
+                                <div className="rounded-t-lg w-full object-cover h-[210px] bg-slate-200 dark:bg-slate-500 overflow-hidden">
+                                    <img
+                                        className="w-full object-cover h-full"
+                                        src={img.src}
+                                        alt={img.name}
+                                        loading="lazy"
+                                    />
+                                </div>
                                 <div className="p-4">
                                     <p className="text-inherit text-base font-medium">
                                         {t('nameImage')}: {img.name}
@@ -301,8 +290,12 @@ export const EditorImages: FC<IEditorImages> = ({
                                     <p className="text-inherit text-base opacity-[0.8]">
                                         Height: {img.height}px
                                     </p>
-                                    <p className="text-inherit text-base mb-2 opacity-[0.8]">
-                                        Size: {convertBytes(img.size)} -{' '}
+                                    <p className="text-inherit text-base opacity-[0.8]">
+                                        Size:{' '}
+                                        <span className="text-green-600">
+                                            {convertBytes(img.size)}
+                                        </span>{' '}
+                                        -{' '}
                                         {img.size < 500 ? (
                                             <span className="text-green-600">
                                                 {t('goodSize')}
@@ -310,6 +303,18 @@ export const EditorImages: FC<IEditorImages> = ({
                                         ) : (
                                             <span className="text-red-600">
                                                 {t('bigSize')}
+                                            </span>
+                                        )}
+                                    </p>
+                                    <p className="text-inherit text-base mb-2 opacity-[0.8]">
+                                        extension: -{' '}
+                                        {img.extension === 'webp' ? (
+                                            <span className="text-green-600">
+                                                {img.extension}
+                                            </span>
+                                        ) : (
+                                            <span className="text-red-600">
+                                                {t('extension')}
                                             </span>
                                         )}
                                     </p>
@@ -321,7 +326,7 @@ export const EditorImages: FC<IEditorImages> = ({
                                             <input
                                                 type="file"
                                                 accept="image/*"
-                                                className="hidden"
+                                                className="hidden caret-black dark:caret-white"
                                                 onChange={(e) =>
                                                     onUpload(img.img, img.id, e)
                                                 }
@@ -350,7 +355,6 @@ export const EditorImages: FC<IEditorImages> = ({
                     <div className="text-xl mt-6">{t('imagesNotFound')}</div>
                 )}
             </div>
-            <PublishedButton onClick={published} />
-        </div>
+        </>
     )
 }

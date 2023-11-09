@@ -1,23 +1,17 @@
-import React, { FC, useEffect, useState } from 'react'
-import { DoughnutChart } from '../DoughnutChart/DoughnutChart'
-import html from '../../../assets/icons/html.svg'
-import css from '../../../assets/icons/css.svg'
-import js from '../../../assets/icons/js.svg'
-import img from '../../../assets/icons/img.svg'
-import backup from '../../../assets/icons/backup.svg'
-import axios from 'axios'
-import { pathAPI } from '../../../constants'
-import { toast } from 'react-toastify'
-import { Button } from '../../UI/Button'
-import { MiniSpinner } from '../../Spinners/MiniSpinner'
+import { FC, useEffect, useState } from 'react'
+import { DoughnutChart } from './DoughnutChart'
+import html from '../../assets/icons/html.svg'
+import css from '../../assets/icons/css.svg'
+import js from '../../assets/icons/js.svg'
+import img from '../../assets/icons/img.svg'
+import backup from '../../assets/icons/backup.svg'
+import { useAppSelector } from '../../hooks/redux'
 import { useTranslation } from 'react-i18next'
-import { useAppSelector } from '../../../hooks/redux'
+import { MiniSpinner } from '../Spinners/MiniSpinner'
+import { Button } from '../UI/Button'
 
 interface IDashboard {}
-interface IFiles {
-    files: string[]
-    path: string[]
-}
+
 export interface IChartData {
     labels: string[]
     data: number[]
@@ -26,80 +20,30 @@ export interface IChartData {
 export const Dashboard: FC<IDashboard> = ({}) => {
     const cardStyle =
         'border border-inherit rounded flex items-center justify-center px-4 py-6 shadow-md border-slate-200 dark:border-slate-700'
-    const [htmlFiles, setHtmlFiles] = useState<string[]>()
-    const [cssFiles, setCssFiles] = useState<IFiles>()
-    const [jsFiles, setJsFiles] = useState<IFiles>()
-    const [imgFiles, setImgFiles] = useState<HTMLImageElement[]>()
-    const [backupFiles, setBackupFiles] = useState<NodeList>()
     const [chartData, setChartData] = useState<IChartData>()
     const { images } = useAppSelector((state) => state.getImage)
+    const { htmlFiles } = useAppSelector((state) => state.htmlFiles)
+    const { cssFiles } = useAppSelector((state) => state.cssFiles)
+    const { jsFiles } = useAppSelector((state) => state.jsFiles)
+    const { backupFiles } = useAppSelector((state) => state.backupFiles)
     const { t } = useTranslation()
-
-    const getList = async (nameFile: string, setFun: (v: any) => void) => {
-        return await axios
-            .get<[]>(`${pathAPI}${nameFile}`)
-            .then((res) => {
-                let files = [] as string[]
-
-                res.data.forEach((f: string) => {
-                    const fileName = f.split('/').pop()
-                    if (fileName) files.push(fileName)
-                })
-                setFun({ files, path: res.data })
-            })
-            .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
-    }
-
-    const getBackupList = async () => {
-        return await axios
-            .get<[]>(`${pathAPI}backupList.php`)
-            .then((res) => {
-                const editedData = [] as any
-                res.data.forEach((str: string) => {
-                    const idx = str.lastIndexOf('/')
-                    editedData.push(str.slice(idx + 1))
-                })
-
-                setBackupFiles(editedData)
-            })
-            .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
-    }
-
-    const getListHtmlFiles = async () => {
-        return await axios
-            .get<[]>(`${pathAPI}htmlList.php`)
-            .then((res) => {
-                const filteredData = res.data.filter(
-                    (item) => item !== 'temporaryFileCanBeDeleted.html'
-                )
-                setHtmlFiles(filteredData)
-            })
-            .catch((e) => toast.error(`Failed to load list of pages! ${e}`))
-    }
-
-    useEffect(() => {
-        setImgFiles(images)
-        getListHtmlFiles()
-        getList('cssList.php', setCssFiles)
-        getList('jsList.php', setJsFiles)
-        getBackupList()
-    }, [])
 
     useEffect(() => {
         if (htmlFiles?.length && cssFiles?.files && jsFiles?.files.length) {
             const chart = {
-                labels: ['HTML', 'CSS', 'JS', 'IMG'],
+                labels: ['HTML', 'CSS', 'JS', 'IMG', 'Backups'],
                 data: [
                     htmlFiles?.length ?? 0,
                     cssFiles?.files.length ?? 0,
                     jsFiles?.files.length ?? 0,
-                    imgFiles?.length ?? 0,
+                    images?.length ?? 0,
+                    backupFiles?.length ?? 0,
                 ],
             }
 
             setChartData(chart)
         }
-    }, [htmlFiles, cssFiles, jsFiles, imgFiles])
+    }, [htmlFiles, cssFiles, jsFiles, images, backupFiles])
 
     return (
         <div className="charts grid md:grid-cols-2 gap-16 justify-center">
@@ -153,8 +97,8 @@ export const Dashboard: FC<IDashboard> = ({}) => {
                         src={img}
                         alt="Your SVG"
                     />
-                    {imgFiles && <p>: {imgFiles.length}</p>}
-                    {!imgFiles && (
+                    {images && <p>: {images.length}</p>}
+                    {!images && (
                         <div className="flex items-center">
                             Images: <MiniSpinner height={6} width={6} />
                         </div>
@@ -185,11 +129,11 @@ export const Dashboard: FC<IDashboard> = ({}) => {
             </div>
 
             {backupFiles && backupFiles.length ? (
-                <div className="bg-amber-100 dark:text-gray-700 p-4 rounded-lg mb-4">
+                <div className="bg-amber-100 dark:text-gray-900 p-4 rounded-lg mb-4">
                     {t('backupFolder')} ./backups/
                 </div>
             ) : (
-                <div className="bg-red-200 dark:text-gray-700  p-4 rounded-lg mb-4">
+                <div className="bg-red-200 dark:text-gray-900  p-4 rounded-lg mb-4">
                     {t('recommendedBackup')}
                 </div>
             )}
