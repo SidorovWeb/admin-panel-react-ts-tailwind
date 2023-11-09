@@ -32,3 +32,4 @@ dist-ssr
 **/api/*.html
 # **/api/index.html
 # **/api/artpresent.html
+src/components/Modal
