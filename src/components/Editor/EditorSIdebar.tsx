@@ -27,14 +27,32 @@ export const EditorSIdebar: FC<IEditorSIdebar> = ({
     const { t } = useTranslation()
 
     const components = [
-        { name: 'Dashboard', icon: <MdBarChart className="w-5 h-5" /> },
-        { name: 'Images', icon: <MdOutlineImage className="w-5 h-5" /> },
-        { name: 'Text', icon: <MdOutlineShortText className="w-5 h-5" /> },
-        { name: 'Code', icon: <MdCode className="w-5 h-5" /> },
-        { name: 'Maps', icon: <MdOutlineMap className="w-5 h-5" /> },
-        { name: 'Video', icon: <MdVideoSettings className="w-5 h-5" /> },
-        { name: 'Uploads', icon: <MdOutlineCloudUpload className="w-5 h-5" /> },
-        { name: 'Manual', icon: <MdHelpOutline className="w-5 h-5" /> },
+        {
+            name: 'Dashboard',
+            icon: <MdBarChart className="w-5 h-5 -mt-[1px]" />,
+        },
+        {
+            name: 'Images',
+            icon: <MdOutlineImage className="w-5 h-5 -mt-[1px]" />,
+        },
+        {
+            name: 'Text',
+            icon: <MdOutlineShortText className="w-5 h-5 -mt-[1px]" />,
+        },
+        { name: 'Code', icon: <MdCode className="w-5 h-5 -mt-[1px]" /> },
+        { name: 'Maps', icon: <MdOutlineMap className="w-5 h-5 -mt-[1px]" /> },
+        {
+            name: 'Video',
+            icon: <MdVideoSettings className="w-5 h-5 -mt-[1px]" />,
+        },
+        {
+            name: 'Uploads',
+            icon: <MdOutlineCloudUpload className="w-5 h-5 -mt-[1px]" />,
+        },
+        {
+            name: 'Manual',
+            icon: <MdHelpOutline className="w-5 h-5 -mt-[1px]" />,
+        },
     ]
 
     return (

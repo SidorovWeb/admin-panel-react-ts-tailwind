@@ -35,7 +35,8 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
     const [direction, setDirection] = useState('row')
     const textId = useAppSelector((state) => state.textEditorPanel.id)
     const { activateCodeEditor } = userActions()
-    const clBtn = '!p-1 w-[30px] sm:w-[34px] h-[30px] sm:h-[34px] m-[2px]'
+    const clBtn =
+        '!p-1 w-[30px] min-[400px]:w-[34px]  h-[30px] min-[400px]:h-[34px]  m-[2px]'
 
     useEffect(() => {
         let position = JSON.parse(
@@ -175,7 +176,7 @@ export const Panel: FC<IPanel> = ({ virtualDom, setVirtualDom }) => {
                     onStop={handleEnd}
                 >
                     <div
-                        className="DragContainer fixed z-998 bg-slate-300/90 dark:bg-slate-800/90 rounded overflow-hidden shadow-lg p-1.5 flex flex-wrap w-[320px] sm:w-auto"
+                        className="DragContainer fixed z-998 bg-slate-300/90 dark:bg-slate-800/90 rounded overflow-hidden shadow-lg p-1.5 flex flex-wrap w-[320px] min-[400px]:w-[auto]"
                         onMouseEnter={onMouseEnter}
                     >
                         <div className="DragInner">

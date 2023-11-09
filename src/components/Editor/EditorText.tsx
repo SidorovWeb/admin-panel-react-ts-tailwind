@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import { MdEdit, MdOutlineSearch } from 'react-icons/md'
 import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
-import { MiniSpinner } from '../Spinners/MiniSpinner'
 import { Tabs } from '../UI/Tabs'
 import { useTranslation } from 'react-i18next'
 import { Search } from '../UI/Search'
@@ -175,7 +174,6 @@ export const EditorText: FC<IEditorText> = ({ virtualDom }) => {
                     placeholder={t('searchPlaceholderText') as string}
                 />
             </div>
-            {isSpinner && <MiniSpinner />}
             <div className="flex flex-col">
                 <div className="sm:-mx-6 lg:-mx-8">
                     <div className="py-2 sm:px-6 lg:px-8">

@@ -10,7 +10,6 @@ import axios from 'axios'
 import { pathAPI } from '../../constants'
 import { parseStrDom } from '../../helpers/dom-helpers'
 import { toPublish } from '../../helpers/utils'
-import { MiniSpinner } from '../Spinners/MiniSpinner'
 import { useTranslation } from 'react-i18next'
 import { PublishedButton } from '../UI/PublishedButton'
 import { useAppSelector } from '../../hooks/redux'
@@ -48,7 +47,6 @@ export const EditorCode: FC<IEditorCode> = ({
     const [jsFileName, setJsFileName] = useState('')
     const [jsData, setJsData] = useState('')
     const [propsByMode, setPropsByMode] = useState<IPropsByMode>()
-    const [isSpinner, setIsSpinner] = useState(true)
     const { t, i18n } = useTranslation()
     const { cssFiles } = useAppSelector((state) => state.cssFiles)
     const { jsFiles } = useAppSelector((state) => state.jsFiles)
@@ -63,7 +61,6 @@ export const EditorCode: FC<IEditorCode> = ({
         }
 
         calculatesHeightCodeEditor()
-        setIsSpinner(false)
 
         window.addEventListener('resize', resizeHandler)
         return () => {
@@ -242,28 +239,23 @@ export const EditorCode: FC<IEditorCode> = ({
                     <PublishedButton onClick={published} />
                 </div>
             </div>
-            {isSpinner && <MiniSpinner />}
-            {!isSpinner && (
-                <>
-                    <div
-                        className="rounded relative w-full h-[70vh]"
-                        ref={codeMirrorWrapperRef}
-                    >
-                        <CodeMirror
-                            height="100%"
-                            basicSetup={{
-                                foldGutter: false,
-                            }}
-                            className="absolute inset-0 w-full h-full"
-                            width={`${codeMirrorWidth}px`}
-                            value={propsByMode && propsByMode.value}
-                            theme={theme}
-                            extensions={[propsByMode && propsByMode.extensions]}
-                            onChange={onChange}
-                        />
-                    </div>
-                </>
-            )}
+            <div
+                className="rounded relative w-full h-[70vh]"
+                ref={codeMirrorWrapperRef}
+            >
+                <CodeMirror
+                    height="100%"
+                    basicSetup={{
+                        foldGutter: false,
+                    }}
+                    className="absolute inset-0 w-full h-full"
+                    width={`${codeMirrorWidth}px`}
+                    value={propsByMode && propsByMode.value}
+                    theme={theme}
+                    extensions={[propsByMode && propsByMode.extensions]}
+                    onChange={onChange}
+                />
+            </div>
         </div>
     )
 }

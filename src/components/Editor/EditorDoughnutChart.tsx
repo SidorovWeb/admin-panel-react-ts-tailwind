@@ -11,11 +11,13 @@ import { IChartData } from './EditorDashboard'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-interface IDoughnutChart {
+interface IEditorDoughnutChart {
     chartData: IChartData
 }
 
-export const DoughnutChart: FC<IDoughnutChart> = ({ chartData }) => {
+export const EditorDoughnutChart: FC<IEditorDoughnutChart> = ({
+    chartData,
+}) => {
     const data = {
         labels: chartData.labels,
 

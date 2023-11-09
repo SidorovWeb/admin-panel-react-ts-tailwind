@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { DoughnutChart } from './DoughnutChart'
+import { EditorDoughnutChart } from './EditorDoughnutChart'
 import html from '../../assets/icons/html.svg'
 import css from '../../assets/icons/css.svg'
 import js from '../../assets/icons/js.svg'
@@ -7,7 +7,6 @@ import img from '../../assets/icons/img.svg'
 import backup from '../../assets/icons/backup.svg'
 import { useAppSelector } from '../../hooks/redux'
 import { useTranslation } from 'react-i18next'
-import { MiniSpinner } from '../Spinners/MiniSpinner'
 import { Button } from '../UI/Button'
 
 interface IDashboard {}
@@ -33,11 +32,11 @@ export const Dashboard: FC<IDashboard> = ({}) => {
             const chart = {
                 labels: ['HTML', 'CSS', 'JS', 'IMG', 'Backups'],
                 data: [
-                    htmlFiles?.length ?? 0,
-                    cssFiles?.files.length ?? 0,
-                    jsFiles?.files.length ?? 0,
-                    images?.length ?? 0,
-                    backupFiles?.length ?? 0,
+                    htmlFiles?.length,
+                    cssFiles?.files.length,
+                    jsFiles?.files.length,
+                    images?.length,
+                    backupFiles?.length,
                 ],
             }
 
@@ -45,78 +44,45 @@ export const Dashboard: FC<IDashboard> = ({}) => {
         }
     }, [htmlFiles, cssFiles, jsFiles, images, backupFiles])
 
+    const components = [
+        {
+            icon: html,
+            files: htmlFiles.length,
+        },
+        {
+            icon: css,
+            files: cssFiles.files.length,
+        },
+        {
+            icon: js,
+            files: jsFiles.files.length,
+        },
+        {
+            icon: img,
+            files: images.length,
+        },
+        {
+            icon: backup,
+            files: backupFiles.length,
+        },
+    ]
+
     return (
         <div className="charts grid md:grid-cols-2 gap-16 justify-center">
             <div className="charts-pie h-[250px] md:h-[300px] md:w-full flex items-center justify-center">
-                {!chartData && <MiniSpinner />}
-                {chartData && <DoughnutChart chartData={chartData} />}
+                {chartData && <EditorDoughnutChart chartData={chartData} />}
             </div>
             <div className="carts-file-list grid grid-cols-2 gap-4">
-                <div className={cardStyle}>
-                    <img
-                        className="max-w-[22%] min-w-[32px]"
-                        src={html}
-                        alt="Your SVG"
-                    />
-                    {htmlFiles && <p>: {htmlFiles.length}</p>}
-                    {!htmlFiles && (
-                        <div className="flex items-center">
-                            HTML: <MiniSpinner height={6} width={6} />
-                        </div>
-                    )}
-                </div>
-                <div className={cardStyle}>
-                    <img
-                        className="max-w-[22%] min-w-[32px]"
-                        src={css}
-                        alt="Your SVG"
-                    />
-                    {cssFiles && <p>: {cssFiles.files.length}</p>}
-                    {!cssFiles && (
-                        <div className="flex items-center">
-                            CSS: <MiniSpinner height={6} width={6} />
-                        </div>
-                    )}
-                </div>
-                <div className={cardStyle}>
-                    <img
-                        className="max-w-[22%] min-w-[32px]"
-                        src={js}
-                        alt="Your SVG"
-                    />
-                    {jsFiles && <p>: {jsFiles.files.length}</p>}
-                    {!jsFiles && (
-                        <div className="flex items-center">
-                            JS: <MiniSpinner height={6} width={6} />
-                        </div>
-                    )}
-                </div>
-                <div className={cardStyle}>
-                    <img
-                        className="max-w-[22%] min-w-[32px]"
-                        src={img}
-                        alt="Your SVG"
-                    />
-                    {images && <p>: {images.length}</p>}
-                    {!images && (
-                        <div className="flex items-center">
-                            Images: <MiniSpinner height={6} width={6} />
-                        </div>
-                    )}
-                </div>
-                <div className={cardStyle}>
-                    <img
-                        className="max-w-[22%] min-w-[32px]"
-                        src={backup}
-                        alt="Your SVG"
-                    />
-                    {backupFiles && <p>: {backupFiles.length}</p>}
-                    {!backupFiles && (
-                        <div className="flex items-center">
-                            Backup: <MiniSpinner height={6} width={6} />
-                        </div>
-                    )}
-                </div>
+                {components.map((item, idx) => (
+                    <div className={cardStyle} key={idx}>
+                        <img
+                            className="max-w-[22%] min-w-[32px]"
+                            src={item.icon}
+                            alt="Your SVG"
+                        />
+                        {item.files && <p>: {item.files}</p>}
+                    </div>
+                ))}
                 <div className={cardStyle}>
                     <Button
                         clName="btn-primary"

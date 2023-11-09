@@ -125,7 +125,7 @@ export const EditorUploads: FC<IEditorUploads> = () => {
                         clName="btn-danger flex item-center space-x-1"
                         onClick={deleteNotUsedImages}
                     >
-                        <MdDeleteOutline className="w-full h-[16px] -mt-[2px]" />
+                        <MdDeleteOutline className="w-full h-[16px] mt-[1px]" />
                         <p>{t('delete')}</p>
                     </Button>
                 </div>
@@ -177,7 +177,7 @@ export const EditorUploads: FC<IEditorUploads> = () => {
                                         clName="btn-danger flex item-center space-x-1"
                                         onClick={() => deleteImage(img)}
                                     >
-                                        <MdDeleteOutline className="w-full h-[16px] -mt-[2px]" />
+                                        <MdDeleteOutline className="w-full h-[16px] mt-[1px]" />
                                         <p>{t('delete')}</p>
                                     </Button>
                                 )}

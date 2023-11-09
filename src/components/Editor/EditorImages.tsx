@@ -7,7 +7,6 @@ import { userActions } from '../../hooks/actions'
 import { useAppSelector } from '../../hooks/redux'
 import { convertBytes, imageSize, published } from '../../helpers/utils'
 import { MdOutlineSearch } from 'react-icons/md'
-import { MiniSpinner } from '../Spinners/MiniSpinner'
 import { useTranslation } from 'react-i18next'
 import { Search } from '../UI/Search'
 import { toast } from 'react-toastify'
@@ -60,7 +59,6 @@ export const EditorImages: FC<IEditorImages> = ({
     const { id, text } = useAppSelector((state) => state.setText)
     const { images } = useAppSelector((state) => state.getImage)
     const [isSpinner, setIsSpinner] = useState(true)
-    const [isCollapse, setIsCollapse] = useState(false)
     const { t } = useTranslation()
 
     useEffect(() => {
@@ -262,7 +260,6 @@ export const EditorImages: FC<IEditorImages> = ({
                     placeholder={t('searchPlaceholderName') as string}
                 />
             </div>
-            {isSpinner && <MiniSpinner />}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center w-full">
                 {!isSpinner &&
                     filteredImages &&
