@@ -81,9 +81,9 @@ const EditorMaps: FC<IEditorText> = ({ virtualDom, currentPage }) => {
                 <p className="font-medium mb-4">
                     Возможно забыли добавить атрибуты:
                     <span className="font-bold ml-2">
-                        data-yamaps="" data-yamaps-id="Your id"
-                        data-apikey="Your API-key" data-address="Your address"
-                        data-coordinates="Your coordinates"
+                        id="Your id" data-yamaps data-apikey="Your API-key"
+                        data-address="Your address" data-coordinates="Your
+                        coordinates"
                     </span>
                 </p>
             </div>
